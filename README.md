@@ -26,7 +26,7 @@ For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configura
       exec = "Devil-Diffusion";
       icon = "/home/<user>/path.to.source.dir/devil-diffusion-icon.png";
 
-      desktopName = "Devil Diffusion Comfy AMD";
+      desktopName = "Devil Diffusion AMD";
       categories = [ "Development" ];
       terminal = true;
 
@@ -34,6 +34,9 @@ For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configura
 ```
 and run a rebuild after, once done your new desktop file will be available and pointing to the src directory to run nix-shell direct from desktop. 
 
+Now that the intros are out of the way, you can find the Model srcs here >> https://civitai.com/models/1184251/devil-pony-v1 & >> https://huggingface.co/Mephist0phel3s/Devil-Diffusion/tree/main
+
+![Devil Diffusion Mascot - Eve](https://github.com/Mephist0phel3s/Devil-Diffusion/blob/c380efa0a776e74ea43632be844ef1e36ada0c50/devil-diffusion-icon.png)
 
 <div align="center">
 
