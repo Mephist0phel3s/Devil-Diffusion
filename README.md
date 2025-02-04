@@ -1,9 +1,38 @@
-forgot to update Readme from fork as i was mainly testing on another repo initially before scaling back scope due to complexity. 
+If you already have nix pkg manager installed, or are running NixOS, you should only need to clone the repo or pull down a release tarball, cd in, and nix-shell. The rest happens automatically. A new window with the running UI will spawn when the server is done building.
 
-ideally you should only need to clone, cd in, then run nix-shell. thats it. Devil does everything else and a new browser window will spawn automatically once the build is complete. 
-You can get nix as a pkg manager or an os at NixOS.org. 
-will write a more thorough readme soon. 
+Those of you not running nix or nixos, heres a one-liner that will do both at once.
 
+`sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/AMDv1.2.tar.gz ; tar -xf AMDv1.2.tar.gz.1 && rm AMDv1.2.tar.gz.1 ; cd Devil-Diffusion-AMDv1.2  && nix-shell` and this will do the same thing. 
+
+NOTICE::: 
+This repo contains an automatic install and pull script for a base model, VAE, and CLIP Vision as well as a few extensions preinstalled to get you working immediately. I may include more in the future as time develops, as the main goal of this repo is to be a feature complete out of the box diffusion model thats ready to generate good images immediately after install. 
+Currently the pull phase eats about 14~gb of bandwidth.
+
+NOTICE::: ive not written a script to bypass this yet but it will be available in the future. For now though, if you wish to skip and use your own models or drops in for the UI, run:
+`touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch ; nix-shell` and it will install the UI bare bones without pulling down preconfigured models.
+After, you can continue to just use `nix-shell` to spawn the server without needingg to run the prior command again.
+
+For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configuration.nix under system packages like:
+```
+  (pkgs.writeShellApplication {
+    name = "Devil-Diffusion";
+      runtimeInputs = [pkgs.bash];
+      text = ''cd /home/<user>/path.to.source.dir/ && nix-shell'';})
+
+
+
+   (pkgs.makeDesktopItem {
+      name = "Devil Diffusion";
+      exec = "Devil-Diffusion";
+      icon = "/home/<user>/path.to.source.dir/devil-diffusion-icon.png";
+
+      desktopName = "Devil Diffusion Comfy AMD";
+      categories = [ "Development" ];
+      terminal = true;
+
+    })
+```
+and run a rebuild after, once done your new desktop file will be available and pointing to the src directory to run nix-shell direct from desktop. 
 
 
 <div align="center">
