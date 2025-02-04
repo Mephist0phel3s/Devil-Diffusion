@@ -1,3 +1,11 @@
+forgot to update Readme from fork as i was mainly testing on another repo initially before scaling back scope due to complexity. 
+
+ideally you should only need to clone, cd in, then run nix-shell. thats it. Devil does everything else and a new browser window will spawn automatically once the build is complete. 
+You can get nix as a pkg manager or an os at NixOS.org. 
+will write a more thorough readme soon. 
+
+
+
 <div align="center">
 
 # ComfyUI
