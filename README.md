@@ -1,8 +1,10 @@
 If you already have nix pkg manager installed, or are running NixOS, you should only need to clone the repo or pull down a release tarball, cd in, and nix-shell. The rest happens automatically. A new window with the running UI will spawn when the server is done building.
 
 Those of you not running nix or nixos, heres a one-liner that will do both at once.
-
-`sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/AMDv1.2.tar.gz ; tar -xf AMDv1.2.tar.gz.1 && rm AMDv1.2.tar.gz.1 ; cd Devil-Diffusion-AMDv1.2  && nix-shell` and this will do the same thing. 
+```
+sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/AMDv1.2.tar.gz ; tar -xf AMDv1.2.tar.gz.1 && rm AMDv1.2.tar.gz.1 ; cd Devil-Diffusion-AMDv1.2  && nix-shell
+```
+and this will do the same thing. 
 
 NOTICE::: 
 This repo contains an automatic install and pull script for a base model, VAE, and CLIP Vision as well as a few extensions preinstalled to get you working immediately. I may include more in the future as time develops, as the main goal of this repo is to be a feature complete out of the box diffusion model thats ready to generate good images immediately after install. 
