@@ -3,12 +3,23 @@ V2 changes, short version:
 Fixed bug where the extensions werent installing correclty and needed to be repaired after initial build. Extensions now install and activate on first boot as intended.
 Fixed a bug where in the Workflows that are supposed to be included in the release werent populating in the UI.
 
-Still an issue with the Welcome workflow not populating on first boot, for now just open the workflows tab on the UI once it spawns and select the Welcome-Devil-Diffusion workflow to get up and running immeditiately with a simplified layout with 2 Lora nodes ready to be populated with a pack. Will include screenshots soon as well as a Welcome Walkthrough on how Devil Diffusion differs from its parent repos.
+Still an issue with the Welcome workflow not populating on first boot, for now just open the workflows tab on the UI once it spawns and select the Welcome-Devil-Diffusion workflow to get up and running immeditiately.
+
+If you are struglingg with getting the workflow to load, please submit a bug report to the issues of this repo.
+Heres a hard link to the welcome json + img with embed data. Both should be drag + drop.
+
+json: https://github.com/Mephist0phel3s/Devil-Diffusion/blob/163f1471b5a964a196ef12f02665192ddcd50ba7/user/default/workflows/Welcome-Devil-Diffusion-v1.2.4.json
+
+img: https://github.com/Mephist0phel3s/Devil-Diffusion/blob/3101e5287cc4fcb5b671b6e6c95118276e54ca15/output/Welcome_00000.png
+
+
+The included workflow is a simplified layout with 2 Lora nodes ready to be populated with a pack. Will include screenshots soon as well as a Welcome Walkthrough on how Devil Diffusion differs from its parent repos.
 The welcome workflow includes a unified prompt box in green for positive and red for negative, as well as enable/disable/bypass switches in a dedicated panel for turning Lora's on or off, as well as clipping positive and negative prompt individually. 
 The workflow also includes a custom KSampler tuned to work specifically with the Devil Pony v1.3 model that comes preinstalled, all built and lovingly sculpted by yours truly.
 More workflows will be available in future releases.
 
-RUNNING DEVIL.
+***RUNNING DEVIL***.
+
 Quite simple actually, for those of you already running a nixified system or NixOS as your main OS, you simply need only pull the main repo or get one of the release tarballs available >> https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/Devil-Difusion-v2-Unified and then run:
 
 ```
@@ -39,10 +50,18 @@ This repo contains an automatic install and pull script for a base model, VAE, a
 Currently the pull phase eats about 14~gb of bandwidth.
 
 NOTICE::: ive not written a script to bypass this yet but it will be available in the future. For now though, if you wish to skip and use your own models or drops in for the UI, run:
-`touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch`
+AMD:::
+```
+touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch
+```
+NVIDIA:::
+```
+touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126 ; pip install -r requirements.txt ; pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
+```
 then run your `NVIDIA` or `AMD` script and it will install the UI bare bones without pulling down preconfigured models.
+More models are available for free download @ https://civitai.com && https://huggingface.co/
 
-After, you can continue to just use the NVIDIA or AMD script to spawn the server without needingg to run the prior command again.
+After, you can continue to just use the NVIDIA or AMD script to spawn the server without needing to run the prior command again.
 
 For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configuration.nix under system packages for AMD like:
 ```
@@ -96,9 +115,11 @@ Here soon i will be writing up full README markdowns and putting them in the Doc
 But for now i will sub in things i find online that are immensely helpful on their own here on the top level of the README.
 
 Tips for generation:
-https://civitai.com/articles/3296/mastering-camera-angles-in-visual-storytelling-a-quick-guide
+Camera Angles and Visual Story Telling.
 
- stable-diffusion-xl supports generating images at the following dimensions:
+  https://civitai.com/articles/3296/mastering-camera-angles-in-visual-storytelling-a-quick-guide
+
+ Devil Diffusion supports generating images at the following dimensions:
 
     1024 x 1024
 
