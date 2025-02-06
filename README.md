@@ -55,6 +55,11 @@ Now that the intros are out of the way, you can find the Model srcs here >> http
 
 ![Devil Diffusion Mascot - Eve](https://github.com/Mephist0phel3s/Devil-Diffusion/blob/c380efa0a776e74ea43632be844ef1e36ada0c50/devil-diffusion-icon.png)
 
+Here soon i will be writing up full README markdowns and putting them in the Doc folder that will contain tips, example imgs and workflows, and how to overcome obstacles you will certainly encounter if you are just starting out like i was not too long ago. 
+But for now i will sub in things i find online that are immensely helpful on their own here on the top level of the README.
+
+Tips for generation:
+https://civitai.com/articles/3296/mastering-camera-angles-in-visual-storytelling-a-quick-guide
 
  stable-diffusion-xl supports generating images at the following dimensions:
 
@@ -91,5 +96,4 @@ For completeness’s sake, these are the resolutions supported by clipdrop.co:
     1365 x 768: Widescreen (16:9)
 
     1564 x 670: Cinematic (21:9)
-
 
