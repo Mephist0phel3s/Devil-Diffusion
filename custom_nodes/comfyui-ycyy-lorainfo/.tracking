@@ -1,0 +1,12 @@
+.gitignore
+LICENSE
+lora.json.example
+lora_info.py
+pyproject.toml
+README.md
+__init__.py
+examples/lora_info_example.json
+images/sdxl-emoji-1.png
+images/sdxl-emoji-2.png
+images/StudioGhibli-1.png
+images/StudioGhibli-2.png
