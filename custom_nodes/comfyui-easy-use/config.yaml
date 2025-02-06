@@ -1,0 +1,5 @@
+STABILITY_API_DEFAULT: 0
+STABILITY_API_KEY:
+- key: ''
+  name: Default
+WEB_VERSION: v2
