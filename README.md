@@ -52,12 +52,20 @@ Currently the pull phase eats about 14~gb of bandwidth.
 NOTICE::: ive not written a script to bypass this yet but it will be available in the future. For now though, if you wish to skip and use your own models or drops in for the UI, run:
 AMD:::
 ```
-touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch
+$ nix-shell -p binutils stdenv.cc.cc.lib stdenv python312Full
+$ touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch
 ```
 NVIDIA:::
 ```
-touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126 ; pip install -r requirements.txt ; pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
+$ nix-shell -p binutils stdenv.cc.cc.lib stdenv python312Full
+
+$ touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126 ; pip install -r requirements.txt ; pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
 ```
+
+***NOTE***
+    You need to run the commands after each $ sequentially, theres no one-liner solution for this yet but im working on it.
+
+
 then run your `NVIDIA` or `AMD` script and it will install the UI bare bones without pulling down preconfigured models.
 More models are available for free download @ https://civitai.com && https://huggingface.co/
 
