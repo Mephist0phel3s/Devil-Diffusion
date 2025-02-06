@@ -87,7 +87,7 @@ in pkgs.mkShell rec {
           ;;
         "CUDA")
           echo "Running first run script for NVIDIA/CUDA..."
-          cd devil_scripts && exec ./firstrunNVIDIA.sh
+          cd devil_scripts && exec ./firstrun-NVIDIA.sh
           ;;
         "CPU")
           echo "Running first run script for CPU..."

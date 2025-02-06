@@ -1,20 +1,33 @@
+Devil Diffusion v2.0 is now available.
+V2 changes, short version:
+Fixed bug where the extensions werent installing correclty and needed to be repaired after initial build. Extensions now install and activate on first boot as intended.
+Fixed a bug where in the Workflows that are supposed to be included in the release werent populating in the UI.
 
-Use latest stable release pkg at >> https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/AMDv1.2
+Still an issue with the Welcome workflow not populating on first boot, for now just open the workflows tab on the UI once it spawns and select the Welcome-Devil-Diffusion workflow to get up and running immeditiately with a simplified layout with 2 Lora nodes ready to be populated with a pack. Will include screenshots soon as well as a Welcome Walkthrough on how Devil Diffusion differs from its parent repos.
+The welcome workflow includes a unified prompt box in green for positive and red for negative, as well as enable/disable/bypass switches in a dedicated panel for turning Lora's on or off, as well as clipping positive and negative prompt individually. 
+The workflow also includes a custom KSampler tuned to work specifically with the Devil Pony v1.3 model that comes preinstalled, all built and lovingly sculpted by yours truly.
+More workflows will be available in future releases.
 
-if you prefer a one liner to download the correct AMD release, use this:
-```
-wget https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/AMDv1.2
-```
- 
+RUNNING DEVIL.
+Quite simple actually, for those of you already running a nixified system or NixOS as your main OS, you simply need only pull the main repo or get one of the release tarballs available >> https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/Devil-Difusion-v2-Unified and then run:
 
-If you already have nix pkg manager installed, or are running NixOS, you should only need to pull down a release tarball, cd in, and nix-shell. The rest happens automatically. 
-A new window with the running UI will spawn when the server is done building.
+```
+./devil-AMD.sh    #### For AMD GPU's
+./devil-NVIDIA.sh #### For NVIDIA GPU's 
+```
+The initial pull and build will take a bit, but when its done Devil will automatically spawn a new window with your default browser and Devil Diffusion loaded and ready to generate out of the box.
 
-Those of you not running nix or nixos, heres a one-liner that will do both at once.
+
+Those of you not running nix or nixos, heres a one-liner that will do both at once, and this should work on ANY nixified Linux system out of the box.
+AMD:
 ```
-sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/AMDv1.2.tar.gz ; tar -xf AMDv1.2.tar.gz.1 && rm AMDv1.2.tar.gz.1 ; cd Devil-Diffusion-AMDv1.2  && nix-shell
+sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Difusion-v2-Unified.tar.gz ; tar -xf Devil-Difusion-v2-Unified.tar.gz && cd Devil-Diffusion-Devil-Difusion-v2-Unified/ ; ./devil-AMD.sh
 ```
-and this will do the same thing. 
+NVIDIA:
+```
+sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Difusion-v2-Unified.tar.gz ; tar -xf Devil-Difusion-v2-Unified.tar.gz && cd Devil-Diffusion-Devil-Difusion-v2-Unified/ ; ./devil-NVIDIA.sh
+```
+
 
 NOTE::: Windows users in particular, you will need wsl enabled, any off the shelf linux distro will probably work but if you are enabling it for the first time i'd suggest using NixOS instead of Ubuntu or something else. 
 It work best since this is a nix expression we are using to build Devil Diffusion.
@@ -26,15 +39,17 @@ This repo contains an automatic install and pull script for a base model, VAE, a
 Currently the pull phase eats about 14~gb of bandwidth.
 
 NOTICE::: ive not written a script to bypass this yet but it will be available in the future. For now though, if you wish to skip and use your own models or drops in for the UI, run:
-`touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch ; nix-shell` and it will install the UI bare bones without pulling down preconfigured models.
-After, you can continue to just use `nix-shell` to spawn the server without needingg to run the prior command again.
+`touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch`
+then run your `NVIDIA` or `AMD` script and it will install the UI bare bones without pulling down preconfigured models.
 
-For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configuration.nix under system packages like:
+After, you can continue to just use the NVIDIA or AMD script to spawn the server without needingg to run the prior command again.
+
+For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configuration.nix under system packages for AMD like:
 ```
   (pkgs.writeShellApplication {
     name = "Devil-Diffusion";
       runtimeInputs = [pkgs.bash];
-      text = ''cd /home/<user>/path.to.source.dir/ && nix-shell'';})
+      text = ''cd /home/<user>/path.to.source.dir/ && ./devil-AMD.sh'';})
 
 
 
@@ -43,12 +58,34 @@ For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configura
       exec = "Devil-Diffusion";
       icon = "/home/<user>/path.to.source.dir/devil-diffusion-icon.png";
 
-      desktopName = "Devil Diffusion AMD";
+      desktopName = "Devil Diffusion";
       categories = [ "Development" ];
       terminal = true;
 
     })
 ```
+
+and for NVIDIA like:
+```
+  (pkgs.writeShellApplication {
+    name = "Devil-Diffusion";
+      runtimeInputs = [pkgs.bash];
+      text = ''cd /home/<user>/path.to.source.dir/ && ./devil-NVIDIA.sh'';})
+
+
+
+   (pkgs.makeDesktopItem {
+      name = "Devil Diffusion";
+      exec = "Devil-Diffusion";
+      icon = "/home/<user>/path.to.source.dir/devil-diffusion-icon.png";
+
+      desktopName = "Devil Diffusion";
+      categories = [ "Development" ];
+      terminal = true;
+
+    })
+```
+
 and run a rebuild after, once done your new desktop file will be available and pointing to the src directory to run nix-shell direct from desktop. 
 
 Now that the intros are out of the way, you can find the Model srcs here >> https://civitai.com/models/1184251/devil-pony-v1 & >> https://huggingface.co/Mephist0phel3s/Devil-Diffusion/tree/main
