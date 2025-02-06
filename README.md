@@ -1,8 +1,13 @@
 The devil branch is always under constant tinkering. 
 Right now, as of 2025-02-06-01-03 ISO time, the default branch <devil> no longer builds on AMD as im now testing an NVIDIA standalone build. 
 
-Use latest stable release pkg at >> `https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/AMDv1.2`
-`wget https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/AMDv1.2` if you prefer a one liner to download the correct AMD release.
+Use latest stable release pkg at >> https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/AMDv1.2
+
+if you prefer a one liner to download the correct AMD release, use this:
+```
+wget https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/AMDv1.2
+```
+ 
 
 If you already have nix pkg manager installed, or are running NixOS, you should only need to pull down a release tarball, cd in, and nix-shell. The rest happens automatically. 
 A new window with the running UI will spawn when the server is done building.
