@@ -24,6 +24,8 @@ git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git custom_nodes/
 cd custom_nodes/ComfyUI-Crystools
 pip install -r requirements.txt
 cd ..
+git clone https://github.com/jitcoder/lora-info.git custom_nodes/lora-info
+git clone https://github.com/ycyy/ComfyUI-YCYY-LoraInfo.git custom_nodes/ComfyUI-YCYY-LoraInfo
 cd ..
 
 
@@ -38,8 +40,8 @@ echo "Cloning Devil-Diffusion base model + VAE, CLIP vision."
 echo -e "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
 sleep 5
 
-git clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion
-git clone https://huggingface.co/h94/IP-Adapter
+git-lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion
+git-lfs clone https://huggingface.co/h94/IP-Adapter
 #echo "Creating model directories for Stable Diffusion core so python and the default SD models that dont really work dont get patched in over Devil."
 
 mkdir -p ../docs/ipadapter
