@@ -1,0 +1,3035 @@
+{
+  "last_node_id": 101,
+  "last_link_id": 229,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -4634.74169921875,
+        14742.9931640625
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            89,
+            91
+          ],
+          "slot_index": 0,
+          "label": "Base Model OUT"
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            90,
+            93,
+            95
+          ],
+          "slot_index": 1,
+          "label": "Base Model CLIP OUT"
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [],
+          "slot_index": 2,
+          "label": "NA"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "Devil_Pony_v1.3.safetensors"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "easy positive",
+      "pos": [
+        -3245.879150390625,
+        15058.0927734375
+      ],
+      "size": [
+        876.6544799804688,
+        774.096923828125
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": [
+            51
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy positive"
+      },
+      "widgets_values": [
+        "(Wide Shot:1.1), from a distance, long shot, rating_PG.\n1girl, solo,head tilted back, eyes closed in bliss, rain, rainstorm, heavy rain, forrest, autumn season, sharp focus, detailed background, \nwater splash on face, looking up, eyes closed, \nenjoying the rain, wet, wet hair, wet clothes, \nfar shot, \n\nexteme detailed (red skin:1.3), mix of meru, katara, merunyaa, and sinon, 21 years old.\nBREAK\n\ndetailed eyes, detailed iris, detailed pupil, shiny pupil, black pupil, extreme detailed face, extreme detail red skin, extreme detail devil tail, \nBREAK\n\nathletic, physically fit,\nblue hair, spiky hair,sharp bangs, short hair, sharp bangs, blue nail paint, painted nails, colored skin, skin-covered oni horns, black devil tail, mouth closed, mischievous [smile|closed lips], black ballgown, black choker, ear rings, lips closed, black lipstick,cartoon, toony, Western art style,cayb, "
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 4,
+      "type": "easy negative",
+      "pos": [
+        -3247.52880859375,
+        15865.8427734375
+      ],
+      "size": [
+        879.0156860351562,
+        365.55780029296875
+      ],
+      "flags": {
+        "collapsed": false,
+        "pinned": true
+      },
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": [
+            52
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy negative"
+      },
+      "widgets_values": [
+        "score_4, score_5, score_6, futanari,extra fingers,distorted hands,distorted fingers, muscular,low quality, lowres, bad anatomy,worst quality, censored,text,signature, lineless,watermark,signature, logo, FastNegativeEmbedding, low-quality, moir pattern, downsampling, aliasing, distorted, blurry, glossy, blur, jpeg artifacts, compression artifacts, poorly drawn, low-resolution, bad, distortion, twisted, excessive, exaggerated pose, exaggerated limbs, mixed characters, grainy, symmetrical, duplicate, error, pattern, beginner, pixelated, fake, hyper, glitch, overexposed, high-contrast, bad-contrast, black and white, NegfeetV2, Deformed, Deformed face, Deformed fingers, Deformed hands, Out of frame, Poorly drawn face, Poorly drawn feet, Poorly drawn hands, Draft, Grainy, Kitsch, Low-res, old, sketch, black and white, doujinshi, exaggerated anatomy, orgasm, milf, big lips, big nose,(((face))), dick, cock, penis, balls, man, men, pool, hotspring, lake, ocean, island, onsen"
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 6,
+      "type": "workflow>Lora S1 Console",
+      "pos": [
+        -4679.70849609375,
+        15379.4326171875
+      ],
+      "size": [
+        481.1999816894531,
+        146
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": "BOOLEAN",
+          "links": [
+            92
+          ],
+          "label": "S1 Model Bypass?"
+        },
+        {
+          "name": "Lora #1 CLIP Positive Prompt? boolean",
+          "type": "BOOLEAN",
+          "links": [
+            94
+          ],
+          "label": "S1 CLIP Pos Prompt?"
+        },
+        {
+          "name": "Lora #1 CLIP Neg Prompt? boolean",
+          "type": "BOOLEAN",
+          "links": [
+            96
+          ],
+          "label": "S1 CLIP Neg Prompt?"
+        }
+      ],
+      "title": "S1 Control Panel",
+      "properties": {
+        "Node name for S&R": "workflow>Lora S1 Console"
+      },
+      "widgets_values": [
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "id": 7,
+      "type": "workflow>S2 Control Panel",
+      "pos": [
+        -4677.85498046875,
+        15568.4013671875
+      ],
+      "size": [
+        477.389404296875,
+        146
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": "BOOLEAN",
+          "links": [
+            12
+          ],
+          "label": "S1 Model Bypass?"
+        },
+        {
+          "name": "S2 CLIP Positive Prompt? boolean",
+          "type": "BOOLEAN",
+          "links": [
+            13
+          ],
+          "label": "S2 CLIP Pos Prompt?"
+        },
+        {
+          "name": "S2 CLIP Negative Prompt? boolean",
+          "type": "BOOLEAN",
+          "links": [
+            14
+          ],
+          "label": "S2 CLIP Neg Prompt?"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "workflow>S2 Control Panel"
+      },
+      "widgets_values": [
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "id": 8,
+      "type": "workflow>Final Guide and Conditioning",
+      "pos": [
+        -4876.583984375,
+        14918.0048828125
+      ],
+      "size": [
+        235.1999969482422,
+        134
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 4
+        },
+        {
+          "name": "negative clip",
+          "type": "CLIP",
+          "link": 5
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 6
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 49,
+          "widget": {
+            "name": "text"
+          },
+          "label": "Pos TXT"
+        },
+        {
+          "name": "negative text",
+          "type": "STRING",
+          "link": 50,
+          "widget": {
+            "name": "negative text"
+          },
+          "label": "Negative Txt"
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "link": 47,
+          "widget": {
+            "name": "cfg"
+          },
+          "label": "Guide Float"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            209
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "workflow>Final Guide and Conditioning"
+      },
+      "widgets_values": [
+        "",
+        "",
+        6.6000000000000005
+      ]
+    },
+    {
+      "id": 9,
+      "type": "workflow>S2 Load",
+      "pos": [
+        -3655.851318359375,
+        14781.25390625
+      ],
+      "size": [
+        472,
+        246
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 83
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 86
+        },
+        {
+          "name": "on_true",
+          "type": "*",
+          "link": 84
+        },
+        {
+          "name": "on_false",
+          "type": "*",
+          "link": 87
+        },
+        {
+          "name": "Lora #2 CLIP Negative Prompt? on_false",
+          "type": "*",
+          "link": 88
+        },
+        {
+          "name": "boolean",
+          "type": "BOOLEAN",
+          "link": 12,
+          "widget": {
+            "name": "boolean"
+          }
+        },
+        {
+          "name": "Lora #2 CLIP Posive prompt? boolean",
+          "type": "BOOLEAN",
+          "link": 13,
+          "widget": {
+            "name": "Lora #2 CLIP Posive prompt? boolean"
+          }
+        },
+        {
+          "name": "Lora #2 CLIP Negative Prompt? boolean",
+          "type": "BOOLEAN",
+          "link": 14,
+          "widget": {
+            "name": "Lora #2 CLIP Negative Prompt? boolean"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Lora MODEL OUT",
+          "type": "*",
+          "links": [
+            6
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "POSITIVE CLIP OUT",
+          "type": "*",
+          "links": [
+            4
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "NEGATIVE CLIP OUT",
+          "type": "*",
+          "links": [
+            5
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "workflow>S2 Load"
+      },
+      "widgets_values": [
+        null,
+        1,
+        1,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "id": 26,
+      "type": "workflow>Master Diffuser v1.2",
+      "pos": [
+        -4606.75048828125,
+        14904.322265625
+      ],
+      "size": [
+        400,
+        442
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "STRING",
+          "link": 51,
+          "widget": {
+            "name": "positive"
+          }
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "link": 52,
+          "widget": {
+            "name": "negative"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            210
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            211
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            212
+          ],
+          "slot_index": 2
+        },
+        {
+          "name": "float",
+          "type": "FLOAT",
+          "links": [
+            47
+          ]
+        },
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            208
+          ],
+          "slot_index": 4
+        },
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": [
+            49
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": [
+            50
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "workflow>Master Diffuser v1.2"
+      },
+      "widgets_values": [
+        "euler",
+        "SDXL",
+        30,
+        1,
+        1024,
+        1024,
+        1,
+        6.65,
+        535328326051785,
+        "randomize",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 35,
+      "type": "workflow>S1 Load",
+      "pos": [
+        -4134.7841796875,
+        14780.966796875
+      ],
+      "size": [
+        463.6000061035156,
+        246
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 89
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 90
+        },
+        {
+          "name": "Bypass Lora #1 Enable",
+          "type": "*",
+          "link": 91
+        },
+        {
+          "name": "CLIP Positive False",
+          "type": "*",
+          "link": 93
+        },
+        {
+          "name": "CLIP Negative False",
+          "type": "*",
+          "link": 95
+        },
+        {
+          "name": "boolean",
+          "type": "BOOLEAN",
+          "link": 92,
+          "widget": {
+            "name": "boolean"
+          }
+        },
+        {
+          "name": "Lora #1 CLIP Posive prompt? boolean",
+          "type": "BOOLEAN",
+          "link": 94,
+          "widget": {
+            "name": "Lora #1 CLIP Posive prompt? boolean"
+          }
+        },
+        {
+          "name": "Lora #1 CLIP Negative Prompt? boolean",
+          "type": "BOOLEAN",
+          "link": 96,
+          "widget": {
+            "name": "Lora #1 CLIP Negative Prompt? boolean"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Lora MODEL OUT",
+          "type": "*",
+          "links": [
+            83,
+            84
+          ]
+        },
+        {
+          "name": "POSITIVE CLIP OUT",
+          "type": "*",
+          "links": [
+            86
+          ]
+        },
+        {
+          "name": "NEGATIVE CLIP OUT",
+          "type": "*",
+          "links": [
+            87,
+            88
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "workflow>S1 Load"
+      },
+      "widgets_values": [
+        null,
+        1,
+        1,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "id": 97,
+      "type": "workflow>Image save with Meta",
+      "pos": [
+        -4186.255859375,
+        15074.8466796875
+      ],
+      "size": [
+        930.8092651367188,
+        1200.400634765625
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 208
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 209
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 210
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 211
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 212
+        },
+        {
+          "name": "extra_metadata",
+          "type": "EXTRA_METADATA",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "N/A",
+          "type": "LATENT",
+          "links": null
+        },
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "workflow>Image save with Meta"
+      },
+      "widgets_values": [
+        "Devil_VAE.safetensors",
+        "Welcome",
+        "",
+        "png",
+        "full",
+        true
+      ]
+    },
+    {
+      "id": 51,
+      "type": "LoraInfo",
+      "pos": [
+        -3102.629638671875,
+        14565.791015625
+      ],
+      "size": [
+        706.4053955078125,
+        363.1183166503906
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 5,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "lora_name",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "trigger_words",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "example_prompt",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraInfo"
+      },
+      "widgets_values": [
+        "",
+        "Pony",
+        "URL: https://civitai.com/models/432753\nBase Model: Pony\n\nExamples:\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/cad2b729-53c2-48d5-b5d7-d1527da4ce79/width=450/11964427.jpeg\nseed: 186478107308946\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 186478107308946, \"steps\": 20, \"cfg\": 6.0, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 0.9, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, score_8_up, source_cartoon, flat color, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, seductive smile, narrowed eyes, head tilt, \\nbraided ponytail, hair over shoulder, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_8, score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 640, \"height\": 960, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1855, 80], \"size\": {\"0\": 320, \"1\": 270}, \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [186478107308946, \"randomize\", 20, 6, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [640, 960, 1]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 547], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_8, score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \"]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [415, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 0.9, 1]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 266], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, score_8_up, source_cartoon, flat color, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, seductive smile, narrowed eyes, head tilt, \\nbraided ponytail, hair over shoulder, \"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 640\nheight: 960\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, score_8_up, source_cartoon, flat color, \n\n1girl, katara, brown hair, blue eyes, dark skin, \nbraid, blue choker, jewelry, \n\nblue dress, \n\nlooking at viewer, seductive smile, narrowed eyes, head tilt, \nbraided ponytail, hair over shoulder, \ndenoise: 1\nsampler: Euler a\ncfgScale: 6\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_8, score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nhair bun, fire nation style, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 0.9, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/384f72f0-c10f-466a-ace8-8f0103e0a18c/width=450/11967154.jpeg\nseed: 12295807367572\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 12295807367572, \"steps\": 20, \"cfg\": 6.0, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 1.0, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, source_cartoon, flat color, \\n\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, light smile, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_8, score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 768, \"height\": 1024, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1855, 80], \"size\": [320, 270], \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [768, 1024, 1]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [12295807367572, \"randomize\", 20, 6, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 547], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_8, score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \"]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [415, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 1, 1]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 266], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, source_cartoon, flat color, \\n\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, light smile, \"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 768\nheight: 1024\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, source_cartoon, flat color, \n\n\n1girl, katara, brown hair, blue eyes, dark skin, \nbraid, blue choker, jewelry, \n\nblue dress, \n\nlooking at viewer, light smile, \ndenoise: 1\nsampler: Euler a\ncfgScale: 6\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_8, score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nhair bun, fire nation style, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 1, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/64401247-14e2-478a-bdc3-8c4d5e4bf7cc/width=450/11964312.jpeg\nseed: 562722529286265\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 562722529286265, \"steps\": 20, \"cfg\": 6.9, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 1.0, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, score_8_up, source_anime, flat color, anime screencap, 1990s (style), film grain, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, seductive smile, (narrowed eyes:1.15), parted lips,\\n(head tilt:0.85),\\n\\nembedding:zPDXL, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \\nembedding:zPDXL-neg, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 768, \"height\": 1024, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1855, 80], \"size\": {\"0\": 320, \"1\": 270}, \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [562722529286265, \"randomize\", 20, 6.9, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 547], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \\nembedding:zPDXL-neg, \"]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [768, 1024, 1]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 266], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, score_8_up, source_anime, flat color, anime screencap, 1990s (style), film grain, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, seductive smile, (narrowed eyes:1.15), parted lips,\\n(head tilt:0.85),\\n\\nembedding:zPDXL, \"]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [415, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 1, 1]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 768\nheight: 1024\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, score_8_up, source_anime, flat color, anime screencap, 1990s (style), film grain, \n\n1girl, katara, brown hair, blue eyes, dark skin, \nbraid, blue choker, jewelry, \n\nblue dress, \n\nlooking at viewer, seductive smile, (narrowed eyes:1.15), parted lips,\n(head tilt:0.85),\n\nembedding:zPDXL, \ndenoise: 1\nsampler: Euler a\ncfgScale: 6.9\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nhair bun, fire nation style, \nembedding:zPDXL-neg, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 1, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/6fc5ab14-3cfd-4411-b69b-4a51b40c06bf/width=450/11964471.jpeg\nseed: 231513546034308\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 231513546034308, \"steps\": 20, \"cfg\": 6.9, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 1.0, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, score_8_up, source_anime, flat color, anime screencap, 1990s (style), film grain, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, seductive smile, (narrowed eyes:1.15), parted lips,\\n(head tilt:0.85),\\n\\nembedding:zPDXL, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \\nembedding:zPDXL-neg, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 768, \"height\": 1024, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1855, 80], \"size\": {\"0\": 320, \"1\": 270}, \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [231513546034308, \"randomize\", 20, 6.9, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 547], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \\nembedding:zPDXL-neg, \"]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [768, 1024, 1]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 266], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, score_8_up, source_anime, flat color, anime screencap, 1990s (style), film grain, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nblue dress, \\n\\nlooking at viewer, seductive smile, (narrowed eyes:1.15), parted lips,\\n(head tilt:0.85),\\n\\nembedding:zPDXL, \"]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [415, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 1, 1]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 768\nheight: 1024\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, score_8_up, source_anime, flat color, anime screencap, 1990s (style), film grain, \n\n1girl, katara, brown hair, blue eyes, dark skin, \nbraid, blue choker, jewelry, \n\nblue dress, \n\nlooking at viewer, seductive smile, (narrowed eyes:1.15), parted lips,\n(head tilt:0.85),\n\nembedding:zPDXL, \ndenoise: 1\nsampler: Euler a\ncfgScale: 6.9\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nhair bun, fire nation style, \nembedding:zPDXL-neg, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 1, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/8aa85ba0-ab19-4e71-8f02-602d4ea2a714/width=450/11964519.jpeg\nseed: 973701904049684\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 973701904049684, \"steps\": 20, \"cfg\": 6.0, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 1.0, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nlooking at viewer, narrowed eyes, frown,\\n\\noutdoors, iceberg, water, snow, ice, \\nsitting, \\n\", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 768, \"height\": 1024, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1855, 80], \"size\": [320, 270], \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [768, 1024, 1]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [973701904049684, \"randomize\", 20, 6, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [415, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 1, 1]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 547], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \"]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 266], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nlooking at viewer, narrowed eyes, frown,\\n\\noutdoors, iceberg, water, snow, ice, \\nsitting, \\n\"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 768\nheight: 1024\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, source_cartoon, flat color, \nrating_safe,\n\n1girl, katara, brown hair, blue eyes, dark skin, \nbraid, blue choker, jewelry, \n\nlooking at viewer, narrowed eyes, frown,\n\noutdoors, iceberg, water, snow, ice, \nsitting, \n\ndenoise: 1\nsampler: Euler a\ncfgScale: 6\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nhair bun, fire nation style, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 1, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/5a02592d-167e-4203-8c6a-d8f2fa123533/width=450/11964562.jpeg\nseed: 204879582544978\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 204879582544978, \"steps\": 20, \"cfg\": 6.9, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 1.0, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nwinter coat, fur coat, fur-trimmed boots, \\n\\nnarrowed eyes, frown, looking away, \\n\\nopen ocean,\\n\\nwater, ice floe, drift ice, iceberg,\\n\\nsitting on drift ice, hugging own legs, \\nsurrounded by water\\n\\nfrom side, \\n\", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \\nmountains, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 1024, \"height\": 768, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [415, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 1, 1]}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1860, 80], \"size\": [320, 270], \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 547], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \\nmountains, \"]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [1024, 768, 1]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [204879582544978, \"randomize\", 20, 6.9, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 270], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nwinter coat, fur coat, fur-trimmed boots, \\n\\nnarrowed eyes, frown, looking away, \\n\\nopen ocean,\\n\\nwater, ice floe, drift ice, iceberg,\\n\\nsitting on drift ice, hugging own legs, \\nsurrounded by water\\n\\nfrom side, \\n\"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 1024\nheight: 768\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, source_cartoon, flat color, \nrating_safe,\n\n1girl, katara, brown hair, blue eyes, dark skin, \nbraid, blue choker, jewelry, \n\nwinter coat, fur coat, fur-trimmed boots, \n\nnarrowed eyes, frown, looking away, \n\nopen ocean,\n\nwater, ice floe, drift ice, iceberg,\n\nsitting on drift ice, hugging own legs, \nsurrounded by water\n\nfrom side, \n\ndenoise: 1\nsampler: Euler a\ncfgScale: 6.9\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nhair bun, fire nation style, \nmountains, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 1, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/2ffaeb8a-689b-411e-a2b3-8e47c1e9f166/width=450/11964567.jpeg\nseed: 664240216375259\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 664240216375259, \"steps\": 20, \"cfg\": 6.0, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 1.0, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nwinter coat, fur coat, fur-trimmed boots, \\n\\nnarrowed eyes, frown, looking away, \\n\\nopen ocean,\\n\\nwater, ice floe,\\n\\nsitting on ice floe, hugging own legs, \\nsurrounded by water\\n\\nfrom side, \\n\", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 768, \"height\": 1024, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [768, 1024, 1]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [664240216375259, \"randomize\", 20, 6, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [415, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 1, 1]}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1860, 80], \"size\": [320, 270], \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 547], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nhair bun, fire nation style, \"]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 270], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\nbraid, blue choker, jewelry, \\n\\nwinter coat, fur coat, fur-trimmed boots, \\n\\nnarrowed eyes, frown, looking away, \\n\\nopen ocean,\\n\\nwater, ice floe,\\n\\nsitting on ice floe, hugging own legs, \\nsurrounded by water\\n\\nfrom side, \\n\"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 768\nheight: 1024\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, source_cartoon, flat color, \nrating_safe,\n\n1girl, katara, brown hair, blue eyes, dark skin, \nbraid, blue choker, jewelry, \n\nwinter coat, fur coat, fur-trimmed boots, \n\nnarrowed eyes, frown, looking away, \n\nopen ocean,\n\nwater, ice floe,\n\nsitting on ice floe, hugging own legs, \nsurrounded by water\n\nfrom side, \n\ndenoise: 1\nsampler: Euler a\ncfgScale: 6\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nhair bun, fire nation style, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 1, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/18c422d6-3116-4312-83aa-76e5398875f5/width=450/11964698.jpeg\nseed: 200592854285057\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 200592854285057, \"steps\": 20, \"cfg\": 7.0, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 0.9, \"strength_clip\": 0.9, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\n\\nlong hair, hair tubes, hair bun, fire nation style, \\nred dress, jewelry, \\n\\nlooking at viewer, seductive smile, narrowed eyes, parted lips, embedding:zPDXL,\\n\", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nbraid, sidelocks, \\nembedding:zPDXL-neg, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 768, \"height\": 1024, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1860, 80], \"size\": [320, 270], \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [200592854285057, \"randomize\", 20, 7, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [768, 1024, 1]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [420, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 0.9, 0.9]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 270], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\n\\nlong hair, hair tubes, hair bun, fire nation style, \\nred dress, jewelry, \\n\\nlooking at viewer, seductive smile, narrowed eyes, parted lips, embedding:zPDXL,\\n\"]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 550], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nbraid, sidelocks, \\nembedding:zPDXL-neg, \"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 768\nheight: 1024\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, source_cartoon, flat color, \nrating_safe,\n\n1girl, katara, brown hair, blue eyes, dark skin, \n\nlong hair, hair tubes, hair bun, fire nation style, \nred dress, jewelry, \n\nlooking at viewer, seductive smile, narrowed eyes, parted lips, embedding:zPDXL,\n\ndenoise: 1\nsampler: Euler a\ncfgScale: 7\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nbraid, sidelocks, \nembedding:zPDXL-neg, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 0.9, 'strengthClip': 0.9}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/b6b12a60-d85a-4370-a483-2027541196cc/width=450/11964602.jpeg\nseed: 49018863880484\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 49018863880484, \"steps\": 20, \"cfg\": 7.0, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL20.safetensors\", \"strength_model\": 1.0, \"strength_clip\": 1.0, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, source_cartoon, flat color, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\n\\nlong hair, hair tubes, hair bun, \\nred dress, red choker, jewelry, golden armpits\\nsingle bare shoulder, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\n(braid, sidelocks:1.25)\", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 640, \"height\": 960, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 52, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1860, 80], \"size\": {\"0\": 320, \"1\": 270}, \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [640, 960, 1]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [420, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL20.safetensors\", 1, 1]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [49018863880484, \"randomize\", 20, 7, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 270], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, source_cartoon, flat color, \\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\n\\nlong hair, hair tubes, hair bun, \\nred dress, red choker, jewelry, golden armpits\\nsingle bare shoulder, \"]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 550], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\n(braid, sidelocks:1.25)\"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 640\nheight: 960\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, source_cartoon, flat color, \n\n1girl, katara, brown hair, blue eyes, dark skin, \n\nlong hair, hair tubes, hair bun, \nred dress, red choker, jewelry, golden armpits\nsingle bare shoulder, \ndenoise: 1\nsampler: Euler a\ncfgScale: 7\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\n(braid, sidelocks:1.25)\nadditionalResources: [{'name': 'pony\\\\KataraXL20.safetensors', 'type': 'lora', 'strength': 1, 'strengthClip': 1}]\n\n\nOutput: https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/6d7a1689-20be-4a46-8db6-26b6407cc9c4/width=450/11964595.jpeg\nseed: 591215965148496\nvaes: []\nModel: sdxl\\ponyDiffusionV6XL_v6StartWithThisOne\ncomfy: {\"prompt\": {\"41\": {\"inputs\": {\"seed\": 591215965148496, \"steps\": 20, \"cfg\": 7.0, \"sampler_name\": \"euler_ancestral\", \"scheduler\": \"normal\", \"denoise\": 1.0, \"model\": [\"42\", 0], \"positive\": [\"47\", 0], \"negative\": [\"48\", 0], \"latent_image\": [\"49\", 0]}, \"class_type\": \"KSampler\"}, \"42\": {\"inputs\": {\"lora_name\": \"pony\\\\KataraXL10.safetensors\", \"strength_model\": 0.9, \"strength_clip\": 0.9, \"model\": [\"43\", 0], \"clip\": [\"43\", 1]}, \"class_type\": \"LoraLoader\"}, \"43\": {\"inputs\": {\"ckpt_name\": \"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\"}, \"44\": {\"inputs\": {\"samples\": [\"41\", 0], \"vae\": [\"43\", 2]}, \"class_type\": \"VAEDecode\"}, \"46\": {\"inputs\": {\"filename_prefix\": \"katara\", \"images\": [\"44\", 0]}, \"class_type\": \"SaveImage\"}, \"47\": {\"inputs\": {\"text\": \"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\n\\nlong hair, hair tubes, hair bun, fire nation style, \\nred dress, jewelry, \\n\\nlooking at viewer, seductive smile, narrowed eyes, parted lips, embedding:zPDXL,\\n\", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"48\": {\"inputs\": {\"text\": \"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nbraid, sidelocks, \\nembedding:zPDXL-neg, \", \"clip\": [\"42\", 1]}, \"class_type\": \"CLIPTextEncode\"}, \"49\": {\"inputs\": {\"width\": 768, \"height\": 1024, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\"}}, \"workflow\": {\"last_node_id\": 51, \"last_link_id\": 77, \"nodes\": [{\"id\": 44, \"type\": \"VAEDecode\", \"pos\": [1595, 80], \"size\": {\"0\": 210, \"1\": 46}, \"flags\": {}, \"order\": 6, \"mode\": 0, \"inputs\": [{\"name\": \"samples\", \"type\": \"LATENT\", \"link\": 64}, {\"name\": \"vae\", \"type\": \"VAE\", \"link\": 63}], \"outputs\": [{\"name\": \"IMAGE\", \"type\": \"IMAGE\", \"links\": [66], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"VAEDecode\"}}, {\"id\": 43, \"type\": \"CheckpointLoaderSimple\", \"pos\": [50, 80], \"size\": {\"0\": 315, \"1\": 98}, \"flags\": {}, \"order\": 0, \"mode\": 0, \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [61], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [62], \"shape\": 3, \"slot_index\": 1}, {\"name\": \"VAE\", \"type\": \"VAE\", \"links\": [63], \"shape\": 3, \"slot_index\": 2}], \"properties\": {\"Node name for S&R\": \"CheckpointLoaderSimple\"}, \"widgets_values\": [\"sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors\"]}, {\"id\": 46, \"type\": \"SaveImage\", \"pos\": [1860, 80], \"size\": [320, 270], \"flags\": {}, \"order\": 7, \"mode\": 0, \"inputs\": [{\"name\": \"images\", \"type\": \"IMAGE\", \"link\": 66}], \"properties\": {}, \"widgets_values\": [\"katara\"]}, {\"id\": 41, \"type\": \"KSampler\", \"pos\": [1230, 80], \"size\": {\"0\": 315, \"1\": 262}, \"flags\": {}, \"order\": 5, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 77, \"slot_index\": 0}, {\"name\": \"positive\", \"type\": \"CONDITIONING\", \"link\": 72, \"slot_index\": 1}, {\"name\": \"negative\", \"type\": \"CONDITIONING\", \"link\": 71, \"slot_index\": 2}, {\"name\": \"latent_image\", \"type\": \"LATENT\", \"link\": 73, \"slot_index\": 3}], \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [64], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"KSampler\"}, \"widgets_values\": [591215965148496, \"randomize\", 20, 7, \"euler_ancestral\", \"normal\", 1]}, {\"id\": 49, \"type\": \"EmptyLatentImage\", \"pos\": [865, 80], \"size\": {\"0\": 315, \"1\": 106}, \"flags\": {}, \"order\": 1, \"mode\": 0, \"outputs\": [{\"name\": \"LATENT\", \"type\": \"LATENT\", \"links\": [73], \"shape\": 3}], \"properties\": {\"Node name for S&R\": \"EmptyLatentImage\"}, \"widgets_values\": [768, 1024, 1]}, {\"id\": 42, \"type\": \"LoraLoader\", \"pos\": [420, 80], \"size\": {\"0\": 315, \"1\": 126}, \"flags\": {}, \"order\": 2, \"mode\": 0, \"inputs\": [{\"name\": \"model\", \"type\": \"MODEL\", \"link\": 61, \"slot_index\": 0}, {\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 62}], \"outputs\": [{\"name\": \"MODEL\", \"type\": \"MODEL\", \"links\": [77], \"shape\": 3, \"slot_index\": 0}, {\"name\": \"CLIP\", \"type\": \"CLIP\", \"links\": [68, 69], \"shape\": 3, \"slot_index\": 1}], \"properties\": {\"Node name for S&R\": \"LoraLoader\"}, \"widgets_values\": [\"pony\\\\KataraXL10.safetensors\", 0.9, 0.9]}, {\"id\": 47, \"type\": \"CLIPTextEncode\", \"pos\": [780, 270], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 3, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 68, \"slot_index\": 0}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [72], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_9, source_cartoon, flat color, \\nrating_safe,\\n\\n1girl, katara, brown hair, blue eyes, dark skin, \\n\\nlong hair, hair tubes, hair bun, fire nation style, \\nred dress, jewelry, \\n\\nlooking at viewer, seductive smile, narrowed eyes, parted lips, embedding:zPDXL,\\n\"]}, {\"id\": 48, \"type\": \"CLIPTextEncode\", \"pos\": [780, 550], \"size\": {\"0\": 400, \"1\": 200}, \"flags\": {}, \"order\": 4, \"mode\": 0, \"inputs\": [{\"name\": \"clip\", \"type\": \"CLIP\", \"link\": 69}], \"outputs\": [{\"name\": \"CONDITIONING\", \"type\": \"CONDITIONING\", \"links\": [71], \"shape\": 3, \"slot_index\": 0}], \"properties\": {\"Node name for S&R\": \"CLIPTextEncode\"}, \"widgets_values\": [\"score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \\n\\nbraid, sidelocks, \\nembedding:zPDXL-neg, \"]}], \"links\": [[61, 43, 0, 42, 0, \"MODEL\"], [62, 43, 1, 42, 1, \"CLIP\"], [63, 43, 2, 44, 1, \"VAE\"], [64, 41, 0, 44, 0, \"LATENT\"], [66, 44, 0, 46, 0, \"IMAGE\"], [68, 42, 1, 47, 0, \"CLIP\"], [69, 42, 1, 48, 0, \"CLIP\"], [71, 48, 0, 41, 2, \"CONDITIONING\"], [72, 47, 0, 41, 1, \"CONDITIONING\"], [73, 49, 0, 41, 3, \"LATENT\"], [77, 42, 0, 41, 0, \"MODEL\"]], \"groups\": [], \"config\": {}, \"extra\": {}, \"version\": 0.4}}\nsteps: 20\nwidth: 768\nheight: 1024\nmodels: ['sdxl\\\\ponyDiffusionV6XL_v6StartWithThisOne.safetensors']\nprompt: score_9, source_cartoon, flat color, \nrating_safe,\n\n1girl, katara, brown hair, blue eyes, dark skin, \n\nlong hair, hair tubes, hair bun, fire nation style, \nred dress, jewelry, \n\nlooking at viewer, seductive smile, narrowed eyes, parted lips, embedding:zPDXL,\n\ndenoise: 1\nsampler: Euler a\ncfgScale: 7\nmodelIds: []\nscheduler: normal\nupscalers: []\nversionIds: []\ncontrolNets: []\nnegativePrompt: score_4, score_5, score_6, bad anatomy, DeviantArt, source_pony,(worst quality, low quality),blurry face,clipping,bad face,deformed hands, bad hands, extra fingers, heels, strabismus, \n\nbraid, sidelocks, \nembedding:zPDXL-neg, \nadditionalResources: [{'name': 'pony\\\\KataraXL10.safetensors', 'type': 'lora', 'strength': 0.9, 'strengthClip': 0.9}]\n\n"
+      ]
+    },
+    {
+      "id": 49,
+      "type": "Note",
+      "pos": [
+        -2358.689453125,
+        14913.904296875
+      ],
+      "size": [
+        569.7301025390625,
+        1320.092529296875
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Note -- Good Prompts",
+      "properties": {},
+      "widgets_values": [
+        ""
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      4,
+      9,
+      1,
+      8,
+      0,
+      "CLIP"
+    ],
+    [
+      5,
+      9,
+      2,
+      8,
+      1,
+      "CLIP"
+    ],
+    [
+      6,
+      9,
+      0,
+      8,
+      2,
+      "MODEL"
+    ],
+    [
+      12,
+      7,
+      0,
+      9,
+      5,
+      "BOOLEAN"
+    ],
+    [
+      13,
+      7,
+      1,
+      9,
+      6,
+      "BOOLEAN"
+    ],
+    [
+      14,
+      7,
+      2,
+      9,
+      7,
+      "BOOLEAN"
+    ],
+    [
+      47,
+      26,
+      3,
+      8,
+      5,
+      "FLOAT"
+    ],
+    [
+      49,
+      26,
+      5,
+      8,
+      3,
+      "STRING"
+    ],
+    [
+      50,
+      26,
+      6,
+      8,
+      4,
+      "STRING"
+    ],
+    [
+      51,
+      3,
+      0,
+      26,
+      0,
+      "STRING"
+    ],
+    [
+      52,
+      4,
+      0,
+      26,
+      1,
+      "STRING"
+    ],
+    [
+      83,
+      35,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      84,
+      35,
+      0,
+      9,
+      2,
+      "*"
+    ],
+    [
+      86,
+      35,
+      1,
+      9,
+      1,
+      "CLIP"
+    ],
+    [
+      87,
+      35,
+      2,
+      9,
+      3,
+      "*"
+    ],
+    [
+      88,
+      35,
+      2,
+      9,
+      4,
+      "*"
+    ],
+    [
+      89,
+      1,
+      0,
+      35,
+      0,
+      "MODEL"
+    ],
+    [
+      90,
+      1,
+      1,
+      35,
+      1,
+      "CLIP"
+    ],
+    [
+      91,
+      1,
+      0,
+      35,
+      2,
+      "*"
+    ],
+    [
+      92,
+      6,
+      0,
+      35,
+      5,
+      "BOOLEAN"
+    ],
+    [
+      93,
+      1,
+      1,
+      35,
+      3,
+      "*"
+    ],
+    [
+      94,
+      6,
+      1,
+      35,
+      6,
+      "BOOLEAN"
+    ],
+    [
+      95,
+      1,
+      1,
+      35,
+      4,
+      "*"
+    ],
+    [
+      96,
+      6,
+      2,
+      35,
+      7,
+      "BOOLEAN"
+    ],
+    [
+      208,
+      26,
+      4,
+      97,
+      0,
+      "NOISE"
+    ],
+    [
+      209,
+      8,
+      0,
+      97,
+      1,
+      "GUIDER"
+    ],
+    [
+      210,
+      26,
+      0,
+      97,
+      2,
+      "SAMPLER"
+    ],
+    [
+      211,
+      26,
+      1,
+      97,
+      3,
+      "SIGMAS"
+    ],
+    [
+      212,
+      26,
+      2,
+      97,
+      4,
+      "LATENT"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5054470284993278,
+      "offset": [
+        5402.534663904711,
+        -14953.781746432962
+      ]
+    },
+    "node_versions": {
+      "comfy-core": "0.3.14",
+      "ComfyUI-Easy-Use": "45d5c08bbb354bcc7427a7774140e5aa4a2989cb",
+      "lora-info": "1.0.1"
+    },
+    "groupNodes": {
+      "S1 Load": {
+        "nodes": [
+          {
+            "id": -1,
+            "type": "LoraLoader",
+            "pos": [
+              -2950.499755859375,
+              16549.15234375
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": null,
+                "localized_name": "model"
+              },
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": null,
+                "localized_name": "clip"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "MODEL",
+                "type": "MODEL",
+                "links": [],
+                "slot_index": 0,
+                "localized_name": "MODEL"
+              },
+              {
+                "name": "CLIP",
+                "type": "CLIP",
+                "links": [],
+                "slot_index": 1,
+                "localized_name": "CLIP"
+              }
+            ],
+            "title": "Load LoRA #1",
+            "properties": {
+              "Node name for S&R": "LoraLoader"
+            },
+            "widgets_values": [
+              "characters/sinon.safetensors",
+              1,
+              1
+            ],
+            "index": 0
+          },
+          {
+            "id": -1,
+            "type": "Switch any [Crystools]",
+            "pos": [
+              -2539.829833984375,
+              16483.31640625
+            ],
+            "size": [
+              315,
+              78
+            ],
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "on_true",
+                "type": "*",
+                "link": null,
+                "label": "Bypass Lora #1 Enable",
+                "localized_name": "on_true"
+              },
+              {
+                "name": "on_false",
+                "type": "*",
+                "link": null,
+                "label": "Bypass Lora #2 Disable",
+                "localized_name": "on_false"
+              },
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "link": null,
+                "widget": {
+                  "name": "boolean"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "*",
+                "type": "*",
+                "links": [],
+                "slot_index": 0,
+                "label": "Lora MODEL OUT",
+                "localized_name": "*"
+              }
+            ],
+            "title": "Bypass Lora Model #1?",
+            "properties": {
+              "Node name for S&R": "Switch any [Crystools]"
+            },
+            "widgets_values": [
+              true
+            ],
+            "index": 1
+          },
+          {
+            "id": -1,
+            "type": "Switch any [Crystools]",
+            "pos": [
+              -2545.943115234375,
+              16647.81640625
+            ],
+            "size": [
+              315,
+              78
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "on_true",
+                "type": "*",
+                "link": null,
+                "label": "CLIP Positive True",
+                "localized_name": "on_true"
+              },
+              {
+                "name": "on_false",
+                "type": "*",
+                "link": null,
+                "label": "CLIP Positive False",
+                "localized_name": "on_false"
+              },
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "link": null,
+                "widget": {
+                  "name": "boolean"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "*",
+                "type": "*",
+                "links": [],
+                "slot_index": 0,
+                "label": "POSITIVE CLIP OUT",
+                "localized_name": "*"
+              }
+            ],
+            "title": "Lora #1 CLIP Posive prompt?",
+            "properties": {
+              "Node name for S&R": "Switch any [Crystools]"
+            },
+            "widgets_values": [
+              true
+            ],
+            "index": 2
+          },
+          {
+            "id": -1,
+            "type": "Switch any [Crystools]",
+            "pos": [
+              -2109.135986328125,
+              16580.408203125
+            ],
+            "size": [
+              315,
+              78
+            ],
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "on_true",
+                "type": "*",
+                "link": null,
+                "label": "CLIP Negative true",
+                "localized_name": "on_true"
+              },
+              {
+                "name": "on_false",
+                "type": "*",
+                "link": null,
+                "label": "CLIP Negative False",
+                "localized_name": "on_false"
+              },
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "link": null,
+                "widget": {
+                  "name": "boolean"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "*",
+                "type": "*",
+                "links": [],
+                "slot_index": 0,
+                "label": "NEGATIVE CLIP OUT",
+                "localized_name": "*"
+              }
+            ],
+            "title": "Lora #1 CLIP Negative Prompt?",
+            "properties": {
+              "Node name for S&R": "Switch any [Crystools]"
+            },
+            "widgets_values": [
+              false
+            ],
+            "index": 3
+          }
+        ],
+        "links": [
+          [
+            null,
+            0,
+            0,
+            0,
+            1,
+            "MODEL"
+          ],
+          [
+            null,
+            1,
+            0,
+            1,
+            1,
+            "CLIP"
+          ],
+          [
+            null,
+            0,
+            1,
+            0,
+            1,
+            "MODEL"
+          ],
+          [
+            0,
+            0,
+            1,
+            1,
+            30,
+            "MODEL"
+          ],
+          [
+            null,
+            0,
+            1,
+            2,
+            6,
+            "BOOLEAN"
+          ],
+          [
+            0,
+            1,
+            2,
+            0,
+            30,
+            "CLIP"
+          ],
+          [
+            null,
+            1,
+            2,
+            1,
+            1,
+            "CLIP"
+          ],
+          [
+            null,
+            1,
+            2,
+            2,
+            6,
+            "BOOLEAN"
+          ],
+          [
+            2,
+            0,
+            3,
+            0,
+            32,
+            "*"
+          ],
+          [
+            null,
+            1,
+            3,
+            1,
+            1,
+            "CLIP"
+          ],
+          [
+            null,
+            2,
+            3,
+            2,
+            6,
+            "BOOLEAN"
+          ]
+        ],
+        "external": [
+          [
+            1,
+            0,
+            "MODEL"
+          ],
+          [
+            2,
+            0,
+            "CLIP"
+          ],
+          [
+            3,
+            0,
+            "*"
+          ]
+        ]
+      },
+      "Lora S1 Console": {
+        "nodes": [
+          {
+            "id": -1,
+            "type": "easy boolean",
+            "pos": [
+              -9347.8115234375,
+              22574.779296875
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 32,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": [],
+                "localized_name": "boolean"
+              }
+            ],
+            "title": "Lora #1 Model Bypass?",
+            "properties": {
+              "Node name for S&R": "easy boolean"
+            },
+            "widgets_values": [
+              true
+            ],
+            "index": 0
+          },
+          {
+            "id": -1,
+            "type": "easy boolean",
+            "pos": [
+              -9347.1044921875,
+              22699.802734375
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 31,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": [],
+                "localized_name": "boolean"
+              }
+            ],
+            "title": "Lora #1 CLIP Positive Prompt?",
+            "properties": {
+              "Node name for S&R": "easy boolean"
+            },
+            "widgets_values": [
+              false
+            ],
+            "index": 1
+          },
+          {
+            "id": -1,
+            "type": "easy boolean",
+            "pos": [
+              -9359.4765625,
+              22803.142578125
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 30,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": [],
+                "slot_index": 0,
+                "localized_name": "boolean"
+              }
+            ],
+            "title": "Lora #1 CLIP Neg Prompt?",
+            "properties": {
+              "Node name for S&R": "easy boolean"
+            },
+            "widgets_values": [
+              false
+            ],
+            "index": 2
+          }
+        ],
+        "links": [],
+        "external": [
+          [
+            {
+              "id": -1,
+              "type": "easy boolean",
+              "pos": [
+                -9359.4765625,
+                22803.142578125
+              ],
+              "size": [
+                315,
+                58
+              ],
+              "flags": {},
+              "order": 30,
+              "mode": 0,
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "boolean",
+                  "type": "BOOLEAN",
+                  "links": [],
+                  "slot_index": 0,
+                  "localized_name": "boolean"
+                }
+              ],
+              "title": "Lora #1 CLIP Neg Prompt?",
+              "properties": {
+                "Node name for S&R": "easy boolean"
+              },
+              "widgets_values": [
+                false
+              ],
+              "index": 2
+            },
+            0,
+            "BOOLEAN"
+          ],
+          [
+            {
+              "id": -1,
+              "type": "easy boolean",
+              "pos": [
+                -9347.1044921875,
+                22699.802734375
+              ],
+              "size": [
+                315,
+                58
+              ],
+              "flags": {},
+              "order": 31,
+              "mode": 0,
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "boolean",
+                  "type": "BOOLEAN",
+                  "links": [],
+                  "localized_name": "boolean"
+                }
+              ],
+              "title": "Lora #1 CLIP Positive Prompt?",
+              "properties": {
+                "Node name for S&R": "easy boolean"
+              },
+              "widgets_values": [
+                false
+              ],
+              "index": 1
+            },
+            0,
+            "BOOLEAN"
+          ],
+          [
+            {
+              "id": -1,
+              "type": "easy boolean",
+              "pos": [
+                -9347.8115234375,
+                22574.779296875
+              ],
+              "size": [
+                315,
+                58
+              ],
+              "flags": {},
+              "order": 32,
+              "mode": 0,
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "boolean",
+                  "type": "BOOLEAN",
+                  "links": [],
+                  "localized_name": "boolean"
+                }
+              ],
+              "title": "Lora #1 Model Bypass?",
+              "properties": {
+                "Node name for S&R": "easy boolean"
+              },
+              "widgets_values": [
+                true
+              ],
+              "index": 0
+            },
+            0,
+            "BOOLEAN"
+          ]
+        ],
+        "config": {
+          "0": {
+            "input": {
+              "value": {
+                "name": "S1 Model Bypass?"
+              }
+            }
+          },
+          "1": {
+            "input": {
+              "value": {
+                "name": "S1 CLIP Pos Prompt?"
+              }
+            }
+          },
+          "2": {
+            "input": {
+              "value": {
+                "name": "S1 CLIP Neg Prompt?"
+              }
+            }
+          }
+        }
+      },
+      "S2 Control Panel": {
+        "nodes": [
+          {
+            "id": -1,
+            "type": "easy boolean",
+            "pos": [
+              -8691.3544921875,
+              24507.91015625
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 34,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": [],
+                "localized_name": "boolean"
+              }
+            ],
+            "title": "S2 Bypass Lora?",
+            "properties": {
+              "Node name for S&R": "easy boolean"
+            },
+            "widgets_values": [
+              false
+            ],
+            "index": 0
+          },
+          {
+            "id": -1,
+            "type": "easy boolean",
+            "pos": [
+              -8694.9169921875,
+              24623.943359375
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 32,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": [],
+                "localized_name": "boolean"
+              }
+            ],
+            "title": "S2 CLIP Positive Prompt?",
+            "properties": {
+              "Node name for S&R": "easy boolean"
+            },
+            "widgets_values": [
+              false
+            ],
+            "index": 1
+          },
+          {
+            "id": -1,
+            "type": "easy boolean",
+            "pos": [
+              -8697.375,
+              24741.869140625
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 33,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": [],
+                "localized_name": "boolean"
+              }
+            ],
+            "title": "S2 CLIP Negative Prompt?",
+            "properties": {
+              "Node name for S&R": "easy boolean"
+            },
+            "widgets_values": [
+              false
+            ],
+            "index": 2
+          }
+        ],
+        "links": [],
+        "external": [
+          [
+            {
+              "id": -1,
+              "type": "easy boolean",
+              "pos": [
+                -8694.9169921875,
+                24623.943359375
+              ],
+              "size": [
+                315,
+                58
+              ],
+              "flags": {},
+              "order": 32,
+              "mode": 0,
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "boolean",
+                  "type": "BOOLEAN",
+                  "links": [],
+                  "localized_name": "boolean"
+                }
+              ],
+              "title": "S2 CLIP Positive Prompt?",
+              "properties": {
+                "Node name for S&R": "easy boolean"
+              },
+              "widgets_values": [
+                false
+              ],
+              "index": 1
+            },
+            0,
+            "BOOLEAN"
+          ],
+          [
+            {
+              "id": -1,
+              "type": "easy boolean",
+              "pos": [
+                -8697.375,
+                24741.869140625
+              ],
+              "size": [
+                315,
+                58
+              ],
+              "flags": {},
+              "order": 33,
+              "mode": 0,
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "boolean",
+                  "type": "BOOLEAN",
+                  "links": [],
+                  "localized_name": "boolean"
+                }
+              ],
+              "title": "S2 CLIP Negative Prompt?",
+              "properties": {
+                "Node name for S&R": "easy boolean"
+              },
+              "widgets_values": [
+                false
+              ],
+              "index": 2
+            },
+            0,
+            "BOOLEAN"
+          ],
+          [
+            {
+              "id": -1,
+              "type": "easy boolean",
+              "pos": [
+                -8691.3544921875,
+                24507.91015625
+              ],
+              "size": [
+                315,
+                58
+              ],
+              "flags": {},
+              "order": 34,
+              "mode": 0,
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "boolean",
+                  "type": "BOOLEAN",
+                  "links": [],
+                  "localized_name": "boolean"
+                }
+              ],
+              "title": "S2 Bypass Lora?",
+              "properties": {
+                "Node name for S&R": "easy boolean"
+              },
+              "widgets_values": [
+                false
+              ],
+              "index": 0
+            },
+            0,
+            "BOOLEAN"
+          ]
+        ],
+        "config": {
+          "0": {
+            "input": {
+              "value": {
+                "name": "S2 Model Bypass?"
+              }
+            }
+          },
+          "1": {
+            "input": {
+              "value": {
+                "name": "S2 CLIP Pos Prompt?"
+              }
+            }
+          },
+          "2": {
+            "input": {
+              "value": {
+                "name": "S2 CLIP Neg Prompt?"
+              }
+            }
+          }
+        }
+      },
+      "Final Guide and Conditioning": {
+        "nodes": [
+          {
+            "id": -1,
+            "type": "CLIPTextEncode",
+            "pos": [
+              -7190.18505859375,
+              23693.0078125
+            ],
+            "size": [
+              400,
+              200
+            ],
+            "flags": {},
+            "order": 91,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": null,
+                "localized_name": "clip"
+              },
+              {
+                "name": "text",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "text"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "CONDITIONING",
+                "type": "CONDITIONING",
+                "links": [],
+                "slot_index": 0,
+                "localized_name": "CONDITIONING"
+              }
+            ],
+            "title": "positive",
+            "properties": {
+              "Node name for S&R": "CLIPTextEncode"
+            },
+            "widgets_values": [
+              ""
+            ],
+            "index": 0
+          },
+          {
+            "id": -1,
+            "type": "CLIPTextEncode",
+            "pos": [
+              -7192.29443359375,
+              24024.0390625
+            ],
+            "size": [
+              400,
+              200
+            ],
+            "flags": {},
+            "order": 92,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": null,
+                "localized_name": "clip"
+              },
+              {
+                "name": "text",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "text"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "CONDITIONING",
+                "type": "CONDITIONING",
+                "links": [],
+                "slot_index": 0,
+                "localized_name": "CONDITIONING"
+              }
+            ],
+            "title": "negative",
+            "properties": {
+              "Node name for S&R": "CLIPTextEncode"
+            },
+            "widgets_values": [
+              ""
+            ],
+            "index": 1
+          },
+          {
+            "id": -1,
+            "type": "CFGGuider",
+            "pos": [
+              -6486.7744140625,
+              23860.58984375
+            ],
+            "size": [
+              315,
+              98
+            ],
+            "flags": {},
+            "order": 100,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": null,
+                "localized_name": "model"
+              },
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": null,
+                "localized_name": "positive"
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "link": null,
+                "localized_name": "negative"
+              },
+              {
+                "name": "cfg",
+                "type": "FLOAT",
+                "link": null,
+                "widget": {
+                  "name": "cfg"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "GUIDER",
+                "type": "GUIDER",
+                "links": [],
+                "localized_name": "GUIDER"
+              }
+            ],
+            "title": "Base Model Guide",
+            "properties": {
+              "Node name for S&R": "CFGGuider"
+            },
+            "widgets_values": [
+              6.6000000000000005
+            ],
+            "index": 2
+          }
+        ],
+        "links": [
+          [
+            null,
+            1,
+            0,
+            0,
+            372,
+            "*"
+          ],
+          [
+            null,
+            0,
+            0,
+            1,
+            282,
+            "STRING"
+          ],
+          [
+            null,
+            2,
+            1,
+            0,
+            372,
+            "*"
+          ],
+          [
+            null,
+            0,
+            1,
+            1,
+            283,
+            "STRING"
+          ],
+          [
+            null,
+            0,
+            2,
+            0,
+            372,
+            "*"
+          ],
+          [
+            0,
+            0,
+            2,
+            1,
+            366,
+            "CONDITIONING"
+          ],
+          [
+            1,
+            0,
+            2,
+            2,
+            367,
+            "CONDITIONING"
+          ],
+          [
+            null,
+            0,
+            2,
+            3,
+            370,
+            "FLOAT"
+          ]
+        ],
+        "external": [
+          [
+            2,
+            0,
+            "GUIDER"
+          ]
+        ]
+      },
+      "S2 Load": {
+        "nodes": [
+          {
+            "id": -1,
+            "type": "LoraLoader",
+            "pos": [
+              -8287.5556640625,
+              24057.6328125
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 84,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": null,
+                "localized_name": "model"
+              },
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": null,
+                "localized_name": "clip"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "MODEL",
+                "type": "MODEL",
+                "links": [],
+                "slot_index": 0,
+                "localized_name": "MODEL"
+              },
+              {
+                "name": "CLIP",
+                "type": "CLIP",
+                "links": [],
+                "slot_index": 1,
+                "localized_name": "CLIP"
+              }
+            ],
+            "title": "Load LoRA #2",
+            "properties": {
+              "Node name for S&R": "LoraLoader"
+            },
+            "widgets_values": [
+              "characters/sinon.safetensors",
+              1,
+              1
+            ],
+            "index": 0
+          },
+          {
+            "id": -1,
+            "type": "Switch any [Crystools]",
+            "pos": [
+              -7825.5244140625,
+              23996.615234375
+            ],
+            "size": [
+              315,
+              78
+            ],
+            "flags": {},
+            "order": 91,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "on_true",
+                "type": "*",
+                "link": null,
+                "localized_name": "on_true"
+              },
+              {
+                "name": "on_false",
+                "type": "*",
+                "link": null,
+                "localized_name": "on_false"
+              },
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "link": null,
+                "widget": {
+                  "name": "boolean"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "*",
+                "type": "*",
+                "links": [],
+                "slot_index": 0,
+                "label": "Lora MODEL OUT",
+                "localized_name": "*"
+              }
+            ],
+            "title": "Bypass Lora Model #2?",
+            "properties": {
+              "Node name for S&R": "Switch any [Crystools]"
+            },
+            "widgets_values": [
+              true
+            ],
+            "index": 1
+          },
+          {
+            "id": -1,
+            "type": "Switch any [Crystools]",
+            "pos": [
+              -7825.1708984375,
+              24201.61328125
+            ],
+            "size": [
+              315,
+              78
+            ],
+            "flags": {},
+            "order": 92,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "on_true",
+                "type": "*",
+                "link": null,
+                "localized_name": "on_true"
+              },
+              {
+                "name": "on_false",
+                "type": "*",
+                "link": null,
+                "localized_name": "on_false"
+              },
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "link": null,
+                "widget": {
+                  "name": "boolean"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "*",
+                "type": "*",
+                "links": [],
+                "slot_index": 0,
+                "label": "POSITIVE CLIP OUT",
+                "localized_name": "*"
+              }
+            ],
+            "title": "Lora #2 CLIP Posive prompt?",
+            "properties": {
+              "Node name for S&R": "Switch any [Crystools]"
+            },
+            "widgets_values": [
+              true
+            ],
+            "index": 2
+          },
+          {
+            "id": -1,
+            "type": "Switch any [Crystools]",
+            "pos": [
+              -7367.595703125,
+              24214.43359375
+            ],
+            "size": [
+              315,
+              78
+            ],
+            "flags": {},
+            "order": 100,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "on_true",
+                "type": "*",
+                "link": null,
+                "localized_name": "on_true"
+              },
+              {
+                "name": "on_false",
+                "type": "*",
+                "link": null,
+                "localized_name": "on_false"
+              },
+              {
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "link": null,
+                "widget": {
+                  "name": "boolean"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "*",
+                "type": "*",
+                "links": [],
+                "slot_index": 0,
+                "label": "NEGATIVE CLIP OUT",
+                "localized_name": "*"
+              }
+            ],
+            "title": "Lora #2 CLIP Negative Prompt?",
+            "properties": {
+              "Node name for S&R": "Switch any [Crystools]"
+            },
+            "widgets_values": [
+              false
+            ],
+            "index": 3
+          }
+        ],
+        "links": [
+          [
+            null,
+            0,
+            0,
+            0,
+            371,
+            "*"
+          ],
+          [
+            null,
+            1,
+            0,
+            1,
+            371,
+            "*"
+          ],
+          [
+            null,
+            0,
+            1,
+            0,
+            371,
+            "*"
+          ],
+          [
+            0,
+            0,
+            1,
+            1,
+            351,
+            "MODEL"
+          ],
+          [
+            null,
+            2,
+            1,
+            2,
+            363,
+            "BOOLEAN"
+          ],
+          [
+            0,
+            1,
+            2,
+            0,
+            351,
+            "CLIP"
+          ],
+          [
+            null,
+            2,
+            2,
+            1,
+            371,
+            "*"
+          ],
+          [
+            null,
+            0,
+            2,
+            2,
+            363,
+            "BOOLEAN"
+          ],
+          [
+            2,
+            0,
+            3,
+            0,
+            353,
+            "*"
+          ],
+          [
+            null,
+            2,
+            3,
+            1,
+            371,
+            "*"
+          ],
+          [
+            null,
+            1,
+            3,
+            2,
+            363,
+            "BOOLEAN"
+          ]
+        ],
+        "external": [
+          [
+            1,
+            0,
+            "MODEL"
+          ],
+          [
+            2,
+            0,
+            "CLIP"
+          ],
+          [
+            3,
+            0,
+            "CLIP"
+          ]
+        ]
+      },
+      "Master Diffuser v1.2": {
+        "nodes": [
+          {
+            "id": -1,
+            "type": "KSamplerSelect",
+            "pos": [
+              -4202.39013671875,
+              15512.7744140625
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {
+              "collapsed": false
+            },
+            "order": 6,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "SAMPLER",
+                "type": "SAMPLER",
+                "links": [],
+                "localized_name": "SAMPLER",
+                "slot_index": 0
+              }
+            ],
+            "title": "Master Diffuser Euler",
+            "properties": {
+              "Node name for S&R": "KSamplerSelect"
+            },
+            "widgets_values": [
+              "euler"
+            ],
+            "index": 0
+          },
+          {
+            "id": -1,
+            "type": "AlignYourStepsScheduler",
+            "pos": [
+              -4193.3828125,
+              15733.9873046875
+            ],
+            "size": [
+              315,
+              106
+            ],
+            "flags": {
+              "collapsed": false
+            },
+            "order": 7,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "SIGMAS",
+                "type": "SIGMAS",
+                "links": [],
+                "localized_name": "SIGMAS",
+                "slot_index": 0
+              }
+            ],
+            "title": "Master Scheduler",
+            "properties": {
+              "Node name for S&R": "AlignYourStepsScheduler"
+            },
+            "widgets_values": [
+              "SDXL",
+              28,
+              1
+            ],
+            "index": 1
+          },
+          {
+            "id": -1,
+            "type": "EmptyLatentImage",
+            "pos": [
+              -4195.37548828125,
+              15881.2529296875
+            ],
+            "size": [
+              315,
+              106
+            ],
+            "flags": {
+              "collapsed": false
+            },
+            "order": 8,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "LATENT",
+                "type": "LATENT",
+                "links": [],
+                "slot_index": 0,
+                "localized_name": "LATENT"
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "EmptyLatentImage"
+            },
+            "widgets_values": [
+              1024,
+              1024,
+              1
+            ],
+            "index": 2
+          },
+          {
+            "id": -1,
+            "type": "easy float",
+            "pos": [
+              -4193.7451171875,
+              16037.8212890625
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "float",
+                "type": "FLOAT",
+                "links": [],
+                "localized_name": "float"
+              }
+            ],
+            "title": "Master Guide",
+            "properties": {
+              "Node name for S&R": "easy float"
+            },
+            "widgets_values": [
+              6.6000000000000005
+            ],
+            "index": 3
+          },
+          {
+            "id": -1,
+            "type": "RandomNoise",
+            "pos": [
+              -4191.84912109375,
+              15612.2041015625
+            ],
+            "size": [
+              315,
+              82
+            ],
+            "flags": {
+              "collapsed": false
+            },
+            "order": 10,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "NOISE",
+                "type": "NOISE",
+                "links": [],
+                "localized_name": "NOISE",
+                "slot_index": 0
+              }
+            ],
+            "title": "Master Seed",
+            "properties": {
+              "Node name for S&R": "RandomNoise"
+            },
+            "widgets_values": [
+              960392043640055,
+              "fixed"
+            ],
+            "index": 4
+          },
+          {
+            "id": -1,
+            "type": "easy positive",
+            "pos": [
+              -4661.9326171875,
+              15529.8662109375
+            ],
+            "size": [
+              400,
+              200
+            ],
+            "flags": {},
+            "order": 12,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "positive",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "positive"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "positive",
+                "type": "STRING",
+                "links": [],
+                "localized_name": "positive",
+                "slot_index": 0
+              }
+            ],
+            "title": "Positive txt prompt passthrough",
+            "properties": {
+              "Node name for S&R": "easy positive"
+            },
+            "widgets_values": [
+              ""
+            ],
+            "color": "#232",
+            "bgcolor": "#353",
+            "index": 5
+          },
+          {
+            "id": -1,
+            "type": "easy negative",
+            "pos": [
+              -4671.076171875,
+              15820.7060546875
+            ],
+            "size": [
+              400,
+              200
+            ],
+            "flags": {},
+            "order": 13,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "negative",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "negative"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "negative",
+                "type": "STRING",
+                "links": [],
+                "localized_name": "negative",
+                "slot_index": 0
+              }
+            ],
+            "title": "Negative txt prompt passthrough",
+            "properties": {
+              "Node name for S&R": "easy negative"
+            },
+            "widgets_values": [
+              ""
+            ],
+            "color": "#322",
+            "bgcolor": "#533",
+            "index": 6
+          }
+        ],
+        "links": [
+          [
+            null,
+            0,
+            5,
+            0,
+            3,
+            "STRING"
+          ],
+          [
+            null,
+            0,
+            6,
+            0,
+            4,
+            "STRING"
+          ]
+        ],
+        "external": [
+          [
+            0,
+            0,
+            "SAMPLER"
+          ],
+          [
+            1,
+            0,
+            "SIGMAS"
+          ],
+          [
+            2,
+            0,
+            "LATENT"
+          ],
+          [
+            3,
+            0,
+            "FLOAT"
+          ],
+          [
+            4,
+            0,
+            "NOISE"
+          ],
+          [
+            5,
+            0,
+            "STRING"
+          ],
+          [
+            6,
+            0,
+            "STRING"
+          ]
+        ],
+        "config": {
+          "3": {
+            "input": {
+              "value": {
+                "name": "Master CFG"
+              }
+            }
+          }
+        }
+      },
+      "Image save with Meta": {
+        "nodes": [
+          {
+            "id": -1,
+            "type": "VAELoader",
+            "pos": [
+              -3638.43994140625,
+              18243.0390625
+            ],
+            "size": [
+              315,
+              58
+            ],
+            "flags": {},
+            "order": 13,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "VAE",
+                "type": "VAE",
+                "links": [],
+                "localized_name": "VAE"
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAELoader"
+            },
+            "widgets_values": [
+              "Devil_VAE.safetensors"
+            ],
+            "index": 0
+          },
+          {
+            "id": -1,
+            "type": "SamplerCustomAdvanced",
+            "pos": [
+              -4051.692626953125,
+              17999.654296875
+            ],
+            "size": [
+              355.20001220703125,
+              106
+            ],
+            "flags": {
+              "collapsed": false
+            },
+            "order": 24,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "noise",
+                "type": "NOISE",
+                "link": null,
+                "localized_name": "noise"
+              },
+              {
+                "name": "guider",
+                "type": "GUIDER",
+                "link": null,
+                "localized_name": "guider"
+              },
+              {
+                "name": "sampler",
+                "type": "SAMPLER",
+                "link": null,
+                "localized_name": "sampler"
+              },
+              {
+                "name": "sigmas",
+                "type": "SIGMAS",
+                "link": null,
+                "localized_name": "sigmas"
+              },
+              {
+                "name": "latent_image",
+                "type": "LATENT",
+                "link": null,
+                "localized_name": "latent_image"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "output",
+                "type": "LATENT",
+                "links": [],
+                "slot_index": 0,
+                "label": "Sample OUT",
+                "localized_name": "output"
+              },
+              {
+                "name": "denoised_output",
+                "type": "LATENT",
+                "links": [],
+                "slot_index": 1,
+                "label": "N/A",
+                "localized_name": "denoised_output"
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "SamplerCustomAdvanced"
+            },
+            "index": 1
+          },
+          {
+            "id": -1,
+            "type": "VAEDecode",
+            "pos": [
+              -3214.4072265625,
+              18190.390625
+            ],
+            "size": [
+              210,
+              46
+            ],
+            "flags": {},
+            "order": 26,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "samples",
+                "type": "LATENT",
+                "link": null,
+                "localized_name": "samples"
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": null,
+                "localized_name": "vae"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [],
+                "localized_name": "IMAGE",
+                "slot_index": 0
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAEDecode"
+            },
+            "index": 2
+          },
+          {
+            "id": -1,
+            "type": "SaveImageWithMetaData",
+            "pos": [
+              -2805.0556640625,
+              17749.412109375
+            ],
+            "size": [
+              1023.087646484375,
+              1493.3885498046875
+            ],
+            "flags": {
+              "collapsed": false
+            },
+            "order": 29,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "images",
+                "type": "IMAGE",
+                "link": null,
+                "localized_name": "images"
+              },
+              {
+                "name": "extra_metadata",
+                "type": "EXTRA_METADATA",
+                "link": null,
+                "shape": 7,
+                "localized_name": "extra_metadata"
+              }
+            ],
+            "outputs": [],
+            "properties": {
+              "Node name for S&R": "SaveImageWithMetaData"
+            },
+            "widgets_values": [
+              "Eve Concept",
+              "output/Gallery VI",
+              "png_with_json",
+              "full",
+              true
+            ],
+            "color": "#222",
+            "bgcolor": "#000",
+            "index": 3
+          },
+          {
+            "id": -1,
+            "type": "Reroute",
+            "pos": [
+              -1441.6881103515625,
+              18230.533203125
+            ],
+            "size": [
+              75,
+              26
+            ],
+            "flags": {},
+            "order": 30,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "",
+                "type": "*",
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "name": "",
+                "type": "*",
+                "links": null
+              }
+            ],
+            "properties": {
+              "showOutputText": false,
+              "horizontal": false
+            },
+            "index": 4
+          }
+        ],
+        "links": [
+          [
+            null,
+            4,
+            1,
+            0,
+            26,
+            "NOISE"
+          ],
+          [
+            null,
+            0,
+            1,
+            1,
+            8,
+            "GUIDER"
+          ],
+          [
+            null,
+            0,
+            1,
+            2,
+            26,
+            "SAMPLER"
+          ],
+          [
+            null,
+            1,
+            1,
+            3,
+            26,
+            "SIGMAS"
+          ],
+          [
+            null,
+            2,
+            1,
+            4,
+            26,
+            "LATENT"
+          ],
+          [
+            1,
+            0,
+            2,
+            0,
+            92,
+            "LATENT"
+          ],
+          [
+            0,
+            0,
+            2,
+            1,
+            91,
+            "VAE"
+          ],
+          [
+            2,
+            0,
+            3,
+            0,
+            93,
+            "IMAGE"
+          ],
+          [
+            2,
+            0,
+            4,
+            0,
+            93,
+            "IMAGE"
+          ]
+        ],
+        "external": []
+      }
+    },
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0
+  },
+  "version": 0.4
+}
