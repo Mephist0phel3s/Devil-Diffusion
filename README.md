@@ -1,5 +1,3 @@
-The devil branch is always under constant tinkering. 
-Right now, as of 2025-02-06-01-03 ISO time, the default branch <devil> no longer builds on AMD as im now testing an NVIDIA standalone build. 
 
 Use latest stable release pkg at >> https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/AMDv1.2
 
