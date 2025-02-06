@@ -12,9 +12,25 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 pip install open-clip-torch
 
+git clone https://github.com/yolain/ComfyUI-Easy-Use custom_nodes/ComfyUI-Easy-Use
+cd custom_nodes/ComfyUI-Easy-Use
+pip install -r requirements.txt
+cd ..
+cd ..
+git clone https://github.com/ltdrdata/ComfyUI-Manager custom_nodes/comfyui-manager
+git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git custom_nodes/ComfyUI-SaveImageWithMetaData
+git clone https://github.com/edelvarden/ComfyUI-ImageMetadataExtension.git custom_nodes/ComfyUI-ImageMetadataExtension
+git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git custom_nodes/ComfyUI-Crystools
+cd custom_nodes/ComfyUI-Crystools
+pip install -r requirements.txt
+cd ..
+cd ..
+
+
 #### TODO: this ^^^^ block is here because the first run script breaks something else upstream in the pkg bootstrapping process that happens on the comfyui side.
 # If the directories for models and such are present, part of the bootstrapping phase gets skipped and the python shell errors out with
 #### ERROR::: "FileNotFoundError: [Errno 2] No such file or directory: '/home/jason/Devil-Diffusion/Devil-Diffusion/custom_nodes'"
+
 
 mkdir -p tmp
 cd tmp
