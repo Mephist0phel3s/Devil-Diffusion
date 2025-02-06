@@ -64,6 +64,8 @@ in pkgs.mkShell rec {
     export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
     VENV=venv
     TMP=tmp
+    export VARIANT="${variant}"
+
 
     # Create virtual environment if it doesn't exist
     if test ! -d $VENV; then
@@ -72,7 +74,31 @@ in pkgs.mkShell rec {
     source ./$VENV/bin/activate
     export PYTHONPATH=`pwd`/$VENV/${pkgs.python312Full.sitePackages}/:$PYTHONPATH
 
-    [ -f devil_scripts/FIRSTRUN.flag ] || { touch devil_scripts/FIRSTRUN.flag && echo -e "First time execution detected. Standby comrade..." && cd devil_scripts && exec ./firstrun.sh; }
+
+
+    if [ ! -f devil_scripts/FIRSTRUN.flag ]; then
+      touch devil_scripts/FIRSTRUN.flag
+      echo -e "First time execution detected. Standby comrade..."
+            # Select the appropriate firstrun script based on the variant
+      case "$VARIANT" in
+        "ROCM")
+          echo "Running first run script for AMD/ROCm..."
+          cd devil_scripts && exec ./firstrun-AMD.sh
+          ;;
+        "CUDA")
+          echo "Running first run script for NVIDIA/CUDA..."
+          cd devil_scripts && exec ./firstrunNVIDIA.sh
+          ;;
+        "CPU")
+          echo "Running first run script for CPU..."
+          cd devil_scripts && exec ./firstrunCPU.sh
+          ;;
+        *)
+          echo "Unknown variant: $VARIANT. Please specify a valid variant."
+          exit 1
+          ;;
+      esac
+    fi
 
     echo "Thank you for using Devil-Diffusion."
     sleep 4
