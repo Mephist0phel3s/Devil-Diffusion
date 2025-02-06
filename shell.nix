@@ -1,4 +1,4 @@
-{ variant ? "ROCM" }:
+{ variant ? "NONE" }:
 
 let
   pkgs = import <nixpkgs> { };
