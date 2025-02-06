@@ -1,4 +1,4 @@
-{ variant ? "ROCM" }:
+{ variant ? "NVIDIA" }:
 
 let pkgs = import <nixpkgs> { };
     python = pkgs.python312Full;
