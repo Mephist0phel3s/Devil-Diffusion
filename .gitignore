@@ -1,4 +1,5 @@
 __pycache__/
+src/.impl.nix.kate-swp
 .cache
 src/devil_scripts/FIRSTRUN.flag
 data/custom_nodes/ComfyUI*
