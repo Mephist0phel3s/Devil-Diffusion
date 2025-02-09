@@ -1,5 +1,6 @@
 __pycache__/
 .cache
+src/devil_scripts/FIRSTRUN.flag
 data/custom_nodes/ComfyUI*
 data/models/*
 data/tmp/*
