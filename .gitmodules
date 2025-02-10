@@ -1,0 +1,12 @@
+[submodule "src/hipBLAS-common"]
+	path = src/hipBLAS-common
+	url = https://github.com/Mephist0phel3s/hipBLAS-common
+[submodule "src/hipBLASLt"]
+	path = src/hipBLASLt
+	url = https://github.com/Mephist0phel3s/hipBLASLt.git
+[submodule "src/rocm.build/hipBLASLt"]
+	path = src/rocm.build/hipBLASLt
+	url = https://github.com/Mephist0phel3s/hipBLASLt.git
+[submodule "src/rocm.build/hipBLAS-common"]
+	path = src/rocm.build/hipBLAS-common
+	url = https://github.com/Mephist0phel3s/hipBLAS-common
