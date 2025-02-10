@@ -1,4 +1,5 @@
 __pycache__/
+data/user/default
 src/.impl.nix.kate-swp
 .cache
 src/devil_scripts/FIRSTRUN.flag
