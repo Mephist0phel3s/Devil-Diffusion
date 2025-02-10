@@ -1,4 +1,5 @@
 __pycache__/
+src/.shell.nix.kate-swp
 data/user/default
 src/.impl.nix.kate-swp
 .cache
