@@ -1,0 +1,4 @@
+dataclasses; python_version == '3.6'
+pyyaml
+msgpack
+joblib
