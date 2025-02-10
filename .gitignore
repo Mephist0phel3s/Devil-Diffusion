@@ -1,4 +1,6 @@
 __pycache__/
+src/hipBLA*
+/src/hipBLASLt-rocm-6.0.2/
 src/.shell.nix.kate-swp
 data/user/default
 src/.impl.nix.kate-swp
