@@ -43,6 +43,7 @@ let
       rocmPackages.rocm-smi
 #      rocmPackages.hipblas
 #      rocmPackages.roctracer
+      python312Packages.torchWithoutCuda
       pciutils
     ] else if variant == "CPU" then [
     ] else throw "You need to specify which variant you want: CPU, ROCm, or CUDA.";
@@ -59,7 +60,7 @@ in pkgs.mkShell rec {
       zstd
       git-lfs
       # python312Packages.torch               ### python version supersedes, fix later
-      # python312Packages.torchWithoutCuda    ### Apparently torch fucking needs CUDA for some god damn reason despite the test machine being an AMD machine without any CUDA cores.
+          ### Apparently torch fucking needs CUDA for some god damn reason despite the test machine being an AMD machine without any CUDA cores.
                                              #### Repo fucking breaks with this enabled. Fix later.
       # python312Packages.pip                 ### See reason above.
       # python312Packages.einops
@@ -102,8 +103,8 @@ in pkgs.mkShell rec {
     cd ..
     GitRoot="$PWD"
 
-        if [ ! -f devil_scripts/FIRSTRUN.flag ]; then
-            touch devil_scripts/FIRSTRUN.flag
+        if [ ! -f $GitRoot/src/devil_scripts/FIRSTRUN.flag ]; then
+            touch $GitRoot/src/devil_scripts/FIRSTRUN.flag
             echo -e "First time execution detected. Standby comrade..."
             mkdir -p models $GitRoot/data/
             mkdir -p input $GitRoot/data/
@@ -118,6 +119,30 @@ in pkgs.mkShell rec {
             cp -r $GitRoot/src/custom_nodes $GitRoot/data/
             cd $GitRoot
         fi
+          case "$VARIANT" in
+      "ROCM")
+        cd $GitRoot/src/
+
+        echo "Running first run script for AMD/ROCm..."
+
+
+        echo "The reason i decided to implement auto install model functionality is because they were a pain in the ass to find, i suffered so you dont have to"
+        echo "Executing first run script"
+
+
+        pip install torch torchvision torchaudio \
+          --index-url https://download.pytorch.org/whl/rocm6.2.4
+        pip install -r requirements.txt
+        pip install open-clip-torch
+        ;;
+      "CUDA")
+        cd $GitRoot/src/
+        pip install torch torchvision torchaudio \
+          --extra-index-url https://download.pytorch.org/whl/cu126
+        pip install -r requirements.txt
+        pip install open-clip-torch
+          ;;
+      esac
 
 
 
@@ -175,7 +200,7 @@ in pkgs.mkShell rec {
             git-lfs clone https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
         else
             git-lfs pull https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
-            ipa=$tmp/IP-Adapter && export !!
+            ipa=$tmp/IP-Adapter && export ipa=$tmp/IP-Adapter
         fi
 
 
@@ -205,27 +230,12 @@ cd "$GitRoot/src"
       "ROCM")
         cd $GitRoot/src/
 
-        echo "Running first run script for AMD/ROCm..."
-
-
-        echo "The reason i decided to implement auto install model functionality is because they were a pain in the ass to find, i suffered so you dont have to"
-        echo "Executing first run script"
-
-
-        pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
-        pip install -r requirements.txt
-        pip install open-clip-torch
-
        echo "$GREENThank you for using $REDDevil-Diffusion."
         TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1 PYTORCH_TUNABLEOP_ENABLED=1 python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
                            --use-pytorch-cross-attention --disable-cuda-malloc
           ;;
       "CUDA")
-        echo "Running first run script for NVIDIA/CUDA..."
-        echo -e "Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
-        echo -e "NOTICE::: This start script will not run again unless you wipe this entire directory. \nThis script can be bypassed in future installs by first running touch devil-scripts/FIRSTRUN.flag before running the nix-shell."
-        echo "The reason i decided to implement auto install model functionality is because they were a pain in the ass to find, i suffered so you dont have to"
-        echo "Executing first run script"
+
         pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
         pip install -r requirements.txt
         pip install open-clip-torch
