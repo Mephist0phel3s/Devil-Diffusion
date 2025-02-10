@@ -37,3 +37,5 @@ models/vae/Devil_VAE.safetensors
 tmp/
 devil_scripts/FIRSTRUN.flag
 ddtemp/
+src/.passthrough.sh.kate-swp
+src/rocm-6.0.2.tar.gz.1
