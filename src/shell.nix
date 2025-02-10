@@ -43,7 +43,7 @@ let
       rocmPackages.rocm-smi
 #      rocmPackages.hipblas
 #      rocmPackages.roctracer
-      python312Packages.torchWithoutCuda
+#      python312Packages.torchWithoutCuda
       pciutils
     ] else if variant == "CPU" then [
     ] else throw "You need to specify which variant you want: CPU, ROCm, or CUDA.";
@@ -106,11 +106,7 @@ in pkgs.mkShell rec {
         if [ ! -f $GitRoot/src/devil_scripts/FIRSTRUN.flag ]; then
             touch $GitRoot/src/devil_scripts/FIRSTRUN.flag
             echo -e "First time execution detected. Standby comrade..."
-            mkdir -p models $GitRoot/data/
-            mkdir -p input $GitRoot/data/
-            mkdir -p output $GitRoot/data/
-            mkdir -p temp $GitRoot/data/
-            mkdir -p custom_nodes $GitRoot/data/
+
 
             cp -r $GitRoot/src/models $GitRoot/data/
             cp -r $GitRoot/src/input $GitRoot/data/
@@ -155,6 +151,12 @@ in pkgs.mkShell rec {
            git pull https://github.com/ltdrdata/ComfyUI-Manager
            cd $GitRoot
         fi
+	
+	if [ ! -d $GitRoot/data/custom_nodes/ComfyUI_mittimiLoadText ]; then
+		cd $GitRoot/data/custom_nodes/
+		git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
+		cd $GitRoot
+	fi
 
         if [ ! -d $GitRoot/data/custom_nodes/ComfyUI-Crystools ]; then
             git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot/data/custom_nodes/ComfyUI-Crystools
@@ -180,14 +182,23 @@ in pkgs.mkShell rec {
             cd $GitRoot
         fi
 
-############################## Cloning the models
+        if [ ! -d $GitRoot/data/custom_nodes/ComfyUI-Image-Saver ]; then
+          cd $GitRoot/data/custom_nodes
+          git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
+          cd ComfyUI-Image-Saver
+          pip install -r requirements.txt
+          cd $GitRoot
+        fi
 
-    echo "Cloning Devil-Diffusion base model + VAE, CLIP vision."
+############# Cloning the models
+
+    echo "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
     echo -e "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
-
     sleep 1
     tmp="$GitRoot/data/tmp"
-    mkdir -p tmp
+    mkdir -p $tmp
+    echo "$PWD"
+    #exit 1
         if [ ! -d $tmp/Devil-Diffusion ]; then
         echo -e "Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. \nFirst execution takes a bit to pull and build initially."
         echo -e "NOTICE: This start script will not run again unless you wipe this entire directory. \nThis script can be bypassed in future installs by first running n/touch devil-scripts/FIRSTRUN.flag before running the nix-shell."
@@ -208,21 +219,24 @@ in pkgs.mkShell rec {
 mkdir -p "$GitRoot/docs/ipadapter" "$ipa"
 
 # Rsync for copying files and directories
-rsync -av --progress \
-    "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$GitRoot/data/models/clip_vision" \
-    "$tmp/Devil-Diffusion/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" "$GitRoot/data/models/clip_vision" \
-    "$tmp/Devil-Diffusion/Devil_Pony_v1.3.safetensors" "$GitRoot/data/models/checkpoints" \
-    "$tmp/Devil-Diffusion/Devil_VAE.safetensors" "$GitRoot/data/models/vae" \
-    "$tmp/IP-Adapter/README.md" "$GitRoot/docs/ipadapter/README.md"
+if [ ! -f $GitRoot/src/devil_scripts/FIRSTRUN.flag ]; then
+
+  rsync -av --progress \
+      "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$GitRoot/data/models/clip_vision" \
+      "$tmp/Devil-Diffusion/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" "$GitRoot/data/models/clip_vision" \
+      "$tmp/Devil-Diffusion/Devil_Pony_v1.3.safetensors" "$GitRoot/data/models/checkpoints" \
+      "$tmp/Devil-Diffusion/Devil_VAE.safetensors" "$GitRoot/data/models/vae" \
+      "$tmp/IP-Adapter/README.md" "$GitRoot/docs/ipadapter/README.md"
 
 # Rsync for copying directories recursively
-rsync -av --progress \
-    "$tmp/IP-Adapter/models/*" "$ipa" \
-    "$tmp/IP-Adapter/sdxl_models/*" "$ipar"
+    rsync -av --progress \
+      "$tmp/IP-Adapter/models/*" "$ipa" \
+      "$tmp/IP-Adapter/sdxl_models/*" "$ipa"
 
 # Return to source directory
-cd "$GitRoot/src"
 
+fi
+    cd "$GitRoot/src"
 
 
 
@@ -230,15 +244,12 @@ cd "$GitRoot/src"
       "ROCM")
         cd $GitRoot/src/
 
-       echo "$GREENThank you for using $REDDevil-Diffusion."
-        TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1 PYTORCH_TUNABLEOP_ENABLED=1 python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
-                           --use-pytorch-cross-attention --disable-cuda-malloc
+       echo "Thank you for using Devil-Diffusion."
+        PYTORCH_TUNABLEOP_ENABLED=0 python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
+                           --disable-cuda-malloc
           ;;
       "CUDA")
-
-        pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
-        pip install -r requirements.txt
-        pip install open-clip-torch
+        cd $GitRoot/src/
         bash -c 'printf "Thank you for using Devil-Diffusion."'
         NIXPKGS_ALLOW_UNFREE=1 python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
                        --cuda-malloc
