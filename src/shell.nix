@@ -119,13 +119,6 @@ in pkgs.mkShell rec {
       "ROCM")
         cd $GitRoot/src/
 
-        echo "Running first run script for AMD/ROCm..."
-
-
-        echo "The reason i decided to implement auto install model functionality is because they were a pain in the ass to find, i suffered so you dont have to"
-        echo "Executing first run script"
-
-
         pip install torch torchvision torchaudio \
           --index-url https://download.pytorch.org/whl/rocm6.2.4
         pip install -r requirements.txt
@@ -216,24 +209,28 @@ in pkgs.mkShell rec {
 
 
 # Create directories
-mkdir -p "$GitRoot/docs/ipadapter" "$ipa"
+mkdir -p "$GitRoot/docs/ipadapter" 
+ipa=$GitRoot/data/models/ipadapter
+models=$GitRoot/data/models
 
-# Rsync for copying files and directories
-if [ ! -f $GitRoot/src/devil_scripts/FIRSTRUN.flag ]; then
-
-  rsync -av --progress \
-      "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$GitRoot/data/models/clip_vision" \
-      "$tmp/Devil-Diffusion/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" "$GitRoot/data/models/clip_vision" \
-      "$tmp/Devil-Diffusion/Devil_Pony_v1.3.safetensors" "$GitRoot/data/models/checkpoints" \
-      "$tmp/Devil-Diffusion/Devil_VAE.safetensors" "$GitRoot/data/models/vae" \
+if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
+   touch $GitRoot/src/devil_scripts/models.flag
+   rsync -av --progress \
+      "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$models/clip_vision" 
+   rsync -av --progress \
+      "$tmp/Devil-Diffusion/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" "$models/clip_vision" 
+   rsync -av --progress \
+      "$tmp/Devil-Diffusion/Devil_Pony_v1.3.safetensors" "$models/checkpoints" 
+   rsync -av --progress \
+      "$tmp/Devil-Diffusion/Devil_VAE.safetensors" "$models/vae" 
+   rsync -av --progress \ 
       "$tmp/IP-Adapter/README.md" "$GitRoot/docs/ipadapter/README.md"
+   mkdir -p $ipa
+   rsync -av --progress \
+      "$tmp/IP-Adapter/models" "$ipa/" 
+   rsync -av --progress \
+      "$tmp/IP-Adapter/sdxl_models" "$ipa/"
 
-# Rsync for copying directories recursively
-    rsync -av --progress \
-      "$tmp/IP-Adapter/models/*" "$ipa" \
-      "$tmp/IP-Adapter/sdxl_models/*" "$ipa"
-
-# Return to source directory
 
 fi
     cd "$GitRoot/src"
