@@ -1,75 +1,37 @@
-Devil Diffusion v2.0 is now available.
-V2 changes, short version:
-Fixed bug where the extensions werent installing correclty and needed to be repaired after initial build. Extensions now install and activate on first boot as intended.
-Fixed a bug where in the Workflows that are supposed to be included in the release werent populating in the UI.
-
-Still an issue with the Welcome workflow not populating on first boot, for now just open the workflows tab on the UI once it spawns and select the Welcome-Devil-Diffusion workflow to get up and running immeditiately.
-
-If you are struglingg with getting the workflow to load, please submit a bug report to the issues of this repo.
-Heres a hard link to the welcome json + img with embed data. Both should be drag + drop.
-
-json: https://github.com/Mephist0phel3s/Devil-Diffusion/blob/163f1471b5a964a196ef12f02665192ddcd50ba7/user/default/workflows/Welcome-Devil-Diffusion-v1.2.4.json
-
-img: https://github.com/Mephist0phel3s/Devil-Diffusion/blob/3101e5287cc4fcb5b671b6e6c95118276e54ca15/output/Welcome_00000.png
-
-
-The included workflow is a simplified layout with 2 Lora nodes ready to be populated with a pack. Will include screenshots soon as well as a Welcome Walkthrough on how Devil Diffusion differs from its parent repos.
-The welcome workflow includes a unified prompt box in green for positive and red for negative, as well as enable/disable/bypass switches in a dedicated panel for turning Lora's on or off, as well as clipping positive and negative prompt individually. 
-The workflow also includes a custom KSampler tuned to work specifically with the Devil Pony v1.3 model that comes preinstalled, all built and lovingly sculpted by yours truly.
-More workflows will be available in future releases.
 
 ***RUNNING DEVIL***.
 
-Quite simple actually, for those of you already running a nixified system or NixOS as your main OS, you simply need only pull the main repo or get one of the release tarballs available >> https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/Devil-Difusion-v2-Unified and then run:
+Quite simple actually, for those of you already running a nixified system or NixOS as your main OS, you simply need only pull the main repo or get one of the release tarballs available >> [Devil Diffusion V2.0.3](https://github.com/Mephist0phel3s/Devil-Diffusion/releases/tag/Devil-Diffusion-v2.0.3) and then run:
 
 ```
 ./devil-AMD.sh    #### For AMD GPU's
 ./devil-NVIDIA.sh #### For NVIDIA GPU's 
 ```
+
+The Src directory contains a directory called data, inside that is where you will put your checkpoints, lora, etc and get your output. 
+I seperated it from the source code for both ease of maintenace on the src itself, and user accessibility.
+
 The initial pull and build will take a bit, but when its done Devil will automatically spawn a new window with your default browser and Devil Diffusion loaded and ready to generate out of the box.
 
+Below instructions were found to not work worth a fuck. Im rethinking my approach and will update this in the near future. when i have something reproducible.
+~~Those of you not running nix or nixos, heres a one-liner that will do both at once, and this should work on ANY nixified Linux system out of the box.~~
 
-Those of you not running nix or nixos, heres a one-liner that will do both at once, and this should work on ANY nixified Linux system out of the box.
-AMD:
-```
-sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Difusion-v2-Unified.tar.gz ; tar -xf Devil-Difusion-v2-Unified.tar.gz && cd Devil-Diffusion-Devil-Difusion-v2-Unified/ ; ./devil-AMD.sh
-```
-NVIDIA:
-```
-sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Difusion-v2-Unified.tar.gz ; tar -xf Devil-Difusion-v2-Unified.tar.gz && cd Devil-Diffusion-Devil-Difusion-v2-Unified/ ; ./devil-NVIDIA.sh
-```
+~~AMD:~~
+~~sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Difusion-v2-Unified.tar.gz ; tar -xf Devil-Difusion-v2-Unified.tar.gz && cd Devil-Diffusion-Devil-Difusion-v2-Unified/ ; ./devil-AMD.sh~~
 
+~~NVIDIA:~~
+~~sudo sh <(curl -L https://nixos.org/nix/install) --daemon && wget https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Difusion-v2-Unified.tar.gz ; tar -xf Devil-Difusion-v2-Unified.tar.gz && cd Devil-Diffusion-Devil-Difusion-v2-Unified/ ; ./devil-NVIDIA.sh~~
 
-NOTE::: Windows users in particular, you will need wsl enabled, any off the shelf linux distro will probably work but if you are enabling it for the first time i'd suggest using NixOS instead of Ubuntu or something else. 
-It work best since this is a nix expression we are using to build Devil Diffusion.
-Instructions for enabling WSL can be found here >> https://learn.microsoft.com/en-us/windows/wsl/install
-I will add a more comprehensive install guide in the near future when i've had time to sit down and do a full pull and build on a windows machine.
+~~NOTE::: Windows users in particular, you will need wsl enabled, any off the shelf linux distro will probably work but if you are enabling it for the first time i'd suggest using NixOS instead of Ubuntu or something else.~~
+~~It work best since this is a nix expression we are using to build Devil Diffusion.~~
+~~Instructions for enabling WSL can be found here >> https://learn.microsoft.com/en-us/windows/wsl/install~~
+~~I will add a more comprehensive install guide in the near future when i've had time to sit down and do a full pull and build on a windows machine.~~
 
 NOTICE::: 
 This repo contains an automatic install and pull script for a base model, VAE, and CLIP Vision as well as a few extensions preinstalled to get you working immediately. I may include more in the future as time develops, as the main goal of this repo is to be a feature complete out of the box diffusion model thats ready to generate good images immediately after install. 
 Currently the pull phase eats about 14~gb of bandwidth.
 
-NOTICE::: ive not written a script to bypass this yet but it will be available in the future. For now though, if you wish to skip and use your own models or drops in for the UI, run:
-AMD:::
-```
-$ nix-shell -p binutils stdenv.cc.cc.lib stdenv python312Full
-$ touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2 ; pip install -r requirements.txt ; pip install open-clip-torch
-```
-NVIDIA:::
-```
-$ nix-shell -p binutils stdenv.cc.cc.lib stdenv python312Full
 
-$ touch devil_scripts/FIRSTRUN.flag && pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126 ; pip install -r requirements.txt ; pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
-```
-
-***NOTE***
-    You need to run the commands after each $ sequentially, theres no one-liner solution for this yet but im working on it.
-
-
-then run your `NVIDIA` or `AMD` script and it will install the UI bare bones without pulling down preconfigured models.
-More models are available for free download @ https://civitai.com && https://huggingface.co/
-
-After, you can continue to just use the NVIDIA or AMD script to spawn the server without needing to run the prior command again.
 
 For my NixOS bros, add a desktopfile to your main config at /etc/nixos/configuration.nix under system packages for AMD like:
 ```
