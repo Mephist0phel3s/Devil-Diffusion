@@ -1,4 +1,6 @@
 __pycache__/
+src/devil_scripts/FIRSTRUN.flag
+src/devil_scripts/models.flag
 data/output/*
 src/hipBLA*
 /src/hipBLASLt-rocm-6.0.2/
