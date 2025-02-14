@@ -40,16 +40,10 @@ function Set-Variant {
         $env:VARIANT = "CPU"
     }
 }
-$ZIP_URL = "https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Diffusion-v2.0.4.1.zip"
-$ZIP_FILE = "Devil-Diffusion-v2.0.4.1.zip"
+
 $FRflagFile = "$SrcRoot\devil_scripts\FIRSTRUN.flag"
 $modelsflagFile = "$SrcRoot\devil_scripts\models.flag"
 $flagContent = "Devil girls are sexy"
-Invoke-WebRequest -Uri $ZIP_URL -OutFile $ZIP_FILE
-Expand-Archive -Path $ZIP_FILE -DestinationPath (Get-Location)
-Rename-Item -Path "Devil-Diffusion-Devil-Diffusion-v2.0.4.1" -NewName "Devil-Diffusion-v2.0.4.1"
-Set-Location -Path "Devil-Diffusion-v2.0.4.1"
-$GitRoot = Get-Location
 $SrcRoot = "$GitRoot\src"
 $DataDir = "$GitRoot\data"
 $models = "$DataDir\models"
@@ -114,6 +108,25 @@ if (-not (Check-Git)) {
         Write-Host "Git LFS is already installed."
     }
 }
+# Get the current user's home directory root (e.g., C:\Users\Username)
+$homeDir = [System.Environment]::GetFolderPath('UserProfile')
+
+# Change to the user's home directory
+Set-Location -Path $homeDir
+$GitRoot = Get-Location
+
+# Define the repository directory
+$repoDir = "$homeDir\Devil-Diffusion"
+
+# Check if the repository already exists
+if (-not (Test-Path -Path $repoDir)) {
+    git clone https://github.com/Mephist0phel3s/Devil-Diffusion.git
+} else {
+    Set-Location -Path $repoDir
+    git pull
+    Write-Host "Repository updated with the latest changes."
+}
+
 
 if (-not (Test-Path -Path $VENV)) {
     python -m venv $VENV
