@@ -154,41 +154,60 @@ if ($env:VARIANT -eq "ROCM") {
 
 $FRflagFile = $SrcRoot\devil_scripts\FIRSTRUN.flag
 if (-not (Test-Path -Path $FRflagFile )) {
-    # Create the FIRSTRUN.flag file with the current date and time
     New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
     Write-Host "First time execution detected. Standby comrade...."
     Start-Sleep -Seconds 3
 
-    # Copy items recursively from src directories to the corresponding out directories
-    Write-Host "Copying models to out\models..."
-    Copy-Item -Recurse "$GitRoot\src\models" "$DataDir\models"
+    Copy-Item -Recurse $GitRoot\src\models $DataDir\models
+    Copy-Item -Recurse $GitRoot\src\input $DataDir\input
+    Copy-Item -Recurse $GitRoot\src\output $DataDir\output
+    Copy-Item -Recurse $GitRoot\src\temp $DataDir\temp
+    Copy-Item -Recurse $GitRoot\src\custom_nodes $DataDir\custom_nodes
+    Set-Location $nodes
 
-    Write-Host "Copying input to out\input..."
-    Copy-Item -Recurse "$GitRoot\src\input" "$DataDir\input"
+    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
 
-    Write-Host "Copying output to out\output..."
-    Copy-Item -Recurse "$GitRoot\src\output" "$DataDir\output"
+    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+        pip install -r requirements.txt
+        Set-Location $nodes
 
-    Write-Host "Copying temp to out\temp..."
-    Copy-Item -Recurse "$GitRoot\src\temp" "$DataDir\temp"
+    git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+        pip install -r requirements.txt
+        Set-Location $nodes
+    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
+        Set-Location $nodes
 
-    Write-Host "Copying custom_nodes to out\custom_nodes..."
-    Copy-Item -Recurse "$GitRoot\src\custom_nodes" "$DataDir\custom_nodes"
 
-    # Set location back to GitRoot
+    if ($env:VARIANT -eq "ROCM") {
+
+            git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            pip install -r requirements.txt
+
+    }
+    elseif ($env:VARIANT -eq "NVIDIA") {
+            git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            pip install -r requirements.txt
+            Set-Location $GitRoot
+    }
+
+
     Set-Location $GitRoot
 } else {
-    Write-Host "First run flag present, proceeding."
-#    Set-Location $GitRoot\src
     Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
-    git pull
+        git pull
     Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
-    git pull
+        git pull
     Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-    git pull
+        git pull
     Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-    git pull
+        git pull
+    Set-Location $nodes\ComfyUI_mittimiLoadText
+        git pull
 
         if ($env:VARIANT -eq "ROCM") {
             Set-Location $SrcRoot
@@ -218,50 +237,50 @@ if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI_mittimiLoadText"))
     Set-Location $GitRoot
 }
 
-if ($env:VARIANT -eq "ROCM") {
-    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
-        git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        pip install -r requirements.txt
-        Set-Location $GitRoot
-    } else {
-        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        git pull https://github.com/crystian/ComfyUI-Crystools.git
-        Set-Location $GitRoot
-    }
-} elseif ($env:VARIANT -eq "NVIDIA") {
-    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
-        git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        pip install -r requirements.txt
-        Set-Location $GitRoot
-    } else {
-        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        git pull https://github.com/crystian/ComfyUI-Crystools.git
-        Set-Location $GitRoot
-    }
-}
-
-
-if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Easy-Use")) {
-    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-    pip install -r requirements.txt
-    Set-Location $GitRoot
-} else {
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-    git pull
-    pip install -r requirements.txt
-    Set-Location $GitRoot
-}
-
-if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Image-Saver")) {
-    Set-Location $GitRoot\data\custom_nodes
-    git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
-    pip install -r requirements.txt
-    Set-Location $GitRoot
-}
+#if ($env:VARIANT -eq "ROCM") {
+#    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
+#        git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+#        pip install -r requirements.txt
+#        Set-Location $GitRoot
+#    } else {
+#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+#        git pull https://github.com/crystian/ComfyUI-Crystools.git
+#        Set-Location $GitRoot
+#    }
+#} elseif ($env:VARIANT -eq "NVIDIA") {
+#    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
+#        git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+#        pip install -r requirements.txt
+#        Set-Location $GitRoot
+#    } else {
+#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+#        git pull https://github.com/crystian/ComfyUI-Crystools.git
+#        Set-Location $GitRoot
+#    }
+#}
+#
+#
+#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Easy-Use")) {
+#    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+#    pip install -r requirements.txt
+#    Set-Location $GitRoot
+#} else {
+#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+#    git pull
+#    pip install -r requirements.txt
+#    Set-Location $GitRoot
+#}
+#
+#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Image-Saver")) {
+#    Set-Location $GitRoot\data\custom_nodes
+#    git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
+#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+#    pip install -r requirements.txt
+#    Set-Location $GitRoot
+#}
 
 Write-Host "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
 Write-Host "Devil base model comes with VAE baked in. VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
