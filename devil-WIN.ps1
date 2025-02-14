@@ -24,6 +24,17 @@ if ($variant -ne $null) {
 } else {
     $env:VARIANT = $null
 }
+if (-not (Test-Path -Path $VENV)) {
+    python3.12 -m venv $VENV
+}
+
+$env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+Set-Location -Path $VENV
+# Assuming activation script for PowerShell is inside the venv
+. .\Scripts\Activate.ps1
+Set-Location -Path $GitRoot
+
+
 function Set-Variant {
     # Check for GPU and set the variant
     $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
@@ -249,9 +260,7 @@ Set-Location -Path $tmp
 
 if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
     Write-Host "Thank you for using Devil-Diffusion."
-    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. \nFirst execution takes a bit to pull and build initially."
-    Write-Host "NOTICE: This start script will not run again unless you wipe this entire directory."
-    Write-Host "This script can be bypassed in future installs by first running touch devil-scripts/FIRSTRUN.flag before running the nix-shell."
+    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
     Start-Sleep -Seconds 5
     git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
 } else {
