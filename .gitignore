@@ -1,5 +1,5 @@
 __pycache__/
-data/models/*
+
 data/input/*
 src/devil_scripts/FIRSTRUN.flag
 src/devil_scripts/models.flag
@@ -12,7 +12,6 @@ src/.impl.nix.kate-swp
 .cache
 src/devil_scripts/FIRSTRUN.flag
 data/custom_nodes/ComfyUI*
-data/models/*
 data/tmp/*
 src/models/*
 *.py[cod]
@@ -21,7 +20,6 @@ src/models/*
 !/input/example.png
 !custom_nodes/example_node.py.example
 extra_model_paths.yaml
-/models/
 /custom_nodes/
 /.vs
 .vscode/
@@ -36,11 +34,6 @@ venv/
 *.log
 web_custom_versions/
 .DS_Store
-models/checkpoints/Devil_Pony_v1.3.safetensors
-models/clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors
-models/clip_vision/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors
-models/ipadapter/
-models/vae/Devil_VAE.safetensors
 tmp/
 devil_scripts/FIRSTRUN.flag
 ddtemp/
