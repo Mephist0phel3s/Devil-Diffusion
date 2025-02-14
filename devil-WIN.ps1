@@ -114,6 +114,7 @@ $currentDir = Get-Location
 if ($currentDir.Path -eq $GitRoot) {
     git pull
 } elseif (-not (Test-Path -Path $GitRoot)) {
+    Set-Location -Path $homeDir
     git clone https://github.com/Mephist0phel3s/Devil-Diffusion.git
 } else {
     Set-Location -Path $GitRoot
