@@ -206,11 +206,11 @@ in pkgs.mkShell rec {
 
 
 # Create directories
-#mkdir -p "$GitRoot/docs/ipadapter" 
-#ipa=$GitRoot/data/models/ipadapter
-#models=$GitRoot/data/models
+mkdir -p "$GitRoot/docs/ipadapter"
+ipa=$GitRoot/data/models/ipadapter
+models=$GitRoot/data/models
 
-#if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
+if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
    touch $GitRoot/src/devil_scripts/models.flag
    rsync -av --progress \
       "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$models/clip_vision" 
@@ -242,7 +242,7 @@ fi
       "ROCM")
         cd $GitRoot/src/
 
-       bash -c "printf '\n$green Thank you for using $red Devil-Diffusion. $nc '"
+       bash -c "printf '\n$green Thank you for using Devil-Diffusion. $nc'"
 
         PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
 
