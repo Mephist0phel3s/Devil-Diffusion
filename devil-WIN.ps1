@@ -182,7 +182,6 @@ if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer 
             Set-Location $SrcRoot
             python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
         }
-}
 } else {
     New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
