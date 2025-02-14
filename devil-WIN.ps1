@@ -109,6 +109,7 @@ function Check-Git {
         return $false
     }
 }
+
 function Check-GitLFS {
     try {
         # Check if Git LFS is available
@@ -150,7 +151,6 @@ if (-not (Check-Git)) {
     }
 }
 
-# Function to check if Python 3.12 is installed
 function Check-Python {
     try {
         # Check if Python 3.12 is installed
@@ -180,11 +180,6 @@ if (-not (Check-Python)) {
 } else {
     Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
 }
-
-# Check if it's the first run
-# Check if the FIRSTRUN.flag is present, if not, create it with the current timestamp and run the copy operations
-
-
 
 if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Manager")) {
     git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
@@ -263,36 +258,37 @@ if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
     git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
 }
 
-Set-Location -Path $GitRoot
-Set-Location -Path $tmp
+#Set-Location -Path $tmp
 
-if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
-    Write-Host "Thank you for using Devil-Diffusion."
-    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
-    Start-Sleep -Seconds 5
-    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-} else {
-    Set-Location -Path "$tmp\Devil-Diffusion"
-    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-}
+#if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
+#    Write-Host "Thank you for using Devil-Diffusion."
+#    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
+#    Start-Sleep -Seconds 5
+#    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+#} else {
+#    Set-Location -Path "$tmp\Devil-Diffusion"
+#    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+#}
 
-Set-Location -Path $GitRoot
+#Set-Location -Path $GitRoot
 
 $models = "$GitRoot\data\models"
-
+$lfs_vae = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors"
+$lfs_basemodel = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors"
 if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\models.flag")) {
     New-Item -Path "$GitRoot\src\devil_scripts\models.flag" -ItemType File
-    Move-Item -Path "$tmp\Devil-Diffusion\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" -Destination "$models\clip_vision\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
-    Move-Item -Path "$tmp\Devil-Diffusion\CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" -Destination "$models\clip_vision\CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors"
-    Move-Item -Path "$tmp\Devil-Diffusion\Devil_Pony_v1.3.safetensors" -Destination "$models\checkpoints\Devil_Pony_v1.3.safetensors"
-    Move-Item -Path "$tmp\Devil-Diffusion\Devil_VAE.safetensors" -Destination "$models\vae\Devil_VAE.safetensors"
+    Set-Location -Path $models\vae
+    Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
+    Set-Location -Path $models\checkpoints
+    Invoke-WebRequest -Uri $lfs_basemodel -OutFile "Devil_Pony_v1.3.safetensors"
 }
 
-Set-Location -Path "$GitRoot\src"
+
 
 
 cd $GitRoot\src
 if ($env:VARIANT -eq "ROCM") {
+    Set-Location $SrcRoot
     Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
     python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
 } elseif ($env:VARIANT -eq "CUDA") {
