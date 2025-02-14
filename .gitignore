@@ -1,8 +1,6 @@
 __pycache__/
 data/models/*
 data/input/*
-src/devil_scripts/FIRSTRUN.flag
-src/devil_scripts/models.flag
 data/output/*
 src/hipBLA*
 /src/hipBLASLt-rocm-6.0.2/
@@ -10,7 +8,6 @@ src/.shell.nix.kate-swp
 data/user/default
 src/.impl.nix.kate-swp
 .cache
-src/devil_scripts/FIRSTRUN.flag
 data/custom_nodes/ComfyUI*
 data/models/*
 data/tmp/*
@@ -42,7 +39,6 @@ models/clip_vision/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors
 models/ipadapter/
 models/vae/Devil_VAE.safetensors
 tmp/
-devil_scripts/FIRSTRUN.flag
 ddtemp/
 src/.passthrough.sh.kate-swp
 src/rocm-6.0.2.tar.gz.1
