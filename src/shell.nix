@@ -2,27 +2,6 @@
 
 let
   pkgs = import <nixpkgs> { };
-  console.colors = [
-    "073642"
-    "dc322f"
-    "859900"
-    "b58900"
-    "268bd2"
-    "d33682"
-    "2aa198"
-    "eee8d5"
-    "002b36"
-    "cb4b16"
-    "586e75"
-    "657b83"
-    "839496"
-    "6c71c4"
-    "93a1a1"
-    "fdf6e3"
-  ];
-
-
-  # Define hardware dependencies based on the variant
   hardware_deps = with pkgs;
     if variant == "CUDA" then [
       cudatoolkit
@@ -50,7 +29,7 @@ let
 
 in pkgs.mkShell rec {
   # Name of the shell
-  name = "stable-diffusion-webui";
+  name = "Devil-Diffusion-WebUI";
 
   # Build dependencies
   buildInputs = with pkgs;
@@ -89,9 +68,26 @@ in pkgs.mkShell rec {
     VENV=venv
     TMP=tmp
     export VARIANT="${variant}"
-    export RED='\033[0;31m'
-    export NC='\033[0m'
-    export GREEN='\033[0;32m'
+
+    export black='\033[0;30m'
+    export red='\033[0;31m'
+    export green='\033[0;32m'
+    export yellow='\033[0;33m'
+    export blue='\033[0;34m'
+    export purple='\033[0;35m'
+    export cyan='\033[0;36m'
+    export white='\033[0;37m'
+    # Background
+    export on_black='\033[40m'
+    export on_red='\033[41m'
+    export on_green='\033[42m'
+    export on_yellow='\033[43m'
+    export on_blue='\033[44m'
+    export on_purple='\033[45m'
+    export on_cyan='\033[46m'
+    export on_white='\033[47m'
+    export BIYellow='\033[1;93m'
+    export UGreen='\033[4;32m'
 
 
     # Create virtual environment if it doesn't exist
@@ -105,9 +101,8 @@ in pkgs.mkShell rec {
 
         if [ ! -f $GitRoot/src/devil_scripts/FIRSTRUN.flag ]; then
             touch $GitRoot/src/devil_scripts/FIRSTRUN.flag
-            echo -e "First time execution detected. Standby comrade..."
-
-
+            bash -c "printf '\n First time execution detected. Standby comrade....'"
+            sleep 3
             cp -r $GitRoot/src/models $GitRoot/data/
             cp -r $GitRoot/src/input $GitRoot/data/
             cp -r $GitRoot/src/output $GitRoot/data/
@@ -187,34 +182,36 @@ in pkgs.mkShell rec {
 
     echo "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
     echo -e "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
-    sleep 1
+    sleep 5
     tmp="$GitRoot/data/tmp"
     mkdir -p $tmp
     echo "$PWD"
     #exit 1
         if [ ! -d $tmp/Devil-Diffusion ]; then
-        echo -e "Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. \nFirst execution takes a bit to pull and build initially."
-        echo -e "NOTICE: This start script will not run again unless you wipe this entire directory. \nThis script can be bypassed in future installs by first running n/touch devil-scripts/FIRSTRUN.flag before running the nix-shell."
+        bash -c "printf '\nThank you for using Devil-Diffusion.'"
+        bash -c "printf '\nWARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. \nFirst execution takes a bit to pull and build initially.'"
+        bash -c "printf '\nNOTICE: This start script will not run again unless you wipe this entire directory. \necho -e "\033[4mThis script can be bypassed in future installs by first running n/touch devil-scripts/FIRSTRUN.flag before running the nix-shell.\033[m"'"
+        sleep 5
             git-lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion $tmp/Devil-Diffusion
               else
             git-lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion $tmp/Devil-Diffusion
         fi
-
-        if [ ! -d $tmp/IP-Adapter ]; then
-            git-lfs clone https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
-        else
-            git-lfs pull https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
-            ipa=$tmp/IP-Adapter && export ipa=$tmp/IP-Adapter
-        fi
+####NOTICE::: ive decided to exlude IPA for now as its not commonly used enough to justify the upfront bandwidth cost to user for now.
+#        if [ ! -d $tmp/IP-Adapter ]; then
+#            git-lfs clone https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
+#        else
+#            git-lfs pull https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
+#            ipa=$tmp/IP-Adapter && export ipa=$tmp/IP-Adapter
+#        fi
 
 
 # Create directories
-mkdir -p "$GitRoot/docs/ipadapter" 
-ipa=$GitRoot/data/models/ipadapter
-models=$GitRoot/data/models
+#mkdir -p "$GitRoot/docs/ipadapter" 
+#ipa=$GitRoot/data/models/ipadapter
+#models=$GitRoot/data/models
 
-if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
-   touch $GitRoot/src/devil_scripts/models.flag
+#if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
+#   touch $GitRoot/src/devil_scripts/models.flag
    rsync -av --progress \
       "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$models/clip_vision" 
    rsync -av --progress \
@@ -226,10 +223,12 @@ if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
    rsync -av --progress \ 
       "$tmp/IP-Adapter/README.md" "$GitRoot/docs/ipadapter/README.md"
    mkdir -p $ipa
-   rsync -av --progress \
-      "$tmp/IP-Adapter/models" "$ipa/" 
-   rsync -av --progress \
-      "$tmp/IP-Adapter/sdxl_models" "$ipa/"
+
+####NOTICE::: I've decided to exlcude IPA for now, as its not a commonly enough used node to justify bandwidth expense. 
+#   rsync -av --progress \
+#      "$tmp/IP-Adapter/models" "$ipa/" 
+#   rsync -av --progress \
+#      "$tmp/IP-Adapter/sdxl_models" "$ipa/"
 
 
 fi
@@ -241,14 +240,18 @@ fi
       "ROCM")
         cd $GitRoot/src/
 
-       echo "Thank you for using Devil-Diffusion."
-        PYTORCH_TUNABLEOP_ENABLED=0 python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
-                           --disable-cuda-malloc
+       bash -c "printf '\n$green Thank you for using $red Devil-Diffusion. $nc '"
+
+        PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
+
+        python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
+                       --use-pytorch-cross-attention --cpu-vae --disable-xformers
           ;;
       "CUDA")
         cd $GitRoot/src/
-        bash -c 'printf "Thank you for using Devil-Diffusion."'
-        NIXPKGS_ALLOW_UNFREE=1 python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
+       bash -c "printf '\n$green Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
+
+        NIXPKGS_ALLOW_UNFREE=1 python main.py  --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
                        --cuda-malloc
           ;;
       "CPU")
