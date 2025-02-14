@@ -55,7 +55,6 @@ $env:VARIANT = $variant
 $tmp = "$GitRoot\data\tmp"
 $lfs_vae = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors"
 $lfs_basemodel = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors"
-# If the -variant flag is set, force the variant
 if ($variant -ne $null) {
     Write-Host "Forcing variant: $variant"
     $env:VARIANT = $variant
@@ -108,23 +107,17 @@ if (-not (Check-Git)) {
         Write-Host "Git LFS is already installed."
     }
 }
-# Get the current user's home directory root (e.g., C:\Users\Username)
 $homeDir = [System.Environment]::GetFolderPath('UserProfile')
-
-# Change to the user's home directory
 Set-Location -Path $homeDir
-$GitRoot = Get-Location
-
-# Define the repository directory
-$repoDir = "$homeDir\Devil-Diffusion"
-
-# Check if the repository already exists
-if (-not (Test-Path -Path $repoDir)) {
+$GitRoot = "$homeDir\Devil-Diffusion"
+$currentDir = Get-Location
+if ($currentDir.Path -eq $GitRoot) {
+    git pull
+} elseif (-not (Test-Path -Path $GitRoot)) {
     git clone https://github.com/Mephist0phel3s/Devil-Diffusion.git
 } else {
-    Set-Location -Path $repoDir
+    Set-Location -Path $GitRoot
     git pull
-    Write-Host "Repository updated with the latest changes."
 }
 
 
@@ -159,11 +152,11 @@ if ($env:VARIANT -eq "ROCM") {
     Set-Location $GitRoot
 }
 
-$flagFile = "$GitRoot\src\devil_scripts\FIRSTRUN.flag"
-if (-not (Test-Path -Path $flagFile)) {
+if (-not (Test-Path -Path $FRflagFile )) {
     # Create the FIRSTRUN.flag file with the current date and time
     $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
     $flagContent = "First run detected at $currentTime"
+    New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
     Write-Host "First time execution detected. Standby comrade...."
     Start-Sleep -Seconds 3
@@ -275,9 +268,9 @@ Write-Host "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
 Write-Host "Devil base model comes with VAE baked in. VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
 Start-Sleep -Seconds 5
 
-if (-not (Test-Path -Path $FRflagFile)) {
-    Set-Content -Path $FRflagFile -Value $flagContent
+if (-not (Test-Path -Path $modelsflagFile)) {
     New-Item -Path "$GitRoot\src\devil_scripts\models.flag" -ItemType File
+    Set-Content -Path $FRflagFile -Value $flagContent
     Set-Location -Path $models\vae
     Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
     Set-Location -Path $models\checkpoints
