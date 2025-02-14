@@ -211,7 +211,7 @@ in pkgs.mkShell rec {
 #models=$GitRoot/data/models
 
 #if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
-#   touch $GitRoot/src/devil_scripts/models.flag
+   touch $GitRoot/src/devil_scripts/models.flag
    rsync -av --progress \
       "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$models/clip_vision" 
    rsync -av --progress \
@@ -220,11 +220,13 @@ in pkgs.mkShell rec {
       "$tmp/Devil-Diffusion/Devil_Pony_v1.3.safetensors" "$models/checkpoints" 
    rsync -av --progress \
       "$tmp/Devil-Diffusion/Devil_VAE.safetensors" "$models/vae" 
-   rsync -av --progress \ 
-      "$tmp/IP-Adapter/README.md" "$GitRoot/docs/ipadapter/README.md"
-   mkdir -p $ipa
 
-####NOTICE::: I've decided to exlcude IPA for now, as its not a commonly enough used node to justify bandwidth expense. 
+
+####NOTICE::: I've decided to exlcude IPA for now, as its not a commonly enough used node to justify bandwidth expense.
+#   rsync -av --progress \
+#      "$tmp/IP-Adapter/README.md" "$GitRoot/docs/ipadapter/README.md"
+#   mkdir -p $ipa
+
 #   rsync -av --progress \
 #      "$tmp/IP-Adapter/models" "$ipa/" 
 #   rsync -av --progress \
