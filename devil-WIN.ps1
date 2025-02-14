@@ -69,8 +69,37 @@ if ($env:VARIANT -eq "ROCM") {
     pip install -r requirements.txt
     Set-Location $GitRoot
 }
+$flagFile = "$GitRoot\src\devil_scripts\FIRSTRUN.flag"
+if (-not (Test-Path -Path $flagFile)) {
+    # Create the FIRSTRUN.flag file with the current date and time
+    $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+    $flagContent = "First run detected at $currentTime"
+    Set-Content -Path $flagFile -Value $flagContent
+    Write-Host "First time execution detected. Standby comrade...."
+    Start-Sleep -Seconds 3
 
-# Function to check if Git is installed
+    # Copy items recursively from src directories to the corresponding out directories
+    Write-Host "Copying models to out\models..."
+    Copy-Item -Recurse "$GitRoot\src\models" "$DataDir\models"
+
+    Write-Host "Copying input to out\input..."
+    Copy-Item -Recurse "$GitRoot\src\input" "$DataDir\input"
+
+    Write-Host "Copying output to out\output..."
+    Copy-Item -Recurse "$GitRoot\src\output" "$DataDir\output"
+
+    Write-Host "Copying temp to out\temp..."
+    Copy-Item -Recurse "$GitRoot\src\temp" "$DataDir\temp"
+
+    Write-Host "Copying custom_nodes to out\custom_nodes..."
+    Copy-Item -Recurse "$GitRoot\src\custom_nodes" "$DataDir\custom_nodes"
+
+    # Set location back to GitRoot
+    Set-Location $GitRoot
+} else {
+    Write-Host "First run flag present, proceeding."
+}
+
 function Check-Git {
     try {
         # Check if Git is available
@@ -80,9 +109,6 @@ function Check-Git {
         return $false
     }
 }
-
-
-# Function to check if Git LFS is installed
 function Check-GitLFS {
     try {
         # Check if Git LFS is available
@@ -93,7 +119,6 @@ function Check-GitLFS {
     }
 }
 
-# If Git is not installed, download and install it along with Git LFS
 if (-not (Check-Git)) {
     Write-Host "Git is not installed. Installing Git along with Git LFS..."
 
@@ -158,36 +183,6 @@ if (-not (Check-Python)) {
 
 # Check if it's the first run
 # Check if the FIRSTRUN.flag is present, if not, create it with the current timestamp and run the copy operations
-$flagFile = "$GitRoot\src\devil_scripts\FIRSTRUN.flag"
-if (-not (Test-Path -Path $flagFile)) {
-    # Create the FIRSTRUN.flag file with the current date and time
-    $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-    $flagContent = "First run detected at $currentTime"
-    Set-Content -Path $flagFile -Value $flagContent
-    Write-Host "First time execution detected. Standby comrade...."
-    Start-Sleep -Seconds 3
-
-    # Copy items recursively from src directories to the corresponding out directories
-    Write-Host "Copying models to out\models..."
-    Copy-Item -Recurse "$GitRoot\src\models" "$GitRoot\out\models"
-
-    Write-Host "Copying input to out\input..."
-    Copy-Item -Recurse "$GitRoot\src\input" "$GitRoot\out\input"
-
-    Write-Host "Copying output to out\output..."
-    Copy-Item -Recurse "$GitRoot\src\output" "$GitRoot\out\output"
-
-    Write-Host "Copying temp to out\temp..."
-    Copy-Item -Recurse "$GitRoot\src\temp" "$GitRoot\out\temp"
-
-    Write-Host "Copying custom_nodes to out\custom_nodes..."
-    Copy-Item -Recurse "$GitRoot\src\custom_nodes" "$GitRoot\out\custom_nodes"
-
-    # Set location back to GitRoot
-    Set-Location $GitRoot
-} else {
-    Write-Host "First run flag present, proceeding."
-}
 
 
 
@@ -283,7 +278,6 @@ if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
 
 Set-Location -Path $GitRoot
 
-# Create directories if they don't exist
 $models = "$GitRoot\data\models"
 
 if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\models.flag")) {
@@ -297,11 +291,6 @@ if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\models.flag")) {
 Set-Location -Path "$GitRoot\src"
 
 
-
-
-
-
-# Install necessary packages and run main.py
 cd $GitRoot\src
 if ($env:VARIANT -eq "ROCM") {
     Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
