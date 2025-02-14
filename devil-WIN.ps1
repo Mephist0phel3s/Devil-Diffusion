@@ -289,12 +289,10 @@ $models = "$GitRoot\data\models"
 if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\models.flag")) {
     New-Item -Path "$GitRoot\src\devil_scripts\models.flag" -ItemType File
     Write-Host "Copying model files..."
-
-    # Rsync equivalent in PowerShell (Copy-Item with -Recurse)
-    Copy-Item -Recurse "$tmp\Devil-Diffusion\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" -Destination "$models\clip_vision"
-    Copy-Item -Recurse "$tmp\Devil-Diffusion\CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" -Destination "$models\clip_vision"
-    Copy-Item -Recurse "$tmp\Devil-Diffusion\Devil_Pony_v1.3.safetensors" -Destination "$models\checkpoints"
-    Copy-Item -Recurse "$tmp\Devil-Diffusion\Devil_VAE.safetensors" -Destination "$models\vae"
+    Move-Item -Path "$tmp\Devil-Diffusion\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" -Destination "$models\clip_vision"
+    Move-Item -Path "$tmp\Devil-Diffusion\CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" -Destination "$models\clip_vision"
+    Move-Item -Path "$tmp\Devil-Diffusion\Devil_Pony_v1.3.safetensors" -Destination "$models\checkpoints"
+    Move-Item -Path "$tmp\Devil-Diffusion\Devil_VAE.safetensors" -Destination "$models\vae"
 }
 
 Set-Location -Path "$GitRoot\src"
