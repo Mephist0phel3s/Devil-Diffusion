@@ -42,7 +42,9 @@ function Set-Variant {
 }
 $ZIP_URL = "https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Diffusion-v2.0.4.1.zip"
 $ZIP_FILE = "Devil-Diffusion-v2.0.4.1.zip"
-
+$FRflagFile = "$SrcRoot\devil_scripts\FIRSTRUN.flag"
+$modelsflagFile = "$SrcRoot\devil_scripts\models.flag"
+$flagContent = "Devil girls are sexy"
 Invoke-WebRequest -Uri $ZIP_URL -OutFile $ZIP_FILE
 Expand-Archive -Path $ZIP_FILE -DestinationPath (Get-Location)
 Rename-Item -Path "Devil-Diffusion-Devil-Diffusion-v2.0.4.1" -NewName "Devil-Diffusion-v2.0.4.1"
@@ -149,7 +151,7 @@ if (-not (Test-Path -Path $flagFile)) {
     # Create the FIRSTRUN.flag file with the current date and time
     $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
     $flagContent = "First run detected at $currentTime"
-    Set-Content -Path $flagFile -Value $flagContent
+    Set-Content -Path $FRflagFile -Value $flagContent
     Write-Host "First time execution detected. Standby comrade...."
     Start-Sleep -Seconds 3
 
@@ -257,16 +259,18 @@ if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Image-Saver")) {
 }
 
 Write-Host "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
-Write-Host "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
+Write-Host "Devil base model comes with VAE baked in. VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
 Start-Sleep -Seconds 5
 
-
-if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\models.flag")) {
+if (-not (Test-Path -Path $FRflagFile)) {
+    Set-Content -Path $FRflagFile -Value $flagContent
     New-Item -Path "$GitRoot\src\devil_scripts\models.flag" -ItemType File
     Set-Location -Path $models\vae
     Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
     Set-Location -Path $models\checkpoints
     Invoke-WebRequest -Uri $lfs_basemodel -OutFile "Devil_Pony_v1.3.safetensors"
+} else {
+    Write-Host "Flag file already exists. Continuing..."
 }
 
 
