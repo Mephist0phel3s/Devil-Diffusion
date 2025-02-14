@@ -268,7 +268,7 @@ Write-Host "Devil base model comes with VAE baked in. VAE on the side is a clone
 Start-Sleep -Seconds 5
 
 if (-not (Test-Path -Path $modelsflagFile)) {
-    New-Item -Path "$GitRoot\src\devil_scripts\models.flag" -ItemType File
+    New-Item -Path "$modelsflagFile" -ItemType File
     Set-Content -Path $FRflagFile -Value $flagContent
     Set-Location -Path $models\vae
     Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
