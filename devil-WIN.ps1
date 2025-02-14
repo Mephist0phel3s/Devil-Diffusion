@@ -181,7 +181,7 @@ if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer 
 #        } else {
 #            Set-Location $SrcRoot
 #            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
-#        }
+        }
 } else {
     New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
@@ -227,66 +227,6 @@ if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer 
 
     Set-Location $GitRoot
 }
-
-
-#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Manager")) {
-#    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
-#} else {
-#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
-#    git pull https://github.com/ltdrdata/ComfyUI-Manager
-#    Set-Location $GitRoot
-#}
-#
-#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI_mittimiLoadText")) {
-#    Set-Location $GitRoot\data\custom_nodes
-#    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
-#    Set-Location $GitRoot
-#}
-
-#if ($env:VARIANT -eq "ROCM") {
-#    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
-#        git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
-#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-#        pip install -r requirements.txt
-#        Set-Location $GitRoot
-#    } else {
-#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-#        git pull https://github.com/crystian/ComfyUI-Crystools.git
-#        Set-Location $GitRoot
-#    }
-#} elseif ($env:VARIANT -eq "NVIDIA") {
-#    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
-#        git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
-#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-#        pip install -r requirements.txt
-#        Set-Location $GitRoot
-#    } else {
-#        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-#        git pull https://github.com/crystian/ComfyUI-Crystools.git
-#        Set-Location $GitRoot
-#    }
-#}
-#
-#
-#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Easy-Use")) {
-#    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-#    pip install -r requirements.txt
-#    Set-Location $GitRoot
-#} else {
-#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-#    git pull
-#    pip install -r requirements.txt
-#    Set-Location $GitRoot
-#}
-#
-#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Image-Saver")) {
-#    Set-Location $GitRoot\data\custom_nodes
-#    git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
-#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
-#    pip install -r requirements.txt
-#    Set-Location $GitRoot
-#}
 
 Write-Host "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
 Write-Host "Devil base model comes with VAE baked in. VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
