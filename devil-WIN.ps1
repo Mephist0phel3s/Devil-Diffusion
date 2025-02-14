@@ -269,6 +269,36 @@ if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
 }
 
 Set-Location -Path $GitRoot
+Set-Location -Path $tmp
+
+if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
+    Write-Host "Thank you for using Devil-Diffusion."
+    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
+    Start-Sleep -Seconds 5
+    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+} else {
+    Set-Location -Path "$tmp\Devil-Diffusion"
+    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+}
+
+Set-Location -Path $GitRoot
+
+# Create directories if they don't exist
+$models = "$GitRoot\data\models"
+
+if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\models.flag")) {
+    New-Item -Path "$GitRoot\src\devil_scripts\models.flag" -ItemType File
+    Write-Host "Copying model files..."
+
+    # Rsync equivalent in PowerShell (Copy-Item with -Recurse)
+    Copy-Item -Recurse "$tmp\Devil-Diffusion\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" -Destination "$models\clip_vision"
+    Copy-Item -Recurse "$tmp\Devil-Diffusion\CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" -Destination "$models\clip_vision"
+    Copy-Item -Recurse "$tmp\Devil-Diffusion\Devil_Pony_v1.3.safetensors" -Destination "$models\checkpoints"
+    Copy-Item -Recurse "$tmp\Devil-Diffusion\Devil_VAE.safetensors" -Destination "$models\vae"
+}
+
+Set-Location -Path "$GitRoot\src"
+
 
 
 
