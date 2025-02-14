@@ -172,16 +172,16 @@ if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer 
 
         if ($env:VARIANT -eq "ROCM") {
             Set-Location $SrcRoot
-            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+            Write-Host "Thank you for using Devil-Diffusion."
             python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
         } elseif ($env:VARIANT -eq "CUDA") {
             Set-Location $SrcRoot
-            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+            Write-Host "Thank you for using Devil-Diffusion."
             python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
-        } else {
-            Set-Location $SrcRoot
-            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
-        }
+#        } else {
+#            Set-Location $SrcRoot
+#            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
+#        }
 } else {
     New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
