@@ -1,5 +1,45 @@
-
-# Set non-nested variables
+function Check-Git {
+    try {
+        # Check if Git is available
+        git --version
+        return $true
+    } catch {
+        return $false
+    }
+}
+function Check-GitLFS {
+    try {
+        # Check if Git LFS is available
+        git lfs version
+        return $true
+    } catch {
+        return $false
+    }
+}
+function Check-Python {
+    try {
+        # Check if Python 3.12 is installed
+        $pythonVersion = python --version
+        if ($pythonVersion -match "Python 3.12") {
+            return $true
+        }
+    } catch {
+        return $false
+    }
+    return $false
+}
+function Set-Variant {
+    # Check for GPU and set the variant
+    $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
+    if ($gpuVendor -match "NVIDIA") {
+        $env:VARIANT = "CUDA"
+    } elseif ($gpuVendor -match "AMD") {
+        $env:VARIANT = "ROCM"
+    } else {
+        Write-Host "No discrete GPU detected, using default CPU variant."
+        $env:VARIANT = "CPU"
+    }
+}
 $ZIP_URL = "https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Diffusion-v2.0.4.1.zip"
 $ZIP_FILE = "Devil-Diffusion-v2.0.4.1.zip"
 
@@ -17,6 +57,8 @@ $VENV = "$SrcRoot\venv"
 $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
 $env:VARIANT = $variant
 $tmp = "$GitRoot\data\tmp"
+$lfs_vae = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors"
+$lfs_basemodel = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors"
 # If the -variant flag is set, force the variant
 if ($variant -ne $null) {
     Write-Host "Forcing variant: $variant"
@@ -24,102 +66,22 @@ if ($variant -ne $null) {
 } else {
     $env:VARIANT = $null
 }
-if (-not (Test-Path -Path $VENV)) {
-    python -m venv $VENV
-    Set-Location -Path $VENV
-    . .\Scripts\Activate.ps1
-    $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
-    Set-Location -Path $GitRoot
-}
+# If Python 3.12 is not installed, use the provided installer
+if (-not (Check-Python)) {
+    Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
 
-
-
-
-function Set-Variant {
-    # Check for GPU and set the variant
-    $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
-    if ($gpuVendor -match "NVIDIA") {
-        $env:VARIANT = "CUDA"
-    } elseif ($gpuVendor -match "AMD") {
-        $env:VARIANT = "ROCM"
+    # Ensure the Python installer is available in $GitRoot
+    $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
+    if (Test-Path -Path $pythonInstallerPath) {
+        # Run the Python installer from $GitRoot
+        Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
     } else {
-        Write-Host "No discrete GPU detected, using default CPU variant."
-        $env:VARIANT = "CPU"
+        Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
+        exit 1
     }
-}
-
-Set-Variant
-cd $GitRoot\src
-if ($env:VARIANT -eq "ROCM") {
-    Write-Host "Installing ROCM-specific dependencies..."
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
-    pip install -r requirements.txt
-    pip install open-clip-torch
-    Set-Location $GitRoot
-} elseif ($env:VARIANT -eq "CUDA") {
-    Write-Host "Installing CUDA-specific dependencies..."
-    Set-Location $SrcRoot
-    pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
-    pip install -r requirements.txt
-    pip install open-clip-torch
-    Set-Location $GitRoot
 } else {
-    Set-Location $SrcRoot
-    Write-Host "Running for CPU variant..."
-    pip install -r requirements.txt
-    Set-Location $GitRoot
+    Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
 }
-$flagFile = "$GitRoot\src\devil_scripts\FIRSTRUN.flag"
-if (-not (Test-Path -Path $flagFile)) {
-    # Create the FIRSTRUN.flag file with the current date and time
-    $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-    $flagContent = "First run detected at $currentTime"
-    Set-Content -Path $flagFile -Value $flagContent
-    Write-Host "First time execution detected. Standby comrade...."
-    Start-Sleep -Seconds 3
-
-    # Copy items recursively from src directories to the corresponding out directories
-    Write-Host "Copying models to out\models..."
-    Copy-Item -Recurse "$GitRoot\src\models" "$DataDir\models"
-
-    Write-Host "Copying input to out\input..."
-    Copy-Item -Recurse "$GitRoot\src\input" "$DataDir\input"
-
-    Write-Host "Copying output to out\output..."
-    Copy-Item -Recurse "$GitRoot\src\output" "$DataDir\output"
-
-    Write-Host "Copying temp to out\temp..."
-    Copy-Item -Recurse "$GitRoot\src\temp" "$DataDir\temp"
-
-    Write-Host "Copying custom_nodes to out\custom_nodes..."
-    Copy-Item -Recurse "$GitRoot\src\custom_nodes" "$DataDir\custom_nodes"
-
-    # Set location back to GitRoot
-    Set-Location $GitRoot
-} else {
-    Write-Host "First run flag present, proceeding."
-}
-
-function Check-Git {
-    try {
-        # Check if Git is available
-        git --version
-        return $true
-    } catch {
-        return $false
-    }
-}
-
-function Check-GitLFS {
-    try {
-        # Check if Git LFS is available
-        git lfs version
-        return $true
-    } catch {
-        return $false
-    }
-}
-
 if (-not (Check-Git)) {
     Write-Host "Git is not installed. Installing Git along with Git LFS..."
 
@@ -151,34 +113,88 @@ if (-not (Check-Git)) {
     }
 }
 
-function Check-Python {
-    try {
-        # Check if Python 3.12 is installed
-        $pythonVersion = python --version
-        if ($pythonVersion -match "Python 3.12") {
-            return $true
-        }
-    } catch {
-        return $false
-    }
-    return $false
+if (-not (Test-Path -Path $VENV)) {
+    python -m venv $VENV
+    Set-Location -Path $VENV
+    . .\Scripts\Activate.ps1
+    $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+    Set-Location -Path $GitRoot
 }
 
-# If Python 3.12 is not installed, use the provided installer
-if (-not (Check-Python)) {
-    Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
+Set-Variant
 
-    # Ensure the Python installer is available in $GitRoot
-    $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
-    if (Test-Path -Path $pythonInstallerPath) {
-        # Run the Python installer from $GitRoot
-        Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
-    } else {
-        Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
-        exit 1
-    }
+cd $GitRoot\src
+if ($env:VARIANT -eq "ROCM") {
+    Write-Host "Installing ROCM-specific dependencies..."
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
+    pip install -r requirements.txt
+    pip install open-clip-torch
+    Set-Location $GitRoot
+} elseif ($env:VARIANT -eq "CUDA") {
+    Write-Host "Installing CUDA-specific dependencies..."
+    Set-Location $SrcRoot
+    pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
+    pip install -r requirements.txt
+    pip install open-clip-torch
+    Set-Location $GitRoot
 } else {
-    Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
+    Set-Location $SrcRoot
+    Write-Host "Running for CPU variant..."
+    pip install -r requirements.txt
+    Set-Location $GitRoot
+}
+
+$flagFile = "$GitRoot\src\devil_scripts\FIRSTRUN.flag"
+if (-not (Test-Path -Path $flagFile)) {
+    # Create the FIRSTRUN.flag file with the current date and time
+    $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+    $flagContent = "First run detected at $currentTime"
+    Set-Content -Path $flagFile -Value $flagContent
+    Write-Host "First time execution detected. Standby comrade...."
+    Start-Sleep -Seconds 3
+
+    # Copy items recursively from src directories to the corresponding out directories
+    Write-Host "Copying models to out\models..."
+    Copy-Item -Recurse "$GitRoot\src\models" "$DataDir\models"
+
+    Write-Host "Copying input to out\input..."
+    Copy-Item -Recurse "$GitRoot\src\input" "$DataDir\input"
+
+    Write-Host "Copying output to out\output..."
+    Copy-Item -Recurse "$GitRoot\src\output" "$DataDir\output"
+
+    Write-Host "Copying temp to out\temp..."
+    Copy-Item -Recurse "$GitRoot\src\temp" "$DataDir\temp"
+
+    Write-Host "Copying custom_nodes to out\custom_nodes..."
+    Copy-Item -Recurse "$GitRoot\src\custom_nodes" "$DataDir\custom_nodes"
+
+    # Set location back to GitRoot
+    Set-Location $GitRoot
+} else {
+    Write-Host "First run flag present, proceeding."
+#    Set-Location $GitRoot\src
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
+    git pull
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+    git pull
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+    git pull
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+    git pull
+
+        if ($env:VARIANT -eq "ROCM") {
+            Set-Location $SrcRoot
+            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
+        } elseif ($env:VARIANT -eq "CUDA") {
+            Set-Location $SrcRoot
+            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
+        } else {
+            Set-Location $SrcRoot
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
+        }
 }
 
 if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Manager")) {
@@ -245,36 +261,6 @@ Write-Host "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the si
 Start-Sleep -Seconds 5
 
 
-
-#Set-Location -Path $tmp
-
-#if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
-#    Write-Host "Thank you for using Devil-Diffusion."
-#    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
-#    Start-Sleep -Seconds 5
-#    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-#} else {
-#    Set-Location -Path $tmp\Devil-Diffusion
-#    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-#}
-
-#Set-Location -Path $tmp
-
-#if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
-#    Write-Host "Thank you for using Devil-Diffusion."
-#    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
-#    Start-Sleep -Seconds 5
-#    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-#} else {
-#    Set-Location -Path "$tmp\Devil-Diffusion"
-#    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-#}
-
-#Set-Location -Path $GitRoot
-
-$models = "$GitRoot\data\models"
-$lfs_vae = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors"
-$lfs_basemodel = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors"
 if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\models.flag")) {
     New-Item -Path "$GitRoot\src\devil_scripts\models.flag" -ItemType File
     Set-Location -Path $models\vae
