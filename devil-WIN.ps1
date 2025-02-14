@@ -246,17 +246,17 @@ Start-Sleep -Seconds 5
 
 
 
-Set-Location -Path $tmp
+#Set-Location -Path $tmp
 
-if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
-    Write-Host "Thank you for using Devil-Diffusion."
-    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
-    Start-Sleep -Seconds 5
-    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-} else {
-    Set-Location -Path $tmp\Devil-Diffusion
-    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
-}
+#if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
+#    Write-Host "Thank you for using Devil-Diffusion."
+#    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. First execution takes a bit to pull and build initially."
+#    Start-Sleep -Seconds 5
+#    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+#} else {
+#    Set-Location -Path $tmp\Devil-Diffusion
+#    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+#}
 
 #Set-Location -Path $tmp
 
