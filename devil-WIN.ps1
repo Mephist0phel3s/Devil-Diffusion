@@ -43,7 +43,7 @@ function Set-Variant {
 
 $modelsflagFile = "$SrcRoot\devil_scripts\models.flag"
 $flagContent = "Devil girls are sexy"
-$SrcRoot = "$GitRoot\src"
+
 $DataDir = "$GitRoot\data"
 $models = "$DataDir\models"
 $TMP = "$DataDir\tmp"
@@ -109,6 +109,7 @@ if (-not (Check-Git)) {
 $homeDir = [System.Environment]::GetFolderPath('UserProfile')
 Set-Location -Path $homeDir
 $GitRoot = "$homeDir\Devil-Diffusion"
+$SrcRoot = "$GitRoot\src"
 $currentDir = Get-Location
 if ($currentDir.Path -eq $GitRoot) {
     git pull
