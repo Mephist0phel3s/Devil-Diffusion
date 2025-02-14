@@ -156,8 +156,7 @@ if ($env:VARIANT -eq "ROCM") {
 #$FRflagFile = $SrcRoot"\devil_scripts\FIRSTRUN.flag"
 
 Set-Location $SrcRoot\devil_scripts
-$devil_scripts
-$FRflagFile = "$devil_scripts\FIRSTRUN.flag"
+$FRflagFile = "$SrcRoot\devil_scripts\FIRSTRUN.flag"
 if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer -eq $false) {
     Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
         git pull
