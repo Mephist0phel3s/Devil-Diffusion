@@ -39,9 +39,21 @@ function Check-Git {
     }
 }
 
-# If Git is not installed, download and install it
+
+# Function to check if Git LFS is installed
+function Check-GitLFS {
+    try {
+        # Check if Git LFS is available
+        git lfs version
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+# If Git is not installed, download and install it along with Git LFS
 if (-not (Check-Git)) {
-    Write-Host "Git is not installed. Installing Git..."
+    Write-Host "Git is not installed. Installing Git along with Git LFS..."
 
     # Get latest download URL for git-for-windows 64-bit exe
     $git_url = "https://api.github.com/repos/git-for-windows/git/releases/latest"
@@ -55,8 +67,20 @@ if (-not (Check-Git)) {
     $git_install_inf = "<install inf file>"
     $install_args = "/SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /LOADINF=""$git_install_inf"""
     Start-Process -FilePath $installer -ArgumentList $install_args -Wait
+
+    # Install Git LFS after installing Git
+    Write-Host "Installing Git LFS..."
+    Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
 } else {
     Write-Host "Git is already installed. Proceeding with the next steps."
+
+    # If Git LFS is not installed, install it
+    if (-not (Check-GitLFS)) {
+        Write-Host "Git LFS is not installed. Installing Git LFS..."
+        Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
+    } else {
+        Write-Host "Git LFS is already installed."
+    }
 }
 
 # Function to check if Python 3.12 is installed
@@ -90,16 +114,10 @@ if (-not (Check-Python)) {
     Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
 }
 
-# Download and Extract the ZIP file
-Invoke-WebRequest -Uri $ZIP_URL -OutFile $ZIP_FILE
-Expand-Archive -Path $ZIP_FILE -DestinationPath (Get-Location)
-Rename-Item -Path "Devil-Diffusion-Devil-Diffusion-v2.0.4.1" -NewName "Devil-Diffusion-v2.0.4.1"
-Set-Location -Path "Devil-Diffusion-v2.0.4.1"
-
 # Check if it's the first run
 if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\FIRSTRUN.flag")) {
     New-Item -Path "$GitRoot\src\devil_scripts\FIRSTRUN.flag" -ItemType File
-    Write-Host "`nFirst time execution detected. Standby comrade...."
+    Write-Host "First time execution detected. Standby comrade...."
     Start-Sleep -Seconds 3
     Copy-Item -Recurse "$GitRoot\src\models" "$GitRoot\data\"
     Copy-Item -Recurse "$GitRoot\src\input" "$GitRoot\data\"
@@ -132,15 +150,23 @@ if ($env:VARIANT -eq "ROCM") {
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
     pip install -r requirements.txt
     pip install open-clip-torch
+    Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+    python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
 } elseif ($env:VARIANT -eq "CUDA") {
     Write-Host "Installing CUDA-specific dependencies..."
+    Set-Location $SrcRoot
     pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
     pip install -r requirements.txt
     pip install open-clip-torch
+    Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+    python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
 } else {
+    Set-Location $SrcRoot
     Write-Host "Running for CPU variant..."
+    pip install -r requirements.txt
+    python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
 }
 
 # Final message
+
 Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
-python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir
