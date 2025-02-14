@@ -16,7 +16,7 @@ $nodes = "$GitRoot\data\custom_nodes"
 $VENV = "$SrcRoot\venv"
 $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
 $env:VARIANT = $variant
-
+$tmp = "$GitRoot\data\tmp"
 # If the -variant flag is set, force the variant
 if ($variant -ne $null) {
     Write-Host "Forcing variant: $variant"
@@ -194,16 +194,30 @@ if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI_mittimiLoadText"))
     Set-Location $GitRoot
 }
 
-if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
-    git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-    pip install -r requirements.txt
-    Set-Location $GitRoot
-} else {
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-    git pull https://github.com/crystian/ComfyUI-Crystools.git
-    Set-Location $GitRoot
+if ($env:VARIANT -eq "ROCM") {
+    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
+        git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+        pip install -r requirements.txt
+        Set-Location $GitRoot
+    } else {
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+        git pull https://github.com/crystian/ComfyUI-Crystools.git
+        Set-Location $GitRoot
+    }
+} elseif ($env:VARIANT -eq "NVIDIA") {
+    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
+        git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+        pip install -r requirements.txt
+        Set-Location $GitRoot
+    } else {
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+        git pull https://github.com/crystian/ComfyUI-Crystools.git
+        Set-Location $GitRoot
+    }
 }
+
 
 if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Easy-Use")) {
     git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
@@ -228,9 +242,10 @@ if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Image-Saver")) {
 Write-Host "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
 Write-Host "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
 Start-Sleep -Seconds 5
-$tmp = "$GitRoot\data\tmp"
-New-Item -ItemType Directory -Force -Path $tmp
-Write-Host $PWD
+
+
+
+Set-Location -Path $tmp
 
 if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
     Write-Host "Thank you for using Devil-Diffusion."
@@ -240,8 +255,11 @@ if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
     Start-Sleep -Seconds 5
     git-lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
 } else {
+    Set-Location -Path $tmp\Devil-Diffusion
     git-lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
 }
+
+Set-Location -Path $GitRoot
 
 
 
