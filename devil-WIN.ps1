@@ -253,10 +253,10 @@ if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
     Write-Host "NOTICE: This start script will not run again unless you wipe this entire directory."
     Write-Host "This script can be bypassed in future installs by first running touch devil-scripts/FIRSTRUN.flag before running the nix-shell."
     Start-Sleep -Seconds 5
-    git-lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+    git lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
 } else {
     Set-Location -Path $tmp\Devil-Diffusion
-    git-lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+    git lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
 }
 
 Set-Location -Path $GitRoot
