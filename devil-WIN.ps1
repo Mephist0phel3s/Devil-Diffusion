@@ -41,7 +41,6 @@ function Set-Variant {
     }
 }
 
-$FRflagFile = "$SrcRoot\devil_scripts\FIRSTRUN.flag"
 $modelsflagFile = "$SrcRoot\devil_scripts\models.flag"
 $flagContent = "Devil girls are sexy"
 $SrcRoot = "$GitRoot\src"
@@ -153,6 +152,7 @@ if ($env:VARIANT -eq "ROCM") {
     Set-Location $GitRoot
 }
 
+$FRflagFile = "$SrcRoot\devil_scripts\FIRSTRUN.flag"
 if (-not (Test-Path -Path $FRflagFile )) {
     # Create the FIRSTRUN.flag file with the current date and time
     New-Item -Path $FRflagFile -itemType File
