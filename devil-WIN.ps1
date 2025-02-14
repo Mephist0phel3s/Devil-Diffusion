@@ -3,12 +3,6 @@
 $ZIP_URL = "https://github.com/Mephist0phel3s/Devil-Diffusion/archive/refs/tags/Devil-Diffusion-v2.0.4.1.zip"
 $ZIP_FILE = "Devil-Diffusion-v2.0.4.1.zip"
 
-
-
-$VENV = "$SrcRoot\venv"
-$SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
-$env:VARIANT = $variant
-
 Invoke-WebRequest -Uri $ZIP_URL -OutFile $ZIP_FILE
 Expand-Archive -Path $ZIP_FILE -DestinationPath (Get-Location)
 Rename-Item -Path "Devil-Diffusion-Devil-Diffusion-v2.0.4.1" -NewName "Devil-Diffusion-v2.0.4.1"
@@ -19,6 +13,9 @@ $DataDir = "$GitRoot\data"
 $models = "$DataDir\models"
 $TMP = "$DataDir\tmp"
 $nodes = "$GitRoot\data\custom_nodes"
+$VENV = "$SrcRoot\venv"
+$SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
+$env:VARIANT = $variant
 
 # If the -variant flag is set, force the variant
 if ($variant -ne $null) {
@@ -26,6 +23,40 @@ if ($variant -ne $null) {
     $env:VARIANT = $variant
 } else {
     $env:VARIANT = $null
+}
+function Set-Variant {
+    # Check for GPU and set the variant
+    $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
+    if ($gpuVendor -match "NVIDIA") {
+        $env:VARIANT = "CUDA"
+    } elseif ($gpuVendor -match "AMD") {
+        $env:VARIANT = "ROCM"
+    } else {
+        Write-Host "No discrete GPU detected, using default CPU variant."
+        $env:VARIANT = "CPU"
+    }
+}
+
+Set-Variant
+cd $GitRoot\src
+if ($env:VARIANT -eq "ROCM") {
+    Write-Host "Installing ROCM-specific dependencies..."
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
+    pip install -r requirements.txt
+    pip install open-clip-torch
+    Set-Location $GitRoot
+} elseif ($env:VARIANT -eq "CUDA") {
+    Write-Host "Installing CUDA-specific dependencies..."
+    Set-Location $SrcRoot
+    pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
+    pip install -r requirements.txt
+    pip install open-clip-torch
+    Set-Location $GitRoot
+} else {
+    Set-Location $SrcRoot
+    Write-Host "Running for CPU variant..."
+    pip install -r requirements.txt
+    Set-Location $GitRoot
 }
 
 # Function to check if Git is installed
@@ -115,58 +146,118 @@ if (-not (Check-Python)) {
 }
 
 # Check if it's the first run
-if (-not (Test-Path -Path "$GitRoot\src\devil_scripts\FIRSTRUN.flag")) {
-    New-Item -Path "$GitRoot\src\devil_scripts\FIRSTRUN.flag" -ItemType File
+# Check if the FIRSTRUN.flag is present, if not, create it with the current timestamp and run the copy operations
+$flagFile = "$GitRoot\src\devil_scripts\FIRSTRUN.flag"
+if (-not (Test-Path -Path $flagFile)) {
+    # Create the FIRSTRUN.flag file with the current date and time
+    $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+    $flagContent = "First run detected at $currentTime"
+    Set-Content -Path $flagFile -Value $flagContent
     Write-Host "First time execution detected. Standby comrade...."
     Start-Sleep -Seconds 3
-    Copy-Item -Recurse "$GitRoot\src\models" "$GitRoot\data\"
-    Copy-Item -Recurse "$GitRoot\src\input" "$GitRoot\data\"
-    Copy-Item -Recurse "$GitRoot\src\output" "$GitRoot\data\"
-    Copy-Item -Recurse "$GitRoot\src\temp" "$GitRoot\data\"
-    Copy-Item -Recurse "$GitRoot\src\custom_nodes" "$GitRoot\data\"
+
+    # Copy items recursively from src directories to the corresponding out directories
+    Write-Host "Copying models to out\models..."
+    Copy-Item -Recurse "$GitRoot\src\models" "$GitRoot\out\models"
+
+    Write-Host "Copying input to out\input..."
+    Copy-Item -Recurse "$GitRoot\src\input" "$GitRoot\out\input"
+
+    Write-Host "Copying output to out\output..."
+    Copy-Item -Recurse "$GitRoot\src\output" "$GitRoot\out\output"
+
+    Write-Host "Copying temp to out\temp..."
+    Copy-Item -Recurse "$GitRoot\src\temp" "$GitRoot\out\temp"
+
+    Write-Host "Copying custom_nodes to out\custom_nodes..."
+    Copy-Item -Recurse "$GitRoot\src\custom_nodes" "$GitRoot\out\custom_nodes"
+
+    # Set location back to GitRoot
+    Set-Location $GitRoot
+} else {
+    Write-Host "First run flag present, proceeding."
+}
+
+
+
+if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Manager")) {
+    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
+} else {
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
+    git pull https://github.com/ltdrdata/ComfyUI-Manager
     Set-Location $GitRoot
 }
 
-# Set the variant based on GPU
-function Set-Variant {
-    # Check for GPU and set the variant
-    $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
-    if ($gpuVendor -match "NVIDIA") {
-        $env:VARIANT = "CUDA"
-    } elseif ($gpuVendor -match "AMD") {
-        $env:VARIANT = "ROCM"
-    } else {
-        Write-Host "No discrete GPU detected, using default CPU variant."
-        $env:VARIANT = "CPU"
-    }
+if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI_mittimiLoadText")) {
+    Set-Location $GitRoot\data\custom_nodes
+    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
+    Set-Location $GitRoot
 }
 
-Set-Variant
+if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
+    git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+    pip install -r requirements.txt
+    Set-Location $GitRoot
+} else {
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+    git pull https://github.com/crystian/ComfyUI-Crystools.git
+    Set-Location $GitRoot
+}
+
+if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Easy-Use")) {
+    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+    pip install -r requirements.txt
+    Set-Location $GitRoot
+} else {
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+    git pull
+    pip install -r requirements.txt
+    Set-Location $GitRoot
+}
+
+if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Image-Saver")) {
+    Set-Location $GitRoot\data\custom_nodes
+    git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+    pip install -r requirements.txt
+    Set-Location $GitRoot
+}
+
+Write-Host "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
+Write-Host "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
+Start-Sleep -Seconds 5
+$tmp = "$GitRoot\data\tmp"
+New-Item -ItemType Directory -Force -Path $tmp
+Write-Host $PWD
+
+if (-not (Test-Path -Path "$tmp\Devil-Diffusion")) {
+    Write-Host "Thank you for using Devil-Diffusion."
+    Write-Host "WARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. \nFirst execution takes a bit to pull and build initially."
+    Write-Host "NOTICE: This start script will not run again unless you wipe this entire directory."
+    Write-Host "This script can be bypassed in future installs by first running touch devil-scripts/FIRSTRUN.flag before running the nix-shell."
+    Start-Sleep -Seconds 5
+    git-lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+} else {
+    git-lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion "$tmp\Devil-Diffusion"
+}
+
+
+
+
 
 # Install necessary packages and run main.py
 cd $GitRoot\src
 if ($env:VARIANT -eq "ROCM") {
-    Write-Host "Installing ROCM-specific dependencies..."
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
-    pip install -r requirements.txt
-    pip install open-clip-torch
     Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
     python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
 } elseif ($env:VARIANT -eq "CUDA") {
-    Write-Host "Installing CUDA-specific dependencies..."
     Set-Location $SrcRoot
-    pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
-    pip install -r requirements.txt
-    pip install open-clip-torch
     Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
     python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
 } else {
     Set-Location $SrcRoot
-    Write-Host "Running for CPU variant..."
-    pip install -r requirements.txt
     python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
 }
 
-# Final message
-
-Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
