@@ -25,14 +25,14 @@ if ($variant -ne $null) {
     $env:VARIANT = $null
 }
 if (-not (Test-Path -Path $VENV)) {
-    python3.12 -m venv $VENV
+    python -m venv $VENV
+    Set-Location -Path $VENV
+    . .\Scripts\Activate.ps1
+    $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+    Set-Location -Path $GitRoot
 }
 
-$env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
-Set-Location -Path $VENV
-# Assuming activation script for PowerShell is inside the venv
-. .\Scripts\Activate.ps1
-Set-Location -Path $GitRoot
+
 
 
 function Set-Variant {
