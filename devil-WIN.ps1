@@ -156,8 +156,34 @@ if ($env:VARIANT -eq "ROCM") {
 #$FRflagFile = $SrcRoot"\devil_scripts\FIRSTRUN.flag"
 
 Set-Location $SrcRoot\devil_scripts
-$FRflagFile = FIRSTRUN.flag
-if (-not (Test-Path -Path $FRflagFile )) {
+$devil_scripts
+$FRflagFile = "$devil_scripts\FIRSTRUN.flag"
+if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer -eq $false) {
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
+        git pull
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+        git pull
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+        git pull
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+        git pull
+    Set-Location $nodes\ComfyUI_mittimiLoadText
+        git pull
+
+        if ($env:VARIANT -eq "ROCM") {
+            Set-Location $SrcRoot
+            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
+        } elseif ($env:VARIANT -eq "CUDA") {
+            Set-Location $SrcRoot
+            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
+        } else {
+            Set-Location $SrcRoot
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
+        }
+}
+} else {
     New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
     Write-Host "First time execution detected. Standby comrade...."
@@ -202,30 +228,7 @@ if (-not (Test-Path -Path $FRflagFile )) {
 
     Set-Location $GitRoot
 } else {
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
-        git pull
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
-        git pull
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-        git pull
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        git pull
-    Set-Location $nodes\ComfyUI_mittimiLoadText
-        git pull
 
-        if ($env:VARIANT -eq "ROCM") {
-            Set-Location $SrcRoot
-            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
-            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
-        } elseif ($env:VARIANT -eq "CUDA") {
-            Set-Location $SrcRoot
-            Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
-            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
-        } else {
-            Set-Location $SrcRoot
-            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
-        }
-}
 
 if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Manager")) {
     git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
