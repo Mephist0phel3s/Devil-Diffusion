@@ -226,22 +226,22 @@ if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer 
 
 
     Set-Location $GitRoot
-} else {
-
-
-if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Manager")) {
-    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
-} else {
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
-    git pull https://github.com/ltdrdata/ComfyUI-Manager
-    Set-Location $GitRoot
 }
 
-if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI_mittimiLoadText")) {
-    Set-Location $GitRoot\data\custom_nodes
-    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
-    Set-Location $GitRoot
-}
+
+#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Manager")) {
+#    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
+#} else {
+#    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
+#    git pull https://github.com/ltdrdata/ComfyUI-Manager
+#    Set-Location $GitRoot
+#}
+#
+#if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI_mittimiLoadText")) {
+#    Set-Location $GitRoot\data\custom_nodes
+#    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
+#    Set-Location $GitRoot
+#}
 
 #if ($env:VARIANT -eq "ROCM") {
 #    if (-not (Test-Path -Path "$GitRoot\data\custom_nodes\ComfyUI-Crystools")) {
