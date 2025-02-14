@@ -154,8 +154,6 @@ if ($env:VARIANT -eq "ROCM") {
 
 if (-not (Test-Path -Path $FRflagFile )) {
     # Create the FIRSTRUN.flag file with the current date and time
-    $currentTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-    $flagContent = "First run detected at $currentTime"
     New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
     Write-Host "First time execution detected. Standby comrade...."
