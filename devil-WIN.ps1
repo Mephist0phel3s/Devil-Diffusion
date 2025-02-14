@@ -152,7 +152,7 @@ if ($env:VARIANT -eq "ROCM") {
     Set-Location $GitRoot
 }
 
-$FRflagFile = "$SrcRoot\devil_scripts\FIRSTRUN.flag"
+$FRflagFile = $SrcRoot"\devil_scripts\FIRSTRUN.flag"
 if (-not (Test-Path -Path $FRflagFile )) {
     New-Item -Path $FRflagFile -itemType File
     Set-Content -Path $FRflagFile -Value $flagContent
