@@ -31,22 +31,16 @@ function checkGit {
     }
 }
 function checkPython {
-        $pythonVersion = python --version
+    try {
+        $pythonVersion = "python --version"
         if ($pythonVersion -match "Python 3.12") {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
         } else {
-            Write-Host "Python version $pythonVersion detected. Installing Python 3.12..."
-            $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
                 Set-Location $GitRoot
                 .\python-3.12.8.exe /passive InstallAllUsers=0 PrependPath=0 SimpleInstall=1 Include_test=0 -Wait
             }
-
-     catch {
-        Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
-        Set-Location $GitRoot
-        .\python-3.12.8.exe /passive InstallAllUsers=0 PrependPath=0 SimpleInstall=1 Include_test=0 -Wait
         }
-
+    }
 
     # Check if virtual environment exists, if not, create and activate it
     if (-not (Test-Path -Path $VENV)) {
