@@ -28,6 +28,7 @@ function checkGit {
         Start-Process -FilePath $installerPath -ArgumentList "/SILENT", "/NORESTART", "/DIR=C:\Program Files\Git" -Wait -NoNewWindow
         Write-Host "Installing Git LFS..."
         Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
     } else {
         Write-Host "Git is already installed. Proceeding with the next steps."
     }
