@@ -213,8 +213,7 @@ if ($variant -ne $null) {
 }
 checkGit
 checkPython
-Set-Variant
-
+setVariant
 
 $homeDir = [System.Environment]::GetFolderPath('UserProfile')
 Set-Location -Path $homeDir
