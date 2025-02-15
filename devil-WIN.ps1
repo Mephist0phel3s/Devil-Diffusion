@@ -211,24 +211,24 @@ if ($variant -ne $null) {
 } else {
     $env:VARIANT = setVariant
 }
+checkGit
+checkPython
+Set-Variant
+
 
 $homeDir = [System.Environment]::GetFolderPath('UserProfile')
 Set-Location -Path $homeDir
-dir
-Start-Sleep -Seconds 9
 $GitRoot = "$homeDir\Devil-Diffusion"
 $SrcRoot = "$GitRoot\src"
-$currentDir = Get-Location
-if ($currentDir.Path -eq $GitRoot) {
-    git pull
-} elseif (-not (Test-Path -Path $GitRoot)) {
-    Set-Location -Path $homeDir
-    git clone https://github.com/Mephist0phel3s/Devil-Diffusion.git
-} else {
-    Set-Location -Path $GitRoot
-    git pull
-}
-
+    if (-not (Test-Path -Path $GitRoot)) {
+        git clone https://github.com/Mephist0phel3s/Devil-Diffusion
+        $GitRoot = "$homeDir\Devil-Diffusion"
+        $SrcRoot = "$GitRoot\src"
+    else
+        Set-Location $GitRoot
+        git pull
+    }
+flags
 
 if (-not (Test-Path -Path $VENV)) {
     python -m venv $VENV
@@ -237,8 +237,8 @@ if (-not (Test-Path -Path $VENV)) {
     $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
     Set-Location -Path $GitRoot
 }
+runDevil
 
-Set-Variant
 
 
 
