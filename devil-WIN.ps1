@@ -147,19 +147,13 @@ function firstBuild {
     Set-Location $GitRoot
 }
 function modelBuild {
-    param (
-        [string]$lfs_vae,
-        [string]$lfs_basemodel,
-        [string]$models
-    )
-
     # Download the VAE model
     Set-Location -Path "$GitRoot\data\models\vae"
-    Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
+    Invoke-WebRequest -Uri https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors -OutFile "Devil_VAE.safetensors"
 
     # Download the base model
     Set-Location -Path "$GitRoot\data\modeels\checkpoints"
-    Invoke-WebRequest -Uri $lfs_basemodel -OutFile "Devil_Pony_v1.3.safetensors"
+    Invoke-WebRequest -Uri https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors -OutFile "Devil_Pony_v1.3.safetensors"
 }
 function buildAll {
     firstBuild
@@ -203,8 +197,6 @@ $nodes = "$GitRoot\data\custom_nodes"
 $VENV = "$SrcRoot\venv"
 $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
 $env:VARIANT = $variant
-$lfs_vae = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors"
-$lfs_basemodel = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors"
 if ($variant -ne $null) {
     Write-Host "Forcing variant: $variant"
     $env:VARIANT = $variant
