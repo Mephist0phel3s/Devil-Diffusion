@@ -53,7 +53,7 @@ function checkPython {
         Set-Location $GitRoot
         .\python-3.12.8.exe /passive InstallAllUsers=0 PrependPath=0 SimpleInstall=1 Include_test=0 -Wait
         }
-    }
+
 
     # Check if virtual environment exists, if not, create and activate it
     if (-not (Test-Path -Path $VENV)) {
@@ -70,6 +70,7 @@ function checkPython {
         . .\Scripts\Activate.ps1
         Set-Location -Path $GitRoot
     }
+}
 
 function cloneDevil {
     $homeDir = [System.Environment]::GetFolderPath('UserProfile')
