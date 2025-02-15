@@ -31,25 +31,90 @@ function checkGit {
     }
 }
 function checkPython {
+    # Check if Python 3.12 is installed
     try {
         $pythonVersion = python --version
         if ($pythonVersion -match "Python 3.12") {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
-            return $true
+        } else {
+            Write-Host "Python version $pythonVersion detected. Installing Python 3.12..."
+            $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
+            if (Test-Path -Path $pythonInstallerPath) {
+                Write-Host "Installing Python 3.12..."
+                Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
+                Write-Host "Python 3.12 installation complete."
+            } else {
+                Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
+                exit 1
+            }
         }
     } catch {
         Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
+        $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
+        if (Test-Path -Path $pythonInstallerPath) {
+            Write-Host "Installing Python 3.12..."
+            Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
+            Write-Host "Python 3.12 installation complete."
+        } else {
+            Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
+            exit 1
+        }
     }
 
-    $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
-    if (Test-Path -Path $pythonInstallerPath) {
-        Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
-        Write-Host "Python 3.12 installation complete."
+    # Check if virtual environment exists, if not, create and activate it
+    if (-not (Test-Path -Path $VENV)) {
+        Write-Host "Virtual environment not found. Creating new virtual environment..."
+        python -m venv $VENV
+        Set-Location -Path $VENV
+        . .\Scripts\Activate.ps1
+        $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+        Set-Location -Path $GitRoot
     } else {
-        Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
-        exit 1
+        Write-Host "Virtual environment already exists. Activating..."
+        Set-Location -Path $VENV
+        . .\Scripts\Activate.ps1
+        Set-Location -Path $GitRoot
     }
 }
+function cloneDevil {
+    $homeDir = [System.Environment]::GetFolderPath('UserProfile')
+    Set-Location -Path $homeDir
+
+    $GitRoot = "$homeDir\Devil-Diffusion"
+    $SrcRoot = "$GitRoot\src"
+
+    if (-not (Test-Path -Path $GitRoot)) {
+        Write-Host "Cloning Devil-Diffusion repository..."
+        git clone https://github.com/Mephist0phel3s/Devil-Diffusion
+        $GitRoot = "$homeDir\Devil-Diffusion"
+        $SrcRoot = "$GitRoot\src"
+    } else {
+        Write-Host "Repository exists. Pulling the latest changes..."
+        Set-Location -Path $GitRoot
+        git pull
+    }
+}
+
+#function checkPython {
+#    try {
+#        $pythonVersion = python --version
+#        if ($pythonVersion -match "Python 3.12") {
+#            Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
+#            return $true
+#        }
+#    } catch {
+#        Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
+#    }
+#
+#    $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
+#    if (Test-Path -Path $pythonInstallerPath) {
+#        Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
+#        Write-Host "Python 3.12 installation complete."
+#    } else {
+#        Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
+#        exit 1
+#    }
+#}
 function setVariant {
     # Check for GPU and set the variant
     $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
@@ -205,31 +270,9 @@ if ($variant -ne $null) {
 }
 setVariant
 checkGit
-
-$homeDir = [System.Environment]::GetFolderPath('UserProfile')
-Set-Location -Path $homeDir
-$GitRoot = "$homeDir\Devil-Diffusion"
-$SrcRoot = "$GitRoot\src"
-    if (-not (Test-Path -Path $GitRoot)) {
-        git clone https://github.com/Mephist0phel3s/Devil-Diffusion
-        $GitRoot = "$homeDir\Devil-Diffusion"
-        $SrcRoot = "$GitRoot\src"
-}   else {
-        Set-Location $GitRoot
-        git pull
-    }
+cloneDevil
 checkPython
-
-if (-not (Test-Path -Path $VENV)) {
-    python -m venv $VENV
-    Set-Location -Path $VENV
-    . .\Scripts\Activate.ps1
-    $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
-    Set-Location -Path $GitRoot
-}
-
 flags
-
 runDevil
 
 
