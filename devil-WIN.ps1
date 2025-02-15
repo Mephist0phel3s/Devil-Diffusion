@@ -126,7 +126,7 @@ function firstBuild {
             pip install -r requirements.txt
 
         }
-    elseif ($env:VARIANT -eq "NVIDIA") {
+    elseif ($env:VARIANT -eq "CUDA") {
             Set-Location $nodes
             git clone https://github.com/crystian/ComfyUI-Crystools.git
             Set-Location ComfyUI-Crystools
