@@ -10,7 +10,7 @@ function checkGit {
     if (-not $gitInstalled) {
         Set-Location $tmp
         curl -L -o Git-2.48.1-64-bit.exe https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe
-        $installerPath = "$tmp\Git-2.48.1-64-bit.exe"
+        $installerPath = %cd%"\Git-2.48.1-64-bit.exe"
         # Run the installer in silent mode with specified installation directory
         Start-Process -FilePath $installerPath -ArgumentList "/SILENT", "/NORESTART", "/DIR=C:\Program Files\Git" -Wait -NoNewWindow
 
@@ -211,9 +211,8 @@ if ($variant -ne $null) {
 } else {
     $env:VARIANT = setVariant
 }
-checkGit
-checkPython
 setVariant
+checkGit
 
 $homeDir = [System.Environment]::GetFolderPath('UserProfile')
 Set-Location -Path $homeDir
@@ -227,7 +226,7 @@ $SrcRoot = "$GitRoot\src"
         Set-Location $GitRoot
         git pull
     }
-flags
+checkPython
 
 if (-not (Test-Path -Path $VENV)) {
     python -m venv $VENV
@@ -236,6 +235,9 @@ if (-not (Test-Path -Path $VENV)) {
     $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
     Set-Location -Path $GitRoot
 }
+
+flags
+
 runDevil
 
 
