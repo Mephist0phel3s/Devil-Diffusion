@@ -42,9 +42,11 @@ function checkPython {
         [string]$flagFile = "$SrcRoot\devil_scripts\win.flag"  # Path to the flag file
     )
 
+        $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
         $pythonVersion = "python --version"
         if ($pythonVersion -match "Python 3.12") {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
+            Set-Location $SrcRoot
         } else {
                 Set-Location $SrcRoot\devil_scripts
                 $fileContents = Get-Content -Path ".\win.flag"
@@ -53,28 +55,25 @@ function checkPython {
                 Set-Location $GitRoot
                 $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1 ", "SimpleInstall=0", "-Include_test=0", "Include_pip=1", -Wait -NoNewWindow -PassThru
                 Wait-Process -Id $process.Id
-                    }
+                Set-Location $SrcRoot
+
+        }
 
 
 
-    # Check if virtual environment exists, if not, create and activate it
-    Set-Location $SrcRoot
-    if (-not (Test-Path -Path ".\venv")) {
-
-        Write-Host "Virtual environment not found. Creating new virtual environment..."
-        $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
+    try (-not (Test-Path -Path ".\venv")) {
         python -m venv ".\venv"
         Set-Location -Path ".\venv"
         . .\Scripts\Activate.ps1
         $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
         Set-Location -Path $GitRoot
-    } else {
+    } catch {
         Write-Host "Virtual environment already exists. Activating..."
         Set-Location -Path ".\venv"
         . .\Scripts\Activate.ps1
         Set-Location -Path $GitRoot
     }
-}
+
 function cloneDevil {
     $homeDir = [System.Environment]::GetFolderPath('UserProfile')
     Set-Location -Path $homeDir
