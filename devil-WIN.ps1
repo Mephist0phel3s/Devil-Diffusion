@@ -89,12 +89,15 @@ function firstBuild {
     Start-Sleep -Seconds 3
 
     # Copy necessary files
-    Copy-Item -Recurse $GitRoot\src\models $DataDir\models
-    Copy-Item -Recurse $GitRoot\src\input $DataDir\input
-    Copy-Item -Recurse $GitRoot\src\output $DataDir\output
-    Copy-Item -Recurse $GitRoot\src\temp $DataDir\temp
-    Copy-Item -Recurse $GitRoot\src\custom_nodes $DataDir\custom_nodes
+#    Copy-Item -Recurse $GitRoot\src\models $DataDir\models
+#    Copy-Item -Recurse $GitRoot\src\input $DataDir\input
+#    Copy-Item -Recurse $GitRoot\src\output $DataDir\output
+#    Copy-Item -Recurse $GitRoot\src\temp $DataDir\temp
+#    Copy-Item -Recurse $GitRoot\src\custom_nodes $DataDir\custom_nodes
+
+
     if ($env:VARIANT -eq "ROCM") {
+            Set-Location $SrcRoot
             Write-Host "Installing ROCM-specific dependencies..."
             pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
             pip install -r requirements.txt
@@ -119,14 +122,14 @@ function firstBuild {
     if ($env:VARIANT -eq "ROCM") {
             Set-Location $nodes
             git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git
-            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location ComfyUI-Crystools
             pip install -r requirements.txt
 
         }
     elseif ($env:VARIANT -eq "NVIDIA") {
             Set-Location $nodes
             git clone https://github.com/crystian/ComfyUI-Crystools.git
-            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location ComfyUI-Crystools
             pip install -r requirements.txt
             Set-Location $GitRoot
         }
