@@ -14,7 +14,7 @@ function checkGit {
         $gitInstalled = $false
     }
 
-    if $false {
+    if ($false) {
         cdHome
         curl -o Git-2.48.1-64-bit.exe https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe
         $installerPath = %cd%"\Git-2.48.1-64-bit.exe"
