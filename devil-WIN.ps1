@@ -70,8 +70,8 @@ function checkPython {
 
         # Start the Python installer process
         $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1", "SimpleInstall=0", "-Include_test=0", "Include_pip=1" -Wait -NoNewWindow -PassThru
-        $pid = $process.Id
-        Wait-Process -Id $pid
+        $devilpid = $process.Id
+        Wait-Process -Id $devilpid
         Set-Location $SrcRoot
         [System.Environment]::SetEnvironmentVariable('PATH', $env:PATH, [System.EnvironmentVariableTarget]::User)
         try {
