@@ -199,7 +199,7 @@ function flags {
         [string]$flagFile = "$SrcRoot\devil_scripts\win.flag"  # Path to the flag file
     )
     Set-Location $SrcRoot\devil_scripts
-    $fileContents = Get-Content -Path $flagFile
+    $fileContents = Get-Content -Path ".\win.flag"
 
     $modelFlag = $fileContents[0].Split('=')[1].Trim()
     $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
@@ -219,7 +219,10 @@ function flags {
         Write-Host "Unexpected flag values."
     }
 }
-
+$homeDir = [System.Environment]::GetFolderPath('UserProfile')
+Set-Location -Path $homeDir
+$GitRoot = "$homeDir\Devil-Diffusion"
+$SrcRoot = "$GitRoot\src"
 $flagFile = "$SrcRoot\devil_scripts\models.flag"
 $DataDir = "$GitRoot\data"
 $models = "$DataDir\models"
