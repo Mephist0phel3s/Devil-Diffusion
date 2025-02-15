@@ -12,7 +12,7 @@ function checkGit {
         $gitInstalled = $true
     } catch {
         $gitInstalled = $false
-    }
+        }
 
     if ($false) {
         cdHome
@@ -24,9 +24,10 @@ function checkGit {
         # Install Git LFS after installing Git
         Write-Host "Installing Git LFS..."
         Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
-    } elseif $true {
+        }
+    elseif ($true) {
         Write-Host "Git is already installed. Proceeding with the next steps."
-
+        }
         try {
             # Check if Git LFS is installed
             git lfs version
@@ -36,7 +37,6 @@ function checkGit {
             Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
         }
     }
-}
 function checkPython {
     param (
         [string]$flagFile = "$SrcRoot\devil_scripts\win.flag"  # Path to the flag file
