@@ -14,9 +14,9 @@ function checkGit {
         $gitInstalled = $false
     }
 
-    if (-not $gitInstalled) {
-        Set-Location $tmp
-        curl -L -o Git-2.48.1-64-bit.exe https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe
+    if $false {
+        cdHome
+        curl -o Git-2.48.1-64-bit.exe https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe
         $installerPath = %cd%"\Git-2.48.1-64-bit.exe"
         # Run the installer in silent mode with specified installation directory
         Start-Process -FilePath $installerPath -ArgumentList "/SILENT", "/NORESTART", "/DIR=C:\Program Files\Git" -Wait -NoNewWindow
@@ -24,7 +24,7 @@ function checkGit {
         # Install Git LFS after installing Git
         Write-Host "Installing Git LFS..."
         Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
-    } else {
+    } elseif $true {
         Write-Host "Git is already installed. Proceeding with the next steps."
 
         try {
@@ -230,6 +230,7 @@ function flags {
 
     $modelFlag = $fileContents[0].Split('=')[1].Trim()
     $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
+
 
     if ($modelFlag -eq "0" -and $firstRunFlag -eq "0") {
         buildAll
