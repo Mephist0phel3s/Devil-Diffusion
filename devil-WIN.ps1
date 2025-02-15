@@ -38,17 +38,27 @@ function checkGit {
     }
 }
 function checkPython {
+    param (
+        [string]$flagFile = "$SrcRoot\devil_scripts\win.flag"  # Path to the flag file
+    )
+
         $pythonVersion = "python --version"
         if ($pythonVersion -match "Python 3.12") {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
         } else {
                 Set-Location $GitRoot
                 Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0 ", "SimpleInstall=1", "-Include_test=0", -Wait -NoNewWindow
+                if ($firstRunFlag -eq "0") {
+                Write-Host "DEBUG::: Installer kept moving on without python and breaking, added time delay to first start"
+                Write-Host "DEBUG::: Sleeping while python does its thing."
+                Start-Sleep -Seconds 20
+                    }
             }
 
 
     # Check if virtual environment exists, if not, create and activate it
     if (-not (Test-Path -Path $VENV)) {
+
         Write-Host "Virtual environment not found. Creating new virtual environment..."
         $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
         python -m venv $VENV
