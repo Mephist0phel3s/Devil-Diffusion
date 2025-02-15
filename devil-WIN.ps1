@@ -55,7 +55,7 @@ function checkPython {
                 if ($firstRunFlag -eq "0") {
                 Write-Host "DEBUG::: Installer kept moving on without python and breaking, added time delay to first start"
                 Write-Host "DEBUG::: Sleeping while python does its thing."
-                Start-Sleep -Seconds 20
+                pause
                     }
             }
 
