@@ -114,17 +114,18 @@ function firstBuild {
 }
     Set-Location $nodes
 
-    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
+    git clone https://github.com/ltdrdata/ComfyUI-Manager
 
     if ($env:VARIANT -eq "ROCM") {
-
-            git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location $nodes
+            git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git
             Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
             pip install -r requirements.txt
 
         }
     elseif ($env:VARIANT -eq "NVIDIA") {
-            git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location $nodes
+            git clone https://github.com/crystian/ComfyUI-Crystools.git
             Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
             pip install -r requirements.txt
             Set-Location $GitRoot
