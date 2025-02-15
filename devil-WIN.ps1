@@ -109,7 +109,6 @@ function firstBuild {
             Set-Location $GitRoot
 }   else {
             Set-Location $SrcRoot
-            Write-Host "Running for CPU variant..."
             pip install -r requirements.txt
             Set-Location $GitRoot
 }
@@ -130,19 +129,19 @@ function firstBuild {
             pip install -r requirements.txt
             Set-Location $GitRoot
         }
-
-    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+    Set-Location $nodes
+    git clone https://github.com/yolain/ComfyUI-Easy-Use
+    Set-Location ComfyUI-Easy-Use
     pip install -r requirements.txt
+
     Set-Location $nodes
 
     git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+    Set-Location ComfyUI-Image-Saver
     pip install -r requirements.txt
-    Set-Location $nodes
 
-    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
     Set-Location $nodes
+    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
 
     Set-Location $GitRoot
 }
