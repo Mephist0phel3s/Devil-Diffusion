@@ -47,7 +47,7 @@ function checkPython {
                 Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
                 exit 1
             }
-        }
+
     } catch {
         Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
         Set-Location $GitRoot
