@@ -74,8 +74,6 @@ function checkPython {
         . .\Scripts\Activate.ps1
         Set-Location -Path $GitRoot
     }
-
-
 function cloneDevil {
     $homeDir = [System.Environment]::GetFolderPath('UserProfile')
     Set-Location -Path $homeDir
