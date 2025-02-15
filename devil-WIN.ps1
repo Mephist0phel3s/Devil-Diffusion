@@ -169,17 +169,14 @@ function flags {
     $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
 
     if ($modelFlag -eq "0" -and $firstRunFlag -eq "0") {
-        # If both flags are 0, call buildAll
         buildAll
         Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
     } elseif ($modelFlag -eq "1" -and $firstRunFlag -eq "1") {
         Write-Host "Flags are both true. Continuing..."
     } elseif ($modelFlag -eq "0" -and $firstRunFlag -eq "1") {
-        # If only model.flag is 0, call firstBuild
         firstBuild
         Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
     } elseif ($modelFlag -eq "1" -and $firstRunFlag -eq "0") {
-        # If only firstrun.flag is 0, call modelBuild
         modelBuild
         Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
     } else {
