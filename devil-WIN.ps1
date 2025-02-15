@@ -61,18 +61,19 @@ function checkPython {
 
 
     # Check if virtual environment exists, if not, create and activate it
-    if (-not (Test-Path -Path $VENV)) {
+    Set-Location $SrcRoot
+    if (-not (Test-Path -Path ".\venv")) {
 
         Write-Host "Virtual environment not found. Creating new virtual environment..."
         $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
-        python -m venv $VENV
-        Set-Location -Path $VENV
+        python -m venv ".\venv"
+        Set-Location -Path ".\venv"
         . .\Scripts\Activate.ps1
         $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
         Set-Location -Path $GitRoot
     } else {
         Write-Host "Virtual environment already exists. Activating..."
-        Set-Location -Path $VENV
+        Set-Location -Path ".\venv"
         . .\Scripts\Activate.ps1
         Set-Location -Path $GitRoot
     }
