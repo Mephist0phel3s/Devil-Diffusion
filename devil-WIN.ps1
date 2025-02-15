@@ -61,11 +61,10 @@ function checkPython {
 
 
 
-    try (-not (Test-Path -Path ".\venv")) {
+    try  {
         python -m venv ".\venv"
         Set-Location -Path ".\venv"
         . .\Scripts\Activate.ps1
-        $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
         Set-Location -Path $GitRoot
     } catch {
         Write-Host "Virtual environment already exists. Activating..."
