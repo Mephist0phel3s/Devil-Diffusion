@@ -1,34 +1,56 @@
-function Check-Git {
+function checkGit {
     try {
-        # Check if Git is available
+        # Check if Git is installed
         git --version
-        return $true
+        $gitInstalled = $true
     } catch {
-        return $false
+        $gitInstalled = $false
+    }
+
+    if (-not $gitInstalled) {
+        Set-Location $tmp
+        curl -L -o Git-2.48.1-64-bit.exe https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe
+        $installerPath = "$tmp\Git-2.48.1-64-bit.exe"
+        # Run the installer in silent mode with specified installation directory
+        Start-Process -FilePath $installerPath -ArgumentList "/SILENT", "/NORESTART", "/DIR=C:\Program Files\Git" -Wait -NoNewWindow
+
+        # Install Git LFS after installing Git
+        Write-Host "Installing Git LFS..."
+        Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
+    } else {
+        Write-Host "Git is already installed. Proceeding with the next steps."
+
+        try {
+            # Check if Git LFS is installed
+            git lfs version
+            Write-Host "Git LFS is already installed."
+        } catch {
+            Write-Host "Git LFS is not installed. Installing Git LFS..."
+            Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
+        }
     }
 }
-function Check-GitLFS {
+function checkPython {
     try {
-        # Check if Git LFS is available
-        git lfs version
-        return $true
-    } catch {
-        return $false
-    }
-}
-function Check-Python {
-    try {
-        # Check if Python 3.12 is installed
         $pythonVersion = python --version
         if ($pythonVersion -match "Python 3.12") {
+            Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
             return $true
         }
     } catch {
-        return $false
+        Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
     }
-    return $false
+
+    $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
+    if (Test-Path -Path $pythonInstallerPath) {
+        Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
+        Write-Host "Python 3.12 installation complete."
+    } else {
+        Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
+        exit 1
+    }
 }
-function Set-Variant {
+function setVariant {
     # Check for GPU and set the variant
     $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
     if ($gpuVendor -match "NVIDIA") {
@@ -40,74 +62,160 @@ function Set-Variant {
         $env:VARIANT = "CPU"
     }
 }
+function runDevil {
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
+            git pull
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+            git pull
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+            git pull
+        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            git pull
+        Set-Location $nodes\ComfyUI_mittimiLoadText
+            git pull
 
-$modelsflagFile = "$SrcRoot\devil_scripts\models.flag"
-$flagContent = "Devil girls are sexy"
+        if ($env:VARIANT -eq "ROCM") {
+            Set-Location $SrcRoot
+            Write-Host "Thank you for using Devil-Diffusion."
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
+        } elseif ($env:VARIANT -eq "CUDA") {
+            Set-Location $SrcRoot
+            Write-Host "Thank you for using Devil-Diffusion."
+            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --cuda-malloc
+        }
+    }
+function firstBuild {
+    Write-Host "First time execution detected. Standby comrade...."
+    Start-Sleep -Seconds 3
 
+    # Copy necessary files
+    Copy-Item -Recurse $GitRoot\src\models $DataDir\models
+    Copy-Item -Recurse $GitRoot\src\input $DataDir\input
+    Copy-Item -Recurse $GitRoot\src\output $DataDir\output
+    Copy-Item -Recurse $GitRoot\src\temp $DataDir\temp
+    Copy-Item -Recurse $GitRoot\src\custom_nodes $DataDir\custom_nodes
+    if ($env:VARIANT -eq "ROCM") {
+            Write-Host "Installing ROCM-specific dependencies..."
+            pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
+            pip install -r requirements.txt
+            pip install open-clip-torch
+            Set-Location $GitRoot
+}   elseif ($env:VARIANT -eq "CUDA") {
+            Write-Host "Installing CUDA-specific dependencies..."
+            Set-Location $SrcRoot
+            pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
+            pip install -r requirements.txt
+            pip install open-clip-torch
+            Set-Location $GitRoot
+}   else {
+            Set-Location $SrcRoot
+            Write-Host "Running for CPU variant..."
+            pip install -r requirements.txt
+            Set-Location $GitRoot
+}
+    Set-Location $nodes
+
+    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
+
+    if ($env:VARIANT -eq "ROCM") {
+
+            git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            pip install -r requirements.txt
+
+        }
+    elseif ($env:VARIANT -eq "NVIDIA") {
+            git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
+            pip install -r requirements.txt
+            Set-Location $GitRoot
+        }
+
+    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
+    pip install -r requirements.txt
+    Set-Location $nodes
+
+    git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
+    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
+    pip install -r requirements.txt
+    Set-Location $nodes
+
+    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
+    Set-Location $nodes
+
+    Set-Location $GitRoot
+}
+function modelBuild {
+    param (
+        [string]$lfs_vae,
+        [string]$lfs_basemodel,
+        [string]$models
+    )
+
+    # Download the VAE model
+    Set-Location -Path "$models\vae"
+    Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
+
+    # Download the base model
+    Set-Location -Path "$models\checkpoints"
+    Invoke-WebRequest -Uri $lfs_basemodel -OutFile "Devil_Pony_v1.3.safetensors"
+}
+function buildAll {
+    firstBuild
+    modelBuild
+}
+function flags {
+    param (
+        [string]$flagFile = "$SrcRoot\devil_scripts\win.flag"  # Path to the flag file
+    )
+    Set-Location $SrcRoot\devil_scripts
+    $fileContents = Get-Content -Path $flagFile
+
+    $modelFlag = $fileContents[0].Split('=')[1].Trim()
+    $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
+
+    if ($modelFlag -eq "0" -and $firstRunFlag -eq "0") {
+        # If both flags are 0, call buildAll
+        buildAll
+        Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
+    } elseif ($modelFlag -eq "1" -and $firstRunFlag -eq "1") {
+        Write-Host "Flags are both true. Continuing..."
+    } elseif ($modelFlag -eq "0" -and $firstRunFlag -eq "1") {
+        # If only model.flag is 0, call firstBuild
+        firstBuild
+        Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
+    } elseif ($modelFlag -eq "1" -and $firstRunFlag -eq "0") {
+        # If only firstrun.flag is 0, call modelBuild
+        modelBuild
+        Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
+    } else {
+        Write-Host "Unexpected flag values."
+    }
+}
+
+$flagFile = "$SrcRoot\devil_scripts\models.flag"
 $DataDir = "$GitRoot\data"
 $models = "$DataDir\models"
 $TMP = "$DataDir\tmp"
+$tmp = "$GitRoot\data\tmp"
 $nodes = "$GitRoot\data\custom_nodes"
 $VENV = "$SrcRoot\venv"
 $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
 $env:VARIANT = $variant
-$tmp = "$GitRoot\data\tmp"
 $lfs_vae = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors"
 $lfs_basemodel = "https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors"
 if ($variant -ne $null) {
     Write-Host "Forcing variant: $variant"
     $env:VARIANT = $variant
 } else {
-    $env:VARIANT = $null
+    $env:VARIANT = setVariant
 }
-# If Python 3.12 is not installed, use the provided installer
-if (-not (Check-Python)) {
-    Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
 
-    # Ensure the Python installer is available in $GitRoot
-    $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
-    if (Test-Path -Path $pythonInstallerPath) {
-        # Run the Python installer from $GitRoot
-        Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
-    } else {
-        Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
-        exit 1
-    }
-} else {
-    Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
-}
-if (-not (Check-Git)) {
-    Write-Host "Git is not installed. Installing Git along with Git LFS..."
-
-    # Get latest download URL for git-for-windows 64-bit exe
-    $git_url = "https://api.github.com/repos/git-for-windows/git/releases/latest"
-    $asset = Invoke-RestMethod -Method Get -Uri $git_url | % assets | where name -like "*64-bit.exe"
-
-    # Download installer
-    $installer = "$env:temp\$($asset.name)"
-    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $installer
-
-    # Run installer
-    $git_install_inf = "<install inf file>"
-    $install_args = "/SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /LOADINF=""$git_install_inf"""
-    Start-Process -FilePath $installer -ArgumentList $install_args -Wait
-
-    # Install Git LFS after installing Git
-    Write-Host "Installing Git LFS..."
-    Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
-} else {
-    Write-Host "Git is already installed. Proceeding with the next steps."
-
-    # If Git LFS is not installed, install it
-    if (-not (Check-GitLFS)) {
-        Write-Host "Git LFS is not installed. Installing Git LFS..."
-        Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
-    } else {
-        Write-Host "Git LFS is already installed."
-    }
-}
 $homeDir = [System.Environment]::GetFolderPath('UserProfile')
 Set-Location -Path $homeDir
+dir
+exit 1
 $GitRoot = "$homeDir\Devil-Diffusion"
 $SrcRoot = "$GitRoot\src"
 $currentDir = Get-Location
@@ -132,130 +240,5 @@ if (-not (Test-Path -Path $VENV)) {
 
 Set-Variant
 
-cd $GitRoot\src
-if ($env:VARIANT -eq "ROCM") {
-    Write-Host "Installing ROCM-specific dependencies..."
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
-    pip install -r requirements.txt
-    pip install open-clip-torch
-    Set-Location $GitRoot
-} elseif ($env:VARIANT -eq "CUDA") {
-    Write-Host "Installing CUDA-specific dependencies..."
-    Set-Location $SrcRoot
-    pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
-    pip install -r requirements.txt
-    pip install open-clip-torch
-    Set-Location $GitRoot
-} else {
-    Set-Location $SrcRoot
-    Write-Host "Running for CPU variant..."
-    pip install -r requirements.txt
-    Set-Location $GitRoot
-}
 
-#$FRflagFile = $SrcRoot"\devil_scripts\FIRSTRUN.flag"
-
-Set-Location $SrcRoot\devil_scripts
-$FRflagFile = "$SrcRoot\devil_scripts\FIRSTRUN.flag"
-if (Test-Path -Path $FRflagFile -and (Get-Item -Path $FRflagFile).PSIsContainer -eq $false) {
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Manager
-        git pull
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
-        git pull
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-        git pull
-    Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-        git pull
-    Set-Location $nodes\ComfyUI_mittimiLoadText
-        git pull
-
-        if ($env:VARIANT -eq "ROCM") {
-            Set-Location $SrcRoot
-            Write-Host "Thank you for using Devil-Diffusion."
-            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
-        } elseif ($env:VARIANT -eq "CUDA") {
-            Set-Location $SrcRoot
-            Write-Host "Thank you for using Devil-Diffusion."
-            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
-#        } else {
-#            Set-Location $SrcRoot
-#            python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
-        }
-} else {
-    New-Item -Path $FRflagFile -itemType File
-    Set-Content -Path $FRflagFile -Value $flagContent
-    Write-Host "First time execution detected. Standby comrade...."
-    Start-Sleep -Seconds 3
-
-    Copy-Item -Recurse $GitRoot\src\models $DataDir\models
-    Copy-Item -Recurse $GitRoot\src\input $DataDir\input
-    Copy-Item -Recurse $GitRoot\src\output $DataDir\output
-    Copy-Item -Recurse $GitRoot\src\temp $DataDir\temp
-    Copy-Item -Recurse $GitRoot\src\custom_nodes $DataDir\custom_nodes
-    Set-Location $nodes
-
-    git clone https://github.com/ltdrdata/ComfyUI-Manager $GitRoot\data\custom_nodes\ComfyUI-Manager
-
-    git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Easy-Use
-        pip install -r requirements.txt
-        Set-Location $nodes
-
-    git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
-        Set-Location $GitRoot\data\custom_nodes\ComfyUI-Image-Saver
-        pip install -r requirements.txt
-        Set-Location $nodes
-    git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
-        Set-Location $nodes
-
-
-    if ($env:VARIANT -eq "ROCM") {
-
-            git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
-            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-            pip install -r requirements.txt
-
-    }
-    elseif ($env:VARIANT -eq "NVIDIA") {
-            git clone https://github.com/crystian/ComfyUI-Crystools.git $GitRoot\data\custom_nodes\ComfyUI-Crystools
-            Set-Location $GitRoot\data\custom_nodes\ComfyUI-Crystools
-            pip install -r requirements.txt
-            Set-Location $GitRoot
-    }
-
-
-    Set-Location $GitRoot
-}
-
-Write-Host "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
-Write-Host "Devil base model comes with VAE baked in. VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
-Start-Sleep -Seconds 5
-
-if (-not (Test-Path -Path $modelsflagFile)) {
-    New-Item -Path "$modelsflagFile" -ItemType File
-    Set-Content -Path $FRflagFile -Value $flagContent
-    Set-Location -Path $models\vae
-    Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
-    Set-Location -Path $models\checkpoints
-    Invoke-WebRequest -Uri $lfs_basemodel -OutFile "Devil_Pony_v1.3.safetensors"
-} else {
-    Write-Host "Flag file already exists. Continuing..."
-}
-
-
-
-
-cd $GitRoot\src
-if ($env:VARIANT -eq "ROCM") {
-    Set-Location $SrcRoot
-    Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
-    python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --disable-xformers
-} elseif ($env:VARIANT -eq "CUDA") {
-    Set-Location $SrcRoot
-    Write-Host "Thank you for using Devil-Diffusion. Starting main.py..."
-    python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cuda-malloc
-} else {
-    Set-Location $SrcRoot
-    python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --cpu
-}
 
