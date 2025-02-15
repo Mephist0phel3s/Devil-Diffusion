@@ -41,7 +41,7 @@ function checkPython {
             $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
             if (Test-Path -Path $pythonInstallerPath) {
                 Write-Host "Installing Python 3.12..."
-                Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
+                Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0", "SimpleInstall=1", "Include_test=0", -Wait
                 Write-Host "Python 3.12 installation complete."
             } else {
                 Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
@@ -53,7 +53,7 @@ function checkPython {
         $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
         if (Test-Path -Path $pythonInstallerPath) {
             Write-Host "Installing Python 3.12..."
-            Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
+            Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0", "SimpleInstall=1", "Include_test=0",  -Wait
             Write-Host "Python 3.12 installation complete."
         } else {
             Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
@@ -64,6 +64,7 @@ function checkPython {
     # Check if virtual environment exists, if not, create and activate it
     if (-not (Test-Path -Path $VENV)) {
         Write-Host "Virtual environment not found. Creating new virtual environment..."
+        $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
         python -m venv $VENV
         Set-Location -Path $VENV
         . .\Scripts\Activate.ps1
@@ -88,33 +89,13 @@ function cloneDevil {
         git clone https://github.com/Mephist0phel3s/Devil-Diffusion
         $GitRoot = "$homeDir\Devil-Diffusion"
         $SrcRoot = "$GitRoot\src"
+        Set-Location -Path $GitRoot
     } else {
         Write-Host "Repository exists. Pulling the latest changes..."
         Set-Location -Path $GitRoot
         git pull
     }
 }
-
-#function checkPython {
-#    try {
-#        $pythonVersion = python --version
-#        if ($pythonVersion -match "Python 3.12") {
-#            Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
-#            return $true
-#        }
-#    } catch {
-#        Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
-#    }
-#
-#    $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
-#    if (Test-Path -Path $pythonInstallerPath) {
-#        Start-Process -FilePath $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=1", "PrependPath=1", "Include_test=0" -Wait
-#        Write-Host "Python 3.12 installation complete."
-#    } else {
-#        Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
-#        exit 1
-#    }
-#}
 function setVariant {
     # Check for GPU and set the variant
     $gpuVendor = Get-WmiObject Win32_VideoController | Select-Object -ExpandProperty Description
@@ -148,7 +129,7 @@ function runDevil {
             Write-Host "Thank you for using Devil-Diffusion."
             python main.py --listen 127.0.0.1 --port 8666 --base-dir $DataDir --auto-launch --use-pytorch-cross-attention --cpu-vae --cuda-malloc
         }
-    }
+}
 function firstBuild {
     Write-Host "First time execution detected. Standby comrade...."
     Start-Sleep -Seconds 3
@@ -160,7 +141,12 @@ function firstBuild {
 #    Copy-Item -Recurse $GitRoot\src\temp $DataDir\temp
 #    Copy-Item -Recurse $GitRoot\src\custom_nodes $DataDir\custom_nodes
 
-
+    $nodes = "$GitRoot\data\custom_nodes"
+    $DataDir = "$GitRoot\data"
+    $models = "$DataDir\models"
+    $TMP = "$DataDir\tmp"
+    $tmp = "$GitRoot\data\tmp"
+    $VENV = "$SrcRoot\venv"
     if ($env:VARIANT -eq "ROCM") {
             Set-Location $SrcRoot
             Write-Host "Installing ROCM-specific dependencies..."
