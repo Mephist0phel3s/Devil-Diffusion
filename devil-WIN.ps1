@@ -4,39 +4,43 @@ function cdHome {
     # Set the location to the user's home directory
     Set-Location -Path $homeDir
 }
-
 function checkGit {
     try {
         # Check if Git is installed
-        git --version
-        $gitInstalled = $true
-    } catch {
-        $gitInstalled = $false
+        $gitVersion = git --version
+        if ($gitVersion -match "git version") {
+            Write-Host "Git is already installed: $gitVersion"
+            $gitInstalled = $true
+        } else {
+            Write-Host "Git is not properly installed."
+            $gitInstalled = $false
         }
+    } catch {
+        Write-Host "Git is not installed or not found in PATH."
+        $gitInstalled = $false
+    }
 
-    if ($false) {
+    if (-not $gitInstalled) {
         cdHome
+        Write-Host "Downloading and installing Git..."
         curl -o Git-2.48.1-64-bit.exe https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe
-        $installerPath = %cd%"\Git-2.48.1-64-bit.exe"
-        # Run the installer in silent mode with specified installation directory
+        $installerPath = Join-Path (Get-Location) "Git-2.48.1-64-bit.exe"
         Start-Process -FilePath $installerPath -ArgumentList "/SILENT", "/NORESTART", "/DIR=C:\Program Files\Git" -Wait -NoNewWindow
-
-        # Install Git LFS after installing Git
         Write-Host "Installing Git LFS..."
         Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
-        }
-    elseif ($true) {
+    } else {
         Write-Host "Git is already installed. Proceeding with the next steps."
-        }
-        try {
-            # Check if Git LFS is installed
-            git lfs version
-            Write-Host "Git LFS is already installed."
-        } catch {
-            Write-Host "Git LFS is not installed. Installing Git LFS..."
-            Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
-        }
     }
+
+    try {
+        # Check if Git LFS is installed
+        git lfs version
+        Write-Host "Git LFS is already installed."
+    } catch {
+        Write-Host "Git LFS is not installed. Installing Git LFS..."
+        Start-Process -FilePath "git" -ArgumentList "lfs install" -Wait
+    }
+}
 function checkPython {
     param (
         [string]$flagFile = "$SrcRoot\devil_scripts\win.flag"  # Path to the flag file
