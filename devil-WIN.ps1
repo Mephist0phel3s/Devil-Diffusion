@@ -222,7 +222,7 @@ $SrcRoot = "$GitRoot\src"
         git clone https://github.com/Mephist0phel3s/Devil-Diffusion
         $GitRoot = "$homeDir\Devil-Diffusion"
         $SrcRoot = "$GitRoot\src"
-    else
+}   else {
         Set-Location $GitRoot
         git pull
     }
