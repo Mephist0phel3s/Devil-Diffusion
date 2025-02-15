@@ -215,8 +215,7 @@ if ($variant -ne $null) {
 $homeDir = [System.Environment]::GetFolderPath('UserProfile')
 Set-Location -Path $homeDir
 dir
-pause
-exit 1
+Start-Sleep -Seconds 9
 $GitRoot = "$homeDir\Devil-Diffusion"
 $SrcRoot = "$GitRoot\src"
 $currentDir = Get-Location
