@@ -46,8 +46,12 @@ function checkPython {
         if ($pythonVersion -match "Python 3.12") {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
         } else {
+                Set-Location $SrcRoot\devil_scripts
+                $fileContents = Get-Content -Path ".\win.flag"
+                $modelFlag = $fileContents[0].Split('=')[1].Trim()
+                $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
                 Set-Location $GitRoot
-                Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0 ", "SimpleInstall=1", "-Include_test=0", -Wait -NoNewWindow
+                Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1 ", "SimpleInstall=0", "-Include_test=0", -Wait -NoNewWindow
                 if ($firstRunFlag -eq "0") {
                 Write-Host "DEBUG::: Installer kept moving on without python and breaking, added time delay to first start"
                 Write-Host "DEBUG::: Sleeping while python does its thing."
