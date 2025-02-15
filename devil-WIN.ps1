@@ -1,3 +1,10 @@
+function cdHome {
+    $homeDir = [System.Environment]::GetFolderPath('UserProfile')
+
+    # Set the location to the user's home directory
+    Set-Location -Path $homeDir
+}
+
 function checkGit {
     try {
         # Check if Git is installed
@@ -36,7 +43,7 @@ function checkPython {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
         } else {
                 Set-Location $GitRoot
-                Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0 ", "SimpleInstall=1", "-Include_test=0", -Wait
+                Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0 ", "SimpleInstall=1", "-Include_test=0", -Wait -NoNewWindow
             }
 
 
@@ -238,6 +245,7 @@ if ($variant -ne $null) {
 } else {
     $env:VARIANT = setVariant
 }
+cdHome
 setVariant
 checkGit
 cloneDevil
