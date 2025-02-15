@@ -151,7 +151,7 @@ function modelBuild {
     Invoke-WebRequest -Uri https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_VAE.safetensors -OutFile "Devil_VAE.safetensors"
 
     # Download the base model
-    Set-Location -Path "$GitRoot\data\modeels\checkpoints"
+    Set-Location -Path "$GitRoot\data\models\checkpoints"
     Invoke-WebRequest -Uri https://huggingface.co/Mephist0phel3s/Devil-Diffusion/resolve/main/Devil_Pony_v1.3.safetensors -OutFile "Devil_Pony_v1.3.safetensors"
 }
 function buildAll {
