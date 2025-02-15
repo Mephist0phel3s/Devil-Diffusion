@@ -175,10 +175,10 @@ function flags {
     } elseif ($modelFlag -eq "1" -and $firstRunFlag -eq "1") {
         Write-Host "Flags are both true. Continuing..."
     } elseif ($modelFlag -eq "0" -and $firstRunFlag -eq "1") {
-        firstBuild
+        modelBuild
         Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
     } elseif ($modelFlag -eq "1" -and $firstRunFlag -eq "0") {
-        modelBuild
+        firstBuild
         Set-Content -Path $flagFile -Value "model.flag=1`nfirstrun.flag=1"
     } else {
         Write-Host "Unexpected flag values."
