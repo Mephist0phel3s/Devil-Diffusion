@@ -154,11 +154,11 @@ function modelBuild {
     )
 
     # Download the VAE model
-    Set-Location -Path "$models\vae"
+    Set-Location -Path "$GitRoot\data\models\vae"
     Invoke-WebRequest -Uri $lfs_vae -OutFile "Devil_VAE.safetensors"
 
     # Download the base model
-    Set-Location -Path "$models\checkpoints"
+    Set-Location -Path "$GitRoot\data\modeels\checkpoints"
     Invoke-WebRequest -Uri $lfs_basemodel -OutFile "Devil_Pony_v1.3.safetensors"
 }
 function buildAll {
