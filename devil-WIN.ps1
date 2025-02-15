@@ -36,7 +36,7 @@ function checkPython {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
         } else {
                 Set-Location $GitRoot
-                .\python-3.12.8.exe /passive InstallAllUsers=0 PrependPath=0 SimpleInstall=1 Include_test=0 -Wait
+                Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0 ", "SimpleInstall=1", "-Include_test=0", -Wait
             }
 
 
