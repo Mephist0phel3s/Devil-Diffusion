@@ -51,7 +51,7 @@ function checkPython {
                 $modelFlag = $fileContents[0].Split('=')[1].Trim()
                 $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
                 Set-Location $GitRoot
-                Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1 ", "SimpleInstall=0", "-Include_test=0", -Wait -NoNewWindow
+                Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1 ", "SimpleInstall=0", "-Include_test=0", "Include_pip=1", -Wait -NoNewWindow
                 if ($firstRunFlag -eq "0") {
                 Write-Host "DEBUG::: Installer kept moving on without python and breaking, added time delay to first start"
                 Write-Host "DEBUG::: Sleeping while python does its thing."
