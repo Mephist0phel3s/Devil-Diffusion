@@ -69,7 +69,7 @@ function checkPython {
         Set-Location $GitRoot
 
         # Start the Python installer process
-        $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1", "SimpleInstall=0", "-Include_test=0", "Include_pip=1" -Wait -NoNewWindow -PassThru
+        $process = Start-Process -FilePath ".\python-3.12.8-amd64.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1", "SimpleInstall=0", "-Include_test=0", "Include_pip=1" -Wait -NoNewWindow -PassThru
         Wait-Process -Id $process.Id
         Set-Location $SrcRoot
             $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
