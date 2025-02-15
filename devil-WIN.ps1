@@ -40,9 +40,9 @@ function checkPython {
             Write-Host "Python version $pythonVersion detected. Installing Python 3.12..."
             $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
             if (Test-Path -Path $pythonInstallerPath) {
+                Set-Location $GitRoot
                 Write-Host "Installing Python 3.12..."
-                $pythonInstallerPath -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0", "SimpleInstall=1", "Include_test=0", -Wait
-                Write-Host "Python 3.12 installation complete."
+                .\python-3.12.8.exe -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0", "SimpleInstall=1", "Include_test=0", -Wait
             } else {
                 Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
                 exit 1
@@ -52,7 +52,6 @@ function checkPython {
         Write-Host "Python 3.12 is not installed. Installing Python 3.12..."
         Set-Location $GitRoot
         .\python-3.12.8.exe -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=0", "SimpleInstall=1", "Include_test=0",  -Wait
-        Write-Host "Python 3.12 installation complete."
         }
     }
 
