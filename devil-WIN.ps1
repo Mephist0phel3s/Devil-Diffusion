@@ -42,39 +42,48 @@ function checkPython {
         [string]$flagFile = "$SrcRoot\devil_scripts\win.flag"  # Path to the flag file
     )
 
-        $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
-        $pythonVersion = "python --version"
-        if ($pythonVersion -match "Python 3.12") {
-            Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
-            Set-Location $SrcRoot
-            $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
-            try {
+    $SOURCE_DATE_EPOCH = (Get-Date -UFormat %s)
+
+    # Run the python --version command and capture the output
+    $pythonVersion = & python --version 2>&1  # Run python and capture version output
+
+    if ($pythonVersion -match "Python 3.12") {
+        Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
+
+        Set-Location $SrcRoot
+        $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+
+        try {
             python -m venv ".\venv"
-            } catch {
+        } catch {
             Set-Location -Path ".\venv"
             . .\Scripts\Activate.ps1
             Set-Location -Path $GitRoot
-            }
-        } else {
-                Set-Location $SrcRoot\devil_scripts
-                $fileContents = Get-Content -Path ".\win.flag"
-                $modelFlag = $fileContents[0].Split('=')[1].Trim()
-                $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
-                Set-Location $GitRoot
-                $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1 ", "SimpleInstall=0", "-Include_test=0", "Include_pip=1", -Wait -NoNewWindow -PassThru
-                Wait-Process -Id $process.Id
-                Set-Location $SrcRoot
-                $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
-                try {
-                python -m venv ".\venv"
-                } catch {
-                Set-Location -Path ".\venv"
-                . .\Scripts\Activate.ps1
-                Set-Location -Path $GitRoot
-                }
-
         }
+    } else {
+        Set-Location $SrcRoot\devil_scripts
+        $fileContents = Get-Content -Path ".\win.flag"
+        $modelFlag = $fileContents[0].Split('=')[1].Trim()
+        $firstRunFlag = $fileContents[1].Split('=')[1].Trim()
 
+        Set-Location $GitRoot
+
+        # Start the Python installer process
+        $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1", "SimpleInstall=0", "-Include_test=0", "Include_pip=1" -Wait -NoNewWindow -PassThru
+        Wait-Process -Id $process.Id
+
+        Set-Location $SrcRoot
+        $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+
+        try {
+            python -m venv ".\venv"
+        } catch {
+            Set-Location -Path ".\venv"
+            . .\Scripts\Activate.ps1
+            Set-Location -Path $GitRoot
+        }
+    }
+}
 function cloneDevil {
     $homeDir = [System.Environment]::GetFolderPath('UserProfile')
     Set-Location -Path $homeDir
