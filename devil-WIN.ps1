@@ -47,6 +47,14 @@ function checkPython {
         if ($pythonVersion -match "Python 3.12") {
             Write-Host "Python 3.12 is already installed. Proceeding with the next steps."
             Set-Location $SrcRoot
+            $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+            try {
+            python -m venv ".\venv"
+            } catch {
+            Set-Location -Path ".\venv"
+            . .\Scripts\Activate.ps1
+            Set-Location -Path $GitRoot
+            }
         } else {
                 Set-Location $SrcRoot\devil_scripts
                 $fileContents = Get-Content -Path ".\win.flag"
@@ -56,22 +64,16 @@ function checkPython {
                 $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1 ", "SimpleInstall=0", "-Include_test=0", "Include_pip=1", -Wait -NoNewWindow -PassThru
                 Wait-Process -Id $process.Id
                 Set-Location $SrcRoot
+                $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
+                try {
+                python -m venv ".\venv"
+                } catch {
+                Set-Location -Path ".\venv"
+                . .\Scripts\Activate.ps1
+                Set-Location -Path $GitRoot
+                }
 
         }
-
-
-
-    try  {
-        python -m venv ".\venv"
-        Set-Location -Path ".\venv"
-        . .\Scripts\Activate.ps1
-        Set-Location -Path $GitRoot
-    } catch {
-        Write-Host "Virtual environment already exists. Activating..."
-        Set-Location -Path ".\venv"
-        . .\Scripts\Activate.ps1
-        Set-Location -Path $GitRoot
-    }
 
 function cloneDevil {
     $homeDir = [System.Environment]::GetFolderPath('UserProfile')
