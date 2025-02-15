@@ -72,9 +72,9 @@ function checkPython {
         $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1", "SimpleInstall=0", "-Include_test=0", "Include_pip=1" -Wait -NoNewWindow -PassThru
         Wait-Process -Id $process.Id
 
-        Set-Location $SrcRoot
-        $env:PYTHONPATH = (Get-Location).Path + "\" + $VENV + "\" + $pkgs.python312Full.sitePackages + "\" + ":" + $env:PYTHONPATH
 
+        Set-Location $SrcRoot
+        [System.Environment]::SetEnvironmentVariable('PATH', $env:PATH, [System.EnvironmentVariableTarget]::User)
         try {
             python -m venv ".\venv"
         } catch {
