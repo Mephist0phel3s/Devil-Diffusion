@@ -54,7 +54,7 @@ function checkPython {
                 $process = Start-Process -FilePath ".\python-3.12.8.exe" -ArgumentList "/passive", "InstallAllUsers=0", "PrependPath=1 ", "SimpleInstall=0", "-Include_test=0", "Include_pip=1", -Wait -NoNewWindow -PassThru
                 Wait-Process -Id $process.Id
                     }
-            }
+
 
 
     # Check if virtual environment exists, if not, create and activate it
@@ -74,6 +74,7 @@ function checkPython {
         . .\Scripts\Activate.ps1
         Set-Location -Path $GitRoot
     }
+}
 function cloneDevil {
     $homeDir = [System.Environment]::GetFolderPath('UserProfile')
     Set-Location -Path $homeDir
