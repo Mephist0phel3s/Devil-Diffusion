@@ -39,13 +39,8 @@ function checkPython {
         } else {
             Write-Host "Python version $pythonVersion detected. Installing Python 3.12..."
             $pythonInstallerPath = "$GitRoot\python-3.12.8.exe"
-            if (Test-Path -Path $pythonInstallerPath) {
                 Set-Location $GitRoot
-                Write-Host "Installing Python 3.12..."
                 .\python-3.12.8.exe /passive InstallAllUsers=0 PrependPath=0 SimpleInstall=1 Include_test=0 -Wait
-            } else {
-                Write-Host "Python installer not found in $GitRoot. Please ensure python-3.12.8.exe is present."
-                exit 1
             }
 
     } catch {
@@ -70,7 +65,7 @@ function checkPython {
         . .\Scripts\Activate.ps1
         Set-Location -Path $GitRoot
     }
-}
+
 
 function cloneDevil {
     $homeDir = [System.Environment]::GetFolderPath('UserProfile')
