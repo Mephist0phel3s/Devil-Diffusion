@@ -36,6 +36,7 @@ in pkgs.mkShell rec {
     hardware_deps ++ [
       git # The program instantly crashes if git is not present, even if everything is already downloaded
       python312Full
+      python312Packages.huggingface-hub
       zstd
       git-lfs
       # python312Packages.torch               ### python version supersedes, fix later
@@ -60,57 +61,179 @@ in pkgs.mkShell rec {
       glib
     ];
 
-  # Custom shell hook for setting up environment
   shellHook = ''
+#!/bin/bash
 
-    SOURCE_DATE_EPOCH=$(date +%s)
-    export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
-    VENV=venv
-    TMP=tmp
-    export VARIANT="${variant}"
+# Define the function
+flags() {
+    local config_file="$GitRoot/devil.flag"  # The name of the configuration file
 
-    export black='\033[0;30m'
-    export red='\033[0;31m'
-    export green='\033[0;32m'
-    export yellow='\033[0;33m'
-    export blue='\033[0;34m'
-    export purple='\033[0;35m'
-    export cyan='\033[0;36m'
-    export white='\033[0;37m'
-    # Background
-    export on_black='\033[40m'
-    export on_red='\033[41m'
-    export on_green='\033[42m'
-    export on_yellow='\033[43m'
-    export on_blue='\033[44m'
-    export on_purple='\033[45m'
-    export on_cyan='\033[46m'
-    export on_white='\033[47m'
-    export BIYellow='\033[1;93m'
-    export UGreen='\033[4;32m'
-
-
-    # Create virtual environment if it doesn't exist
-    if test ! -d $VENV; then
-      python3.12 -m venv $VENV
+    # Check if the config file exists
+    if [[ ! -f "$config_file" ]]; then
+        echo "Config file '$config_file' not found!"
+        return 1
     fi
-    source ./$VENV/bin/activate
-    export PYTHONPATH=`pwd`/$VENV/${pkgs.python312Full.sitePackages}/:$PYTHONPATH
-    cd ..
-    GitRoot="$PWD"
 
-        if [ ! -f $GitRoot/src/devil_scripts/FIRSTRUN.flag ]; then
-            touch $GitRoot/src/devil_scripts/FIRSTRUN.flag
-            bash -c "printf '\n First time execution detected. Standby comrade....'"
-            sleep 3
-            cp -r $GitRoot/src/models $GitRoot/data/
-            cp -r $GitRoot/src/input $GitRoot/data/
-            cp -r $GitRoot/src/output $GitRoot/data/
-            cp -r $GitRoot/src/temp $GitRoot/data/
-            cp -r $GitRoot/src/custom_nodes $GitRoot/data/
-            cd $GitRoot
+    # Read the file line by line
+    while IFS='=' read -r option value; do
+        # Ignore lines that are empty or comments
+        if [[ -z "$option" || "$option" == \#* ]]; then
+            continue
         fi
-          case "$VARIANT" in
+
+        # Check if the option is enabled (value = 1)
+        case "$option" in
+            "first-run")
+                if [[ "$value" -eq 0 ]]; then
+                    echo "Running script for Option 1: first run..."
+                fi
+                ;;
+            "build-devil")
+                if [[ "$value" -eq 1 ]]; then
+                    echo "Running script for Option 2: build extensions..."
+                    build-devil
+                fi
+                ;;
+            "build-extensions")
+                if [[ "$value" -eq 1 ]]; then
+                    echo "Running script for Option 3: lfs-pull..."
+                fi
+                ;;
+            "lfs-pull")
+                if [[ "$value" -eq 1 ]]; then
+                    echo "Running script for Option 4: build devel..."
+                fi
+                ;;
+            *)
+                echo "Unknown option: $option"
+                ;;
+        esac
+    done < "$config_file"
+}
+lfs-pull() {
+if [ ! -f $GitRoot/devil_scripts/lfs.flag ]; then
+    echo "Devil" >> $GitRoot/devil_scripts/lfs.flag
+    local TIMEOUT=20
+    local choice
+    echo "Choose an option:"
+    echo "A: Download default Devil Pony v1.3"
+    echo "B: Download Devil Cartoon v1.1"
+    echo "C: Download both"
+    echo "D: Download none (add your own)"
+    (
+        sleep $TIMEOUT
+        kill -s SIGTERM $$
+    ) &
+    read -t $TIMEOUT -p "Your choice: " choice
+    if [[ -z "$choice" ]]; then
+        echo "No input received, defaulting to Download default"
+        choice="A"
+    fi
+    case "$choice" in
+        A|a) echo "Pulling Devil Pony v1.3, standby." && \
+        huggingface-cli download Mephist0phel3s/Devil-Diffusion \
+        --include Devil_Pony_v1.3.safetensors \
+        --local-dir $PWD/ ;;
+
+        B|b) echo "Pulling Devil Cartoon v1.1, standby" && \
+        huggingface-cli download Mephist0phel3s/Devil-Diffusion \
+        --include Devil_Cartoon_v1.1-beta_00001_.safetensors
+        --local-dir $PWD/ ;;
+        C|c) echo "Pulling both Devil Cartoon v1.1 and Pony v1.3, standby" && \
+        huggingface-cli download Mephist0phel3s/Devil-Diffusion \
+        --include Devil_Cartoon_v1.1-beta_00001_.safetensors \
+        --include Devil_Pony_v1.3.safetensors \
+        --local-dir $PWD/ ;;
+        D|d) echo "None, add your own to data/models/checkpoints";;
+
+        *) echo "Invalid selection, defaulting to A, standby.";;
+    esac
+fi
+}
+extension-pull() {
+cd $GitRoot
+          git submodule update --init --recursive
+          nodes=$GitRoot/data/custom_nodes
+
+          cd $nodes/ComfyUI-Manager
+          git checkout 3.9.4
+
+          cd $nodes/ComfyUI-Crystools
+          git checkout AMD
+          pip install -r $GitRoot/data/custom_nodes/ComfyUI-Crystools/requirements.txt
+
+          cd $nodes/ComfyUI_mittimiLoadText
+          git checkout main
+
+          cd $nodes/ComfyUI-Image-Saver
+          git checkout v1.4.0
+          pip install -r $GitRoot/data/custom_nodes/ComfyUI-Image-Saver/requirements.txt
+
+          cd $nodes/ComfyUI-Easy-Use
+          git checkout v1.2.7
+          pip install -r $GitRoot/data/custom_nodes/ComfyUI-Easy-Use/requirements.txt
+
+case "$VARIANT" in
+      "ROCM")
+            cd $GitRoot/data/custom_nodes/ComfyUI-Crystools
+            git checkout AMD
+            pip install -r $GitRoot/data/custom_nodes/ComfyUI-Crystools/requirements.txt
+            cd $GitRoot
+            ;;
+      "CUDA")
+        cd $nodes/ComfyUI-Crystools
+        git checkout 1.9.3
+        pip install -r $GitRoot/data/custom_nodes/ComfyUI-Crystools/requirements.txt
+      ;;
+esac
+
+}
+extension-py-install(){
+cd $GitRoot
+pip install -r $GitRoot/src/custom_nodes/ComfyUI-Image-Saver/requirements.txt
+pip install -r $GitRoot/src/custom_nodes/ComfyUI-Easy-Use/requirements.txt
+pip install -r $GitRoot/src/custom_nodes/ComfyUI-Crystools/requirements.txt
+}
+run-devil() {
+    cd "$GitRoot/src"
+    case "$VARIANT" in
+      "ROCM")
+        cd $GitRoot/src/
+
+       bash -c "printf '\n Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
+        #### Env set for run
+        PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
+
+        #### Main command
+        python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
+
+        #### Options
+        --use-pytorch-cross-attention --cpu-vae --disable-xformers
+          ;;
+      "CUDA")
+        cd $GitRoot/src/
+       bash -c "printf '\n Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
+
+        #### Env set for run
+        NIXPKGS_ALLOW_UNFREE=1 \
+
+        #### Main command
+        python main.py \
+
+        #### Options
+        --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data --cuda-malloc
+          ;;
+      "CPU")
+        echo "Running first run script for CPU..."
+          ;;
+        *)
+        echo "Unknown variant: $VARIANT. Please specify a valid variant."
+        exit 1
+          ;;
+    esac
+}
+build-devil() {
+    case "$VARIANT" in
       "ROCM")
         cd $GitRoot/src/
 
@@ -126,157 +249,38 @@ in pkgs.mkShell rec {
         pip install -r requirements.txt
         pip install open-clip-torch
           ;;
-      esac
-
-
-
-############# Custom nodes
-
-        if [ ! -d $GitRoot/data/custom_nodes/ComfyUI-Manager ]; then
-            git clone  https://github.com/ltdrdata/ComfyUI-Manager $GitRoot/data/custom_nodes/ComfyUI-Manager
-        else
-           cd $GitRoot/data/custom_nodes/ComfyUI-Manager
-           git pull https://github.com/ltdrdata/ComfyUI-Manager
-           cd $GitRoot
-        fi
-	
-	if [ ! -d $GitRoot/data/custom_nodes/ComfyUI_mittimiLoadText ]; then
-		cd $GitRoot/data/custom_nodes/
-		git clone https://github.com/mittimi/ComfyUI_mittimiLoadText
-		cd $GitRoot
-	fi
-
-        if [ ! -d $GitRoot/data/custom_nodes/ComfyUI-Crystools ]; then
-            git clone -b AMD https://github.com/crystian/ComfyUI-Crystools.git $GitRoot/data/custom_nodes/ComfyUI-Crystools
-            cd $GitRoot/data/custom_nodes/ComfyUI-Crystools
-            pip install -r requirements.txt
-            cd $GitRoot
-          else
-            cd $GitRoot/data/custom_nodes/ComfyUI-Crystools
-            git pull https://github.com/crystian/ComfyUI-Crystools.git
-            cd $GitRoot
-        fi
-
-
-        if [ ! -d $GitRoot/data/custom_nodes/ComfyUI-Easy-Use ]; then
-            git clone https://github.com/yolain/ComfyUI-Easy-Use $GitRoot/data/custom_nodes/ComfyUI-Easy-Use
-            cd $GitRoot/data/custom_nodes/ComfyUI-Easy-Use
-            pip install -r requirements.txt
-            cd $GitRoot
-         else
-            cd $GitRoot/data/custom_nodes/ComfyUI-Easy-Use
-            git pull
-            pip install -r requirements.txt
-            cd $GitRoot
-        fi
-
-        if [ ! -d $GitRoot/data/custom_nodes/ComfyUI-Image-Saver ]; then
-          cd $GitRoot/data/custom_nodes
-          git clone https://github.com/alexopus/ComfyUI-Image-Saver.git
-          cd ComfyUI-Image-Saver
-          pip install -r requirements.txt
-          cd $GitRoot
-        fi
-
-############# Cloning the models
-
-    echo "Cloning Devil-Diffusion base model + VAE, and CLIP vision."
-    echo -e "NOTE::: Devilv1.3 base model comes with VAE baked in.n/VAE on the side is a clone of the baked in VAE for ease of access for certain nodes, some nodes really REALLY want a specified VAE for some reason ive yet to figure out."
-    sleep 5
-    tmp="$GitRoot/data/tmp"
-    mkdir -p $tmp
-    echo "$PWD"
-    #exit 1
-        if [ ! -d $tmp/Devil-Diffusion ]; then
-        bash -c "printf '\nThank you for using Devil-Diffusion.'"
-        bash -c "printf '\nWARNING::: Depending on your network speed, this may be a good time to go to the bathroom or grab coffee. \nFirst execution takes a bit to pull and build initially.'"
-        bash -c "printf '\nNOTICE: This start script will not run again unless you wipe this entire directory. \necho -e "\033[4mThis script can be bypassed in future installs by first running n/touch devil-scripts/FIRSTRUN.flag before running the nix-shell.\033[m"'"
-        sleep 5
-            git-lfs clone https://huggingface.co/Mephist0phel3s/Devil-Diffusion $tmp/Devil-Diffusion
-              else
-            git-lfs pull https://huggingface.co/Mephist0phel3s/Devil-Diffusion $tmp/Devil-Diffusion
-        fi
-####NOTICE::: ive decided to exlude IPA for now as its not commonly used enough to justify the upfront bandwidth cost to user for now.
-#        if [ ! -d $tmp/IP-Adapter ]; then
-#            git-lfs clone https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
-#        else
-#            git-lfs pull https://huggingface.co/h94/IP-Adapter $tmp/IP-Adapter
-#            ipa=$tmp/IP-Adapter && export ipa=$tmp/IP-Adapter
-#        fi
-
-
-# Create directories
-mkdir -p "$GitRoot/docs/ipadapter"
-ipa=$GitRoot/data/models/ipadapter
-models=$GitRoot/data/models
-
-if [ ! -f $GitRoot/src/devil_scripts/models.flag ]; then
-   touch $GitRoot/src/devil_scripts/models.flag
-   rsync -av --progress \
-      "$tmp/Devil-Diffusion/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" "$models/clip_vision" 
-   rsync -av --progress \
-      "$tmp/Devil-Diffusion/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors" "$models/clip_vision" 
-   rsync -av --progress \
-      "$tmp/Devil-Diffusion/Devil_Pony_v1.3.safetensors" "$models/checkpoints" 
-   rsync -av --progress \
-      "$tmp/Devil-Diffusion/Devil_VAE.safetensors" "$models/vae" 
-
-
-####NOTICE::: I've decided to exlcude IPA for now, as its not a commonly enough used node to justify bandwidth expense.
-#   rsync -av --progress \
-#      "$tmp/IP-Adapter/README.md" "$GitRoot/docs/ipadapter/README.md"
-#   mkdir -p $ipa
-
-#   rsync -av --progress \
-#      "$tmp/IP-Adapter/models" "$ipa/" 
-#   rsync -av --progress \
-#      "$tmp/IP-Adapter/sdxl_models" "$ipa/"
-
-
-fi
-    cd "$GitRoot/src"
-
-
-
-    case "$VARIANT" in
-      "ROCM")
-        cd $GitRoot/src/
-
-       bash -c "printf '\n$green Thank you for using Devil-Diffusion. $nc'"
-
-        PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
-
-        python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
-                       --use-pytorch-cross-attention --cpu-vae --disable-xformers
-          ;;
-      "CUDA")
-        cd $GitRoot/src/
-       bash -c "printf '\n$green Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
-
-        NIXPKGS_ALLOW_UNFREE=1 python main.py  --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
-                       --cuda-malloc
-          ;;
-      "CPU")
-        echo "Running first run script for CPU..."
-          ;;
-        *)
-        echo "Unknown variant: $VARIANT. Please specify a valid variant."
-        exit 1
-          ;;
     esac
+}
+spawn-venv() {
+    cd $SrcRoot
+    SOURCE_DATE_EPOCH=$(date +%s)
+    if test ! -d $SrcRoot/venv; then
+      python3.12 -m venv venv
+    fi
+    source $SrcRoot/venv/bin/activate
+    export PYTHONPATH=$SrcRoot/venv/${pkgs.python312Full.sitePackages}/:$PYTHONPATH
+    cd $GitRoot
+}
 
 
+    export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
+    export VARIANT="${variant}"
+SrcRoot="$PWD"
+cd ..
+GitRoot="$PWD"
+cd $GitRoot
+spawn-venv
+#build-devil
 
   '';
 
-  # Post shell hook to set Python environment properly
   postShellHook = ''
-    ln -sf ${pkgs.python312Full.sitePackages}/* ./venv/lib/python3.12/site-packages
+  ln -sf ${pkgs.python312Full.sitePackages}/* ./venv/lib/python3.12/site-packages
   '';
 
   # Environment variables
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
   CUDA_PATH = pkgs.lib.optionalString (variant == "CUDA") pkgs.cudatoolkit;
-  ROCM_PATH= pkgs.lib.optionalString ( variant == "ROCM") pkgs.rocmPackages.rocm-smi;
+  ROCM_PATH = pkgs.lib.optionalString ( variant == "ROCM") pkgs.rocmPackages.rocm-smi;
   EXTRA_LDFLAGS = pkgs.lib.optionalString (variant == "CUDA") "-L${pkgs.linuxPackages.nvidia_x11}/lib";
 }
