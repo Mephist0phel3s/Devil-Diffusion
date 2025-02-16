@@ -1,4 +1,8 @@
 __pycache__/
+!data/custom_nodes/ComfyUI-Image-Saver
+!data/custom_nodes/ComfyUI-ComfyUI-Manager
+!data/custom_nodes/ComfyUI-ComfyUI_mittimiLoadText
+!data/custom_nodes/ComfyUI-Crystools
 src/devil_scripts/wget-log
 src/devil_scripts/FIRSTRUN.flag
 src/devil_scripts/models.flag
