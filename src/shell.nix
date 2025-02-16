@@ -82,10 +82,10 @@ flags() {
             "first-run")
                 if [[ "$value" -eq 0 ]]; then
                     echo "First build detected, standby."
-                    sed -i 's/^first-run=0$/first-run=1/' "$flag"
                     build-devil
                     extension-pull
                     lfs-pull
+                    sed -i 's/^first-run=0$/first-run=1/' "$flag"
                     run-devil
                   else
                     run-devil
@@ -110,6 +110,7 @@ lfs-pull() {
     echo "B: Download Devil Cartoon v1.1"
     echo "C: Download both"
     echo "D: Download none (add your own)"
+    echo -e "Choice is the essence of Chaos!\n Make your choice, chaos seed."
     (
         sleep $TIMEOUT
         kill -s SIGTERM $$
@@ -184,7 +185,7 @@ run-devil() {
       "ROCM")
         cd $GitRoot/src/
 
-       bash -c "printf '\n Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
+       devilish-print "Thank you for using Devil Diffusion" "Red" "blue" "bold"
         #### Env set for run
         PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
         python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
@@ -192,7 +193,7 @@ run-devil() {
           ;;
       "CUDA")
         cd $GitRoot/src/
-       bash -c "printf '\n Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
+         devilish-print "Thank you for using Devil Diffusion" "Red" "blue" "bold"
 
         NIXPKGS_ALLOW_UNFREE=1 \
         python main.py \
@@ -211,6 +212,8 @@ build-devil() {
     case "$VARIANT" in
       "ROCM")
         cd $GitRoot/src/
+  devilish-print "This is red text on yellow background with bold" "red" "yellow" "bold"
+  devilish-print "Building Devil Diffusion for CUDA based machine." "red" "yellow" "bold"
 
         pip install torch torchvision torchaudio \
           --index-url https://download.pytorch.org/whl/rocm6.2.4
@@ -227,6 +230,7 @@ build-devil() {
     esac
 }
 spawn-venv() {
+  devilish-print "Spawning python virtual env and prepping env for runtime" "yellow" "black" ""
     cd $SrcRoot
     SOURCE_DATE_EPOCH=$(date +%s)
     if test ! -d $SrcRoot/venv; then
@@ -236,11 +240,117 @@ spawn-venv() {
     export PYTHONPATH=$SrcRoot/venv/${pkgs.python312Full.sitePackages}/:$PYTHONPATH
     cd $GitRoot
 }
+#!/bin/bash
+
+# Function to print colored text with background, bold, and underline options
+devilish-print() {
+    local text="$1"
+    local color="$2"
+    local bgcolor="$3"
+    local style="$4"
+
+    # Define color codes (foreground colors)
+    local RESET="\033[0m"
+    local BOLD="\033[1m"
+    local UNDERLINE="\033[4m"
+
+    # Foreground colors (xterm 16 colors)
+    local BLACK="\033[30m"
+    local RED="\033[31m"
+    local GREEN="\033[32m"
+    local YELLOW="\033[33m"
+    local BLUE="\033[34m"
+    local MAGENTA="\033[35m"
+    local CYAN="\033[36m"
+    local WHITE="\033[37m"
+    local GRAY="\033[90m"
+    local LIGHT_RED="\033[91m"
+    local LIGHT_GREEN="\033[92m"
+    local LIGHT_YELLOW="\033[93m"
+    local LIGHT_BLUE="\033[94m"
+    local LIGHT_MAGENTA="\033[95m"
+    local LIGHT_CYAN="\033[96m"
+    local LIGHT_WHITE="\033[97m"
+
+    # Background colors
+    local BG_BLACK="\033[40m"
+    local BG_RED="\033[41m"
+    local BG_GREEN="\033[42m"
+    local BG_YELLOW="\033[43m"
+    local BG_BLUE="\033[44m"
+    local BG_MAGENTA="\033[45m"
+    local BG_CYAN="\033[46m"
+    local BG_WHITE="\033[47m"
+    local BG_GRAY="\033[48;5;8m"    # Using 256-color background gray
+    local BG_LIGHT_RED="\033[48;5;9m"
+    local BG_LIGHT_GREEN="\033[48;5;10m"
+    local BG_LIGHT_YELLOW="\033[48;5;11m"
+    local BG_LIGHT_BLUE="\033[48;5;12m"
+    local BG_LIGHT_MAGENTA="\033[48;5;13m"
+    local BG_LIGHT_CYAN="\033[48;5;14m"
+    local BG_LIGHT_WHITE="\033[48;5;15m"
+
+    # Select foreground color based on input
+    case "$color" in
+        "black")   fg=$BLACK ;;
+        "red")     fg=$RED ;;
+        "green")   fg=$GREEN ;;
+        "yellow")  fg=$YELLOW ;;
+        "blue")    fg=$BLUE ;;
+        "magenta") fg=$MAGENTA ;;
+        "cyan")    fg=$CYAN ;;
+        "white")   fg=$WHITE ;;
+        "gray")    fg=$GRAY ;;
+        "light-red")   fg=$LIGHT_RED ;;
+        "light-green") fg=$LIGHT_GREEN ;;
+        "light-yellow") fg=$LIGHT_YELLOW ;;
+        "light-blue") fg=$LIGHT_BLUE ;;
+        "light-magenta") fg=$LIGHT_MAGENTA ;;
+        "light-cyan") fg=$LIGHT_CYAN ;;
+        "light-white") fg=$LIGHT_WHITE ;;
+        *)          fg=$RESET ;;  # Default to no color
+    esac
+
+    # Select background color based on input
+    case "$bgcolor" in
+        "black")   bg=$BG_BLACK ;;
+        "red")     bg=$BG_RED ;;
+        "green")   bg=$BG_GREEN ;;
+        "yellow")  bg=$BG_YELLOW ;;
+        "blue")    bg=$BG_BLUE ;;
+        "magenta") bg=$BG_MAGENTA ;;
+        "cyan")    bg=$BG_CYAN ;;
+        "white")   bg=$BG_WHITE ;;
+        "gray")    bg=$BG_GRAY ;;
+        "light-red")   bg=$BG_LIGHT_RED ;;
+        "light-green") bg=$BG_LIGHT_GREEN ;;
+        "light-yellow") bg=$BG_LIGHT_YELLOW ;;
+        "light-blue") bg=$BG_LIGHT_BLUE ;;
+        "light-magenta") bg=$BG_LIGHT_MAGENTA ;;
+        "light-cyan") bg=$BG_LIGHT_CYAN ;;
+        "light-white") bg=$BG_LIGHT_WHITE ;;
+        *)          bg=$RESET ;;  # Default to no background color
+    esac
+
+    # Apply style options (bold, underline)
+    case "$style" in
+        "bold")       style_code=$BOLD ;;
+        "underline")  style_code=$UNDERLINE ;;
+        *)            style_code=$RESET ;;  # Default to no style
+    esac
+
+    # Print the formatted text
+     bash -c 'printf "${style_code}${fg}${bg}${text}${RESET}\n"'
+}
+
+# Example usage:
+
 export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
 export VARIANT="${variant}"
 SrcRoot="$PWD"
 cd ..
 GitRoot="$PWD"
+checkpoints=$GitRoot/data/models/checkpoints
 cd $GitRoot
 spawn-venv
 flags
