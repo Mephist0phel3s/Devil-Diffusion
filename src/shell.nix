@@ -62,15 +62,11 @@ in pkgs.mkShell rec {
     ];
 
   shellHook = ''
-#!/bin/bash
-
-# Define the function
 flags() {
-    local config_file="$GitRoot/devil.flag"  # The name of the configuration file
+    local flag="$GitRoot/devil.flag"
 
-    # Check if the config file exists
-    if [[ ! -f "$config_file" ]]; then
-        echo "Config file '$config_file' not found!"
+    if [[ ! -f "$flag" ]]; then
+        echo "Flag file '$flag' not found!"
         return 1
     fi
 
@@ -85,7 +81,14 @@ flags() {
         case "$option" in
             "first-run")
                 if [[ "$value" -eq 0 ]]; then
-                    echo "Running script for Option 1: first run..."
+                    echo "First build detected, standby."
+                    sed -i 's/^first-run=0$/first-run=1/' "$flag"
+                    build-devel
+                    extension-pull
+                    lfs-pull
+                    run-devil
+                  else
+                    run-devil
                 fi
                 ;;
             "build-devil")
@@ -108,7 +111,7 @@ flags() {
                 echo "Unknown option: $option"
                 ;;
         esac
-    done < "$config_file"
+    done < "$flag"
 }
 lfs-pull() {
 if [ ! -f $GitRoot/devil_scripts/lfs.flag ]; then
@@ -188,12 +191,6 @@ case "$VARIANT" in
 esac
 
 }
-extension-py-install(){
-cd $GitRoot
-pip install -r $GitRoot/src/custom_nodes/ComfyUI-Image-Saver/requirements.txt
-pip install -r $GitRoot/src/custom_nodes/ComfyUI-Easy-Use/requirements.txt
-pip install -r $GitRoot/src/custom_nodes/ComfyUI-Crystools/requirements.txt
-}
 run-devil() {
     cd "$GitRoot/src"
     case "$VARIANT" in
@@ -261,16 +258,18 @@ spawn-venv() {
     export PYTHONPATH=$SrcRoot/venv/${pkgs.python312Full.sitePackages}/:$PYTHONPATH
     cd $GitRoot
 }
-
-
-    export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
-    export VARIANT="${variant}"
+export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
+export VARIANT="${variant}"
 SrcRoot="$PWD"
 cd ..
 GitRoot="$PWD"
 cd $GitRoot
 spawn-venv
+flags
 #build-devil
+#extension-pull
+#lfs-pull
+#run-devil
 
   '';
 
