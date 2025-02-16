@@ -1,4 +1,5 @@
 __pycache__/
+/devil.flag
 !data/custom_nodes/ComfyUI-Image-Saver
 !data/custom_nodes/ComfyUI-ComfyUI-Manager
 !data/custom_nodes/ComfyUI-ComfyUI_mittimiLoadText
