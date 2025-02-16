@@ -34,7 +34,7 @@ in pkgs.mkShell rec {
   # Build dependencies
   buildInputs = with pkgs;
     hardware_deps ++ [
-      git # The program instantly crashes if git is not present, even if everything is already downloaded
+      git
       python312Full
       python312Packages.huggingface-hub
       zstd
@@ -91,6 +91,11 @@ flags() {
                     run-devil
                 fi
                 ;;
+            "lfs-pull")
+                if [[ "$value" -eq 0 ]]; then
+                    printf ""
+                    lfs-pull
+                ;;
             *)
                 echo "Unknown option: $option"
                 ;;
@@ -98,8 +103,6 @@ flags() {
     done < "$flag"
 }
 lfs-pull() {
-if [ ! -f $GitRoot/devil_scripts/lfs.flag ]; then
-    echo "Devil" >> $GitRoot/devil_scripts/lfs.flag
     local TIMEOUT=20
     local choice
     echo "Choose an option:"
@@ -184,24 +187,15 @@ run-devil() {
        bash -c "printf '\n Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
         #### Env set for run
         PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
-
-        #### Main command
         python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
-
-        #### Options
         --use-pytorch-cross-attention --cpu-vae --disable-xformers
           ;;
       "CUDA")
         cd $GitRoot/src/
        bash -c "printf '\n Thank you for using \033[31mDevil-Diffusion.\033[0m\n'"
 
-        #### Env set for run
         NIXPKGS_ALLOW_UNFREE=1 \
-
-        #### Main command
         python main.py \
-
-        #### Options
         --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data --cuda-malloc
           ;;
       "CPU")
