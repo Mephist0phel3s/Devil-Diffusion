@@ -1,4 +1,7 @@
 __pycache__/
+src/devil_scripts/wget-log
+src/devil_scripts/FIRSTRUN.flag
+src/devil_scripts/models.flag
 data/models/*
 data/input/*
 data/output/*
