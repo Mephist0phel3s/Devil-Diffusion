@@ -1,15 +1,15 @@
-[submodule "data/custom_nodes/ComfyUI-Easy-Use"]
-	path = data/custom_nodes/ComfyUI-Easy-Use
-	url = https://github.com/yolain/ComfyUI-Easy-Use
-[submodule "data/custom_nodes/ComfyUI-Crystools"]
-	path = data/custom_nodes/ComfyUI-Crystools
-	url = https://github.com/crystian/ComfyUI-Crystools
-[submodule "data/custom_nodes/ComfyUI-Image-Saver"]
-	path = data/custom_nodes/ComfyUI-Image-Saver
-	url = https://github.com/alexopus/ComfyUI-Image-Saver
-[submodule "data/custom_nodes/ComfyUI_mittimiLoadText"]
-	path = data/custom_nodes/ComfyUI_mittimiLoadText
-	url = https://github.com/mittimi/ComfyUI_mittimiLoadText
-[submodulee "data/custom_nodes/ComfyUI-Manager"]
-	path = data/custom_nodes/ComfyUI-Manager
+[submodule "src/custom_nodes/ComfyUI-Image-Saver"]
+	path = src/custom_nodes/ComfyUI-Image-Saver
+	url = https://github.com/alexopus/ComfyUI-Image-Saver.git
+[submodule "src/custom_nodes/ComfyUI-Manager"]
+	path = src/custom_nodes/ComfyUI-Manager
 	url = https://github.com/ltdrdata/ComfyUI-Manager
+[submodule "src/custom_nodes/ComfyUI-Crystools"]
+	path = src/custom_nodes/ComfyUI-Crystools
+	url = https://github.com/crystian/ComfyUI-Crystools.git
+[submodule "src/custom_nodes/ComfyUI-Easy-Use"]
+	path = src/custom_nodes/ComfyUI-Easy-Use
+	url = https://github.com/yolain/ComfyUI-Easy-Use
+[submodule "src/custom_nodes/ComfyUI_mittimiLoadText"]
+	path = src/custom_nodes/ComfyUI_mittimiLoadText
+	url = https://github.com/mittimi/ComfyUI_mittimiLoadText
