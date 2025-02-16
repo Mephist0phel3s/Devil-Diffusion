@@ -70,14 +70,10 @@ flags() {
         return 1
     fi
 
-    # Read the file line by line
     while IFS='=' read -r option value; do
-        # Ignore lines that are empty or comments
         if [[ -z "$option" || "$option" == \#* ]]; then
             continue
         fi
-
-        # Check if the option is enabled (value = 1)
         case "$option" in
             "first-run")
                 if [[ "$value" -eq 0 ]]; then
@@ -86,23 +82,24 @@ flags() {
                     extension-pull
                     lfs-pull
                     sed -i 's/^first-run=0$/first-run=1/' "$flag"
-                    run-devil
-                  else
-                    run-devil
                 fi
                 ;;
             "lfs-pull")
                 if [[ "$value" -eq 0 ]]; then
-                    printf ""
                     lfs-pull
+                  else
+                    printf "skip lfs-pull"
+                  sed -i 's/^lfs-pull=0$/lfs-pull=1/' "$flag"
+                fi
                 ;;
             *)
-                echo "Unknown option: $option"
+                echo "Unknown option"
                 ;;
         esac
     done < "$flag"
 }
 lfs-pull() {
+    local flag="$GitRoot/devil.flag"
     local TIMEOUT=20
     local choice
     echo "Choose an option:"
@@ -121,25 +118,29 @@ lfs-pull() {
         choice="A"
     fi
     case "$choice" in
-        A|a) echo "Pulling Devil Pony v1.3, standby." && \
+        A|a) echo "Pulling Devil Pony v1.3, standby."
         huggingface-cli download Mephist0phel3s/Devil-Diffusion \
         --include Devil_Pony_v1.3.safetensors \
-        --local-dir $PWD/ ;;
+        --local-dir $checkpoints/
+        ;;
 
-        B|b) echo "Pulling Devil Cartoon v1.1, standby" && \
+        B|b) echo "Pulling Devil Cartoon v1.1, standby"
         huggingface-cli download Mephist0phel3s/Devil-Diffusion \
-        --include Devil_Cartoon_v1.1-beta_00001_.safetensors
-        --local-dir $PWD/ ;;
-        C|c) echo "Pulling both Devil Cartoon v1.1 and Pony v1.3, standby" && \
+        --include Devil_Cartoon_v1.1-beta_00001_.safetensors \
+        --local-dir $checkpoints/
+        ;;
+        C|c) echo "Pulling both Devil Cartoon v1.1 and Pony v1.3, standby"
         huggingface-cli download Mephist0phel3s/Devil-Diffusion \
         --include Devil_Cartoon_v1.1-beta_00001_.safetensors \
         --include Devil_Pony_v1.3.safetensors \
-        --local-dir $PWD/ ;;
-        D|d) echo "None, add your own to data/models/checkpoints";;
+        --local-dir $checkpoints/
+        ;;
+        D|d) echo "None, add your own to data/models/checkpoints"
+        ;;
 
-        *) echo "Invalid selection, defaulting to A, standby.";;
+        *) echo "Invalid selection, defaulting to A, standby."
+        ;;
     esac
-fi
 }
 extension-pull() {
 cd $GitRoot
@@ -185,7 +186,6 @@ run-devil() {
       "ROCM")
         cd $GitRoot/src/
 
-       devilish-print "Thank you for using Devil Diffusion" "Red" "blue" "bold"
         #### Env set for run
         PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
         python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
@@ -193,7 +193,6 @@ run-devil() {
           ;;
       "CUDA")
         cd $GitRoot/src/
-         devilish-print "Thank you for using Devil Diffusion" "Red" "blue" "bold"
 
         NIXPKGS_ALLOW_UNFREE=1 \
         python main.py \
@@ -212,8 +211,8 @@ build-devil() {
     case "$VARIANT" in
       "ROCM")
         cd $GitRoot/src/
-  devilish-print "This is red text on yellow background with bold" "red" "yellow" "bold"
-  devilish-print "Building Devil Diffusion for CUDA based machine." "red" "yellow" "bold"
+#  devilish-print "This is red text on yellow background with bold" "red" "yellow" "bold"
+#  devilish-print "Building Devil Diffusion for CUDA based machine." "red" "yellow" "bold"
 
         pip install torch torchvision torchaudio \
           --index-url https://download.pytorch.org/whl/rocm6.2.4
@@ -226,124 +225,20 @@ build-devil() {
           --extra-index-url https://download.pytorch.org/whl/cu126
         pip install -r requirements.txt
         pip install open-clip-torch
-          ;;
+        ;;
     esac
 }
 spawn-venv() {
-  devilish-print "Spawning python virtual env and prepping env for runtime" "yellow" "black" ""
+#  devilish-print "Spawning python virtual env and prepping env for runtime" "yellow" "black" ""
     cd $SrcRoot
     SOURCE_DATE_EPOCH=$(date +%s)
-    if test ! -d $SrcRoot/venv; then
+    if [ ! -d $SrcRoot/venv ]; then
       python3.12 -m venv venv
     fi
     source $SrcRoot/venv/bin/activate
     export PYTHONPATH=$SrcRoot/venv/${pkgs.python312Full.sitePackages}/:$PYTHONPATH
     cd $GitRoot
 }
-#!/bin/bash
-
-# Function to print colored text with background, bold, and underline options
-devilish-print() {
-    local text="$1"
-    local color="$2"
-    local bgcolor="$3"
-    local style="$4"
-
-    # Define color codes (foreground colors)
-    local RESET="\033[0m"
-    local BOLD="\033[1m"
-    local UNDERLINE="\033[4m"
-
-    # Foreground colors (xterm 16 colors)
-    local BLACK="\033[30m"
-    local RED="\033[31m"
-    local GREEN="\033[32m"
-    local YELLOW="\033[33m"
-    local BLUE="\033[34m"
-    local MAGENTA="\033[35m"
-    local CYAN="\033[36m"
-    local WHITE="\033[37m"
-    local GRAY="\033[90m"
-    local LIGHT_RED="\033[91m"
-    local LIGHT_GREEN="\033[92m"
-    local LIGHT_YELLOW="\033[93m"
-    local LIGHT_BLUE="\033[94m"
-    local LIGHT_MAGENTA="\033[95m"
-    local LIGHT_CYAN="\033[96m"
-    local LIGHT_WHITE="\033[97m"
-
-    # Background colors
-    local BG_BLACK="\033[40m"
-    local BG_RED="\033[41m"
-    local BG_GREEN="\033[42m"
-    local BG_YELLOW="\033[43m"
-    local BG_BLUE="\033[44m"
-    local BG_MAGENTA="\033[45m"
-    local BG_CYAN="\033[46m"
-    local BG_WHITE="\033[47m"
-    local BG_GRAY="\033[48;5;8m"    # Using 256-color background gray
-    local BG_LIGHT_RED="\033[48;5;9m"
-    local BG_LIGHT_GREEN="\033[48;5;10m"
-    local BG_LIGHT_YELLOW="\033[48;5;11m"
-    local BG_LIGHT_BLUE="\033[48;5;12m"
-    local BG_LIGHT_MAGENTA="\033[48;5;13m"
-    local BG_LIGHT_CYAN="\033[48;5;14m"
-    local BG_LIGHT_WHITE="\033[48;5;15m"
-
-    # Select foreground color based on input
-    case "$color" in
-        "black")   fg=$BLACK ;;
-        "red")     fg=$RED ;;
-        "green")   fg=$GREEN ;;
-        "yellow")  fg=$YELLOW ;;
-        "blue")    fg=$BLUE ;;
-        "magenta") fg=$MAGENTA ;;
-        "cyan")    fg=$CYAN ;;
-        "white")   fg=$WHITE ;;
-        "gray")    fg=$GRAY ;;
-        "light-red")   fg=$LIGHT_RED ;;
-        "light-green") fg=$LIGHT_GREEN ;;
-        "light-yellow") fg=$LIGHT_YELLOW ;;
-        "light-blue") fg=$LIGHT_BLUE ;;
-        "light-magenta") fg=$LIGHT_MAGENTA ;;
-        "light-cyan") fg=$LIGHT_CYAN ;;
-        "light-white") fg=$LIGHT_WHITE ;;
-        *)          fg=$RESET ;;  # Default to no color
-    esac
-
-    # Select background color based on input
-    case "$bgcolor" in
-        "black")   bg=$BG_BLACK ;;
-        "red")     bg=$BG_RED ;;
-        "green")   bg=$BG_GREEN ;;
-        "yellow")  bg=$BG_YELLOW ;;
-        "blue")    bg=$BG_BLUE ;;
-        "magenta") bg=$BG_MAGENTA ;;
-        "cyan")    bg=$BG_CYAN ;;
-        "white")   bg=$BG_WHITE ;;
-        "gray")    bg=$BG_GRAY ;;
-        "light-red")   bg=$BG_LIGHT_RED ;;
-        "light-green") bg=$BG_LIGHT_GREEN ;;
-        "light-yellow") bg=$BG_LIGHT_YELLOW ;;
-        "light-blue") bg=$BG_LIGHT_BLUE ;;
-        "light-magenta") bg=$BG_LIGHT_MAGENTA ;;
-        "light-cyan") bg=$BG_LIGHT_CYAN ;;
-        "light-white") bg=$BG_LIGHT_WHITE ;;
-        *)          bg=$RESET ;;  # Default to no background color
-    esac
-
-    # Apply style options (bold, underline)
-    case "$style" in
-        "bold")       style_code=$BOLD ;;
-        "underline")  style_code=$UNDERLINE ;;
-        *)            style_code=$RESET ;;  # Default to no style
-    esac
-
-    # Print the formatted text
-     bash -c 'printf "${style_code}${fg}${bg}${text}${RESET}\n"'
-}
-
-# Example usage:
 
 export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
 export VARIANT="${variant}"
@@ -354,18 +249,10 @@ checkpoints=$GitRoot/data/models/checkpoints
 cd $GitRoot
 spawn-venv
 flags
-#build-devil
-#extension-pull
-#lfs-pull
-#run-devil
+run-devil
 
   '';
-
-  postShellHook = ''
-  ln -sf ${pkgs.python312Full.sitePackages}/* ./venv/lib/python3.12/site-packages
-  '';
-
-  # Environment variables
+  postShellHook = ''ln -sf ${pkgs.python312Full.sitePackages}/* ./venv/lib/python3.12/site-packages'';
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
   CUDA_PATH = pkgs.lib.optionalString (variant == "CUDA") pkgs.cudatoolkit;
   ROCM_PATH = pkgs.lib.optionalString ( variant == "ROCM") pkgs.rocmPackages.rocm-smi;
