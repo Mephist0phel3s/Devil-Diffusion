@@ -9,13 +9,10 @@ src/devil_scripts/models.flag
 data/models/*
 data/input/*
 data/output/*
-src/hipBLA*
-/src/hipBLASLt-rocm-6.0.2/
 src/.shell.nix.kate-swp
 data/user/default
 src/.impl.nix.kate-swp
 .cache
-data/custom_nodes/ComfyUI*
 data/models/*
 data/tmp/*
 src/models/*
@@ -48,4 +45,3 @@ models/vae/Devil_VAE.safetensors
 tmp/
 ddtemp/
 src/.passthrough.sh.kate-swp
-src/rocm-6.0.2.tar.gz.1
