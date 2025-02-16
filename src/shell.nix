@@ -83,28 +83,12 @@ flags() {
                 if [[ "$value" -eq 0 ]]; then
                     echo "First build detected, standby."
                     sed -i 's/^first-run=0$/first-run=1/' "$flag"
-                    build-devel
+                    build-devil
                     extension-pull
                     lfs-pull
                     run-devil
                   else
                     run-devil
-                fi
-                ;;
-            "build-devil")
-                if [[ "$value" -eq 1 ]]; then
-                    echo "Running script for Option 2: build extensions..."
-                    build-devil
-                fi
-                ;;
-            "build-extensions")
-                if [[ "$value" -eq 1 ]]; then
-                    echo "Running script for Option 3: lfs-pull..."
-                fi
-                ;;
-            "lfs-pull")
-                if [[ "$value" -eq 1 ]]; then
-                    echo "Running script for Option 4: build devel..."
                 fi
                 ;;
             *)
