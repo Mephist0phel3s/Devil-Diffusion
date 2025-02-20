@@ -7,9 +7,9 @@
 [submodule "data/custom_nodes/ComfyUI-Crystools"]
 	path = data/custom_nodes/ComfyUI-Crystools
 	url = https://github.com/crystian/ComfyUI-Crystools.git
-[submodule "data/custom_nodes/ComfyUI-Easy-Use"]
-	path = data/custom_nodes/ComfyUI-Easy-Use
-	url = https://github.com/yolain/ComfyUI-Easy-Use
 [submodule "data/custom_nodes/ComfyUI-Image-Saver"]
 	path = data/custom_nodes/ComfyUI-Image-Saver
 	url = https://github.com/alexopus/ComfyUI-Image-Saver.git
+[submodule "data/custom_nodes/ComfyUI-Impact-Pack"]
+	path = data/custom_nodes/ComfyUI-Impact-Pack
+	url = https://github.com/ltdrdata/ComfyUI-Impact-Pack
