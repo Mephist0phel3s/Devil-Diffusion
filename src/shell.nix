@@ -193,7 +193,6 @@ run-devil() {
     case "$VARIANT" in
       "ROCM")
         cd $GitRoot/src/
-
         #### Env set for run
         PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
         python main.py --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
@@ -201,7 +200,6 @@ run-devil() {
           ;;
       "CUDA")
         cd $GitRoot/src/
-
         NIXPKGS_ALLOW_UNFREE=1 \
         python main.py \
         --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data --cuda-malloc
@@ -253,6 +251,16 @@ spawn-venv() {
     export PYTHONPATH=$SrcRoot/venv/${pkgs.python312Full.sitePackages}/:$PYTHONPATH
     cd $GitRoot
 }
+ascii-art() {
+art_file="src/devil_scripts/devil-mascot-ascii.txt"
+
+scroll_speed=0.01
+
+while IFS= read -r line; do
+    echo "$line"
+    sleep "$scroll_speed"
+done < "$art_file"
+}
 
 export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LD_LIBRARY_PATH}"
 export VARIANT="${variant}"
@@ -263,6 +271,7 @@ checkpoints=$GitRoot/data/models/checkpoints
 cd $GitRoot
 spawn-venv
 flags
+ascii-art
 run-devil
 
   '';
