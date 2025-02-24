@@ -1,5 +1,11 @@
 __pycache__/
+data/temp
+data/custom_nodes/ComfyUI-Impact-Pack
+data/custom_nodes/comfyui-lora-auto-trigger-words
+src/huggingface/hub
+src/discord_webhook_url.txt
 /devil.flag
+data/custom_nodes/ComfyUI-DiscordWebhook
 !data/custom_nodes/ComfyUI-Image-Saver
 !data/custom_nodes/ComfyUI-ComfyUI-Manager
 !data/custom_nodes/ComfyUI-ComfyUI_mittimiLoadText

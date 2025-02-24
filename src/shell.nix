@@ -25,6 +25,7 @@ let
 #      python312Packages.torchWithoutCuda
       pciutils
     ] else if variant == "CPU" then [
+    ] else if variant == "ROCM-LP" then [
     ] else throw "You need to specify which variant you want: CPU, ROCm, or CUDA.";
 
 in pkgs.mkShell rec {
@@ -40,7 +41,7 @@ in pkgs.mkShell rec {
       zstd
       git-lfs
       # python312Packages.torch               ### python version supersedes, fix later
-          ### Apparently torch fucking needs CUDA for some god damn reason despite the test machine being an AMD machine without any CUDA cores.
+      ### Apparently torch fucking needs CUDA for some god damn reason despite the test machine being an AMD machine without any CUDA cores.
                                              #### Repo fucking breaks with this enabled. Fix later.
       # python312Packages.pip                 ### See reason above.
       # python312Packages.einops
@@ -89,7 +90,7 @@ flags() {
                     lfs-pull
                   else
                     printf "skip lfs-pull"
-                  sed -i 's/^lfs-pull=0$/lfs-pull=1/' "$flag"
+                    sed -i 's/^lfs-pull=0$/lfs-pull=1/' "$flag"
                 fi
                 ;;
             *)
@@ -165,6 +166,13 @@ cd $GitRoot
           git checkout v1.2.7
           pip install -r $GitRoot/data/custom_nodes/ComfyUI-Easy-Use/requirements.txt
 
+          cd $nodes/ComfyUI-Impact-Pack
+          git checkout 8.8.1
+          pip install -r $nodes/ComfyUI-Impact-Pack
+          python install.py
+cd $GitRoot
+
+
 case "$VARIANT" in
       "ROCM")
             cd $GitRoot/data/custom_nodes/ComfyUI-Crystools
@@ -200,6 +208,12 @@ run-devil() {
           ;;
       "CPU")
         echo "Running first run script for CPU..."
+          ;;
+        "ROCM-LP")
+          PYTORCH_TUNABLEOP_ENABLED=0 TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=0 \
+        python main.py --lowvram --listen 127.0.0.1 --auto-launch --port 8666 --base-directory $GitRoot/data \
+        --use-pytorch-cross-attention --disable-xformers --cpu-vae
+
           ;;
         *)
         echo "Unknown variant: $VARIANT. Please specify a valid variant."

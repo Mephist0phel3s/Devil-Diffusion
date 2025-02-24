@@ -10,6 +10,6 @@
 [submodule "data/custom_nodes/ComfyUI-Image-Saver"]
 	path = data/custom_nodes/ComfyUI-Image-Saver
 	url = https://github.com/alexopus/ComfyUI-Image-Saver.git
-[submodule "data/custom_nodes/ComfyUI-Impact-Pack"]
-	path = data/custom_nodes/ComfyUI-Impact-Pack
-	url = https://github.com/ltdrdata/ComfyUI-Impact-Pack
+[submodule "data/custom_nodes/ComfyUI-Easy-Use"]
+	path = data/custom_nodes/ComfyUI-Easy-Use
+	url = https://github.com/crystian/ComfyUI-Crystools.git
