@@ -1,4 +1,4 @@
-
+Join us on Discord: https://discord.gg/xfCftj9pNE
 ***RUNNING DEVIL***.
 
 
